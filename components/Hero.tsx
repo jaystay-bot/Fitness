@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import type { Recommendation, UserInput } from "@/lib/types";
 import { AssessmentForm } from "./AssessmentForm";
+import { EvidenceLedger } from "./EvidenceLedger";
 import { ResultCard } from "./ResultCard";
 
 export function Hero() {
@@ -55,7 +56,8 @@ export function Hero() {
             </li>
           </ul>
         </div>
-        <div className="lg:sticky lg:top-8">
+        <div className="lg:sticky lg:top-8 flex flex-col">
+          <EvidenceLedger />
           <AssessmentForm
             onResult={(rec, used) => {
               setResult(rec);
