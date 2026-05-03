@@ -26,6 +26,14 @@ export type Symptom =
 
 export type EvidenceTier = "Strong" | "Moderate" | "Emerging";
 
+export type ConflictSeverity = "block" | "warn";
+
+export interface ConflictFlag {
+  severity: ConflictSeverity;
+  message: string;
+  suggestedFix: string;
+}
+
 export interface UserInput {
   age: number;
   sex: Sex;
@@ -53,7 +61,7 @@ export interface SupplementPick {
 export interface Recommendation {
   verdict: string;
   bmi: number;
-  goalConflict: string | null;
+  goalConflict: ConflictFlag | null;
   supplements: SupplementPick[];
   nutrition: {
     eatMore: string[];
