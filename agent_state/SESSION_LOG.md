@@ -12,3 +12,16 @@
 - **Status:** N=001 PASS. TRUTH_RESULT.md and NEXT_N.md written.
 - **Next direction:** Deploy to Vercel, capture public URL, run Lighthouse mobile audit, advance to N=002 (OG card share-result image generation) per QUEUE.md.
 - Phase 0 — state files normalized from repo-root PDFs to /agent_state/*.md. No contract changes.
+
+## N=002 — Apex Protocol differentiation pass
+
+- **Date:** 2026-05-03
+- **Commander:** Wrote CURRENT_002.md. Three atomic additions: evidence ledger in hero, OG image per result, conflict banner promoted above verdict.
+- **Architect:** Wrote S1_LOCKED_002.md. Locked 5 new files, 7 file modifications, all-frozen list (supplements/globals/tailwind), conflict detection rules (5 deterministic rules), OG route Edge contract, ledger sample mapping (Creatine/Caffeine+Theanine/Rhodiola).
+- **Sentinel:** GATE OPEN. No contradiction with S1_LOCKED.md. The `Recommendation.goalConflict` shape is enriched from `string | null` to `ConflictFlag | null` — additive structural strengthening with all consumers in this cycle's modify-allowed set. All other locks (palette, fonts, engine purity, lucide-react, no-external-fetch, mobile-first hero, 14 supplement entries) are preserved.
+- **Operator:** COMPLETE — five atomic commits landed (conflicts+types; engine+ResultCard integration; evidence ledger; OG route+meta; A1_OUTPUT_002 manifest). `npm run build` green after each milestone; final build emits `/`, `/api/og` (edge), `/api/recommend` (node).
+- **Watcher:** 10/10 drift checks clean. AI-powered=0, from/to-purple=0, gss/gsp=0, no pages dir, lib/supplements.ts diff empty, app/globals.css diff empty, tailwind.config.ts diff empty, package.json diff empty (no new deps yet), no 'use client' in lib/, all hex colors in EvidenceLedger/ConflictBanner/og route are within the locked palette (0A0A0A, FAFAF7, D4FF3A, FF6B35).
+- **Judge:** 8/8 PASS. Differentiation pass shipped. Ready for N=003 prioritization.
+- N=002 Sentinel: GATE OPEN. No contradiction with S1_LOCKED.md.
+- N=002 Watcher: 10/10 drift checks clean.
+- N=002 Judge: 8/8 PASS. Conflict block fires for muscle+sedentary and focus+sleep<6 with the locked messages. /api/og returns 200 image at 44801 bytes default and 30258 bytes parameterized. Ledger renders above form (336 < 678). Conflict banner renders above verdict (872 < 1072). Latent N=001 CSS-pipeline bug discovered and queued — not fixed in this cycle per guardrail.
