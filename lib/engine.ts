@@ -1,3 +1,4 @@
+import { detectConflict } from "./conflicts";
 import {
   DIET_OVERRIDES,
   GOAL_NUTRITION,
@@ -243,22 +244,6 @@ function buildWarnings(
   return warnings;
 }
 
-function detectGoalConflict(input: UserInput): string | null {
-  if (input.primaryGoal === "muscle" && input.activityLevel === "sedentary") {
-    return "Activity level too low for a muscle goal — fix activity first, then the supplement stack does its job.";
-  }
-  if (
-    input.primaryGoal === "fat-loss" &&
-    (input.dietPattern === "vegan" || input.dietPattern === "vegetarian")
-  ) {
-    return "Fat loss on a plant-based diet works, but only if protein hits ~1.6 g/kg — prioritize protein before any fat-burner.";
-  }
-  if (input.primaryGoal === "muscle" && input.sleepHours < 6) {
-    return "Sleep under six hours blunts muscle protein synthesis — sleep is the first 'supplement' here.";
-  }
-  return null;
-}
-
 function buildNutrition(input: UserInput): Recommendation["nutrition"] {
   const base = GOAL_NUTRITION[input.primaryGoal];
   const dietExtra = DIET_OVERRIDES[input.dietPattern] ?? {
@@ -356,7 +341,7 @@ function buildPlan(
 export function recommend(input: UserInput): Recommendation {
   const supplements = buildStack(input);
   const verdict = buildVerdict(input, supplements);
-  const goalConflict = detectGoalConflict(input);
+  const goalConflict = detectConflict(input);
   const warnings = buildWarnings(input, supplements);
   const nutrition = buildNutrition(input);
   const thirtyDayPlan = buildPlan(input, supplements);

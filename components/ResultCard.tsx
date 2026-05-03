@@ -1,6 +1,7 @@
 import { AlertTriangle, Calendar, Pill, Salad } from "lucide-react";
 
 import type { Recommendation, UserInput } from "@/lib/types";
+import { ConflictBanner } from "./ConflictBanner";
 import { EvidenceTier } from "./EvidenceTier";
 import { Verdict } from "./Verdict";
 
@@ -16,6 +17,7 @@ export function ResultCard({
       aria-label="Your Apex Protocol result"
       className="mt-12 sm:mt-16 border-t border-paper/15 pt-10"
     >
+      {result.goalConflict ? <ConflictBanner flag={result.goalConflict} /> : null}
       <div className="flex flex-col gap-3">
         <span className="text-[11px] font-mono uppercase tracking-wider text-lime">
           Your protocol — {input.primaryGoal}
@@ -27,14 +29,6 @@ export function ResultCard({
           <span>Water {result.nutrition.dailyTargets.waterLiters} L/day</span>
           <span>Sleep {result.nutrition.dailyTargets.sleepHours} h/night</span>
         </div>
-        {result.goalConflict ? (
-          <p className="mt-2 border-l-2 border-clinical pl-3 text-sm text-paper/80">
-            <span className="font-mono uppercase tracking-wider text-clinical text-[11px] block mb-1">
-              Goal conflict
-            </span>
-            {result.goalConflict}
-          </p>
-        ) : null}
       </div>
 
       <SectionHeader icon={<Pill className="w-4 h-4" aria-hidden="true" />}>
