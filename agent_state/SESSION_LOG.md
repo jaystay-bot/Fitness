@@ -38,3 +38,16 @@
 - N=003 Sentinel: GATE OPEN. Recovery cycle scope verified.
 - N=003 Watcher: 14/14 drift checks clean.
 - N=003 Judge: 6/6 PASS. h1=36px (>32 ✓), body bg rgb(10,10,10) ✓, CTA bg rgb(212,255,58) ✓. Baseline 390 screenshot 226136 bytes vs N=002 unstyled 90951 bytes (+135185). N=002 regressions clean: muscle+sedentary block, /api/og default 200 image/png, /api/og parameterized 200 image/png. CSS bundle 10242 → 22234 bytes; utilities like grid-cols-1/max-w-md/bg-ink/bg-lime/text-paper now present.
+
+## N=004 — US-first unit toggle
+
+- **Date:** 2026-05-03
+- **Commander:** Wrote CURRENT_004.md. Targeted addition: imperial-default unit toggle (FT/LB ↔ CM/KG). Conversion at form boundary. Engine unchanged. Distribution + trust layer remains queued as N=005.
+- **Architect:** Wrote S1_LOCKED_004.md. Locked 2 new files (`components/UnitToggle.tsx`, `lib/units.ts`), 2 modifications (`components/AssessmentForm.tsx`, `tests/visual.spec.ts`). Froze every other file in the repo. Banned localStorage/sessionStorage/cookies and any UserInput type change.
+- **Sentinel:** GATE OPEN. Engine contract preserved. `recommend(input: UserInput): Recommendation` signature in `lib/engine.ts` is unchanged; `UserInput` in `lib/types.ts` still carries numeric `heightCm` and `weightKg`. New file slots (`components/UnitToggle.tsx`, `lib/units.ts`) absent on disk before this cycle — no name collision with any existing route or component.
+- **Operator:** COMPLETE — five atomic commits landed. `lib/units.ts` (4 pure converters + `UnitSystem`), `components/UnitToggle.tsx` (stateless segmented control with `aria-pressed`), `components/AssessmentForm.tsx` (toggle integrated, conditional inputs, boundary conversion, inline validation, submit-disable on out-of-range), `tests/visual.spec.ts` (two new assertions + two new screenshots). `npm run build` clean. No `package.json` change.
+- **Watcher:** 15/15 drift checks clean against N=003 PASS (498118b). AI-powered=0; from/to-purple=0; lib/engine.ts/lib/types.ts/lib/supplements.ts/lib/conflicts.ts/lib/ledgerSamples.ts diffs EMPTY; app/api diff EMPTY; frozen components diff EMPTY; app/page.tsx/app/layout.tsx/app/globals.css/tailwind.config.ts/postcss.config.js diffs EMPTY; package.json diff EMPTY; no localStorage/sessionStorage/cookie usage; app/r, SourcesPanel, EmailCapture, app/api/subscribe all ABSENT; UnitToggle uses only locked palette utility classes (no hex literals); UserInput still carries numeric heightCm and weightKg.
+- **Judge:** 7/7 PASS. Imperial-default toggle shipped. Engine contract preserved. Ready for N=005.
+- N=004 Sentinel: GATE OPEN. Engine contract preserved.
+- N=004 Watcher: 15/15 drift checks clean.
+- N=004 Judge: 7/7 PASS. lib/units pure-function asserts: imperialToCm(5,10)=178, imperialToKg(180)=82, cmToImperial(178)={5,10}, kgToPounds(82)=181. Build clean (17.1s). Visual baseline still green (h1>32, body rgb(10,10,10), CTA rgb(212,255,58)). Imperial default renders FT/IN/LB with FT/LB aria-pressed=true. Metric after click renders CM/KG with CM/KG aria-pressed=true. E2E imperial submission intercepted at /api/recommend → body.heightCm=178, body.weightKg=82, 5 supplements returned.
