@@ -118,6 +118,63 @@ export async function runVisualBaseline(): Promise<VisualReport> {
     const shot390 = path.join(SHOTS, "visual_baseline_390.png");
     await page390.screenshot({ path: shot390, fullPage: true });
     report.screenshots.push(shot390);
+
+    // N=004 unit toggle — imperial (default)
+    const imperialFeetVisible = await page390
+      .locator("#feet")
+      .isVisible();
+    const imperialInchesVisible = await page390
+      .locator("#inches")
+      .isVisible();
+    const imperialPoundsVisible = await page390
+      .locator("#pounds")
+      .isVisible();
+    const cmHidden = (await page390.locator("#heightCm").count()) === 0;
+    const kgHidden = (await page390.locator("#weightKg").count()) === 0;
+    const ftLbPressed = await page390
+      .getByRole("button", { name: /feet, inches, pounds/i })
+      .getAttribute("aria-pressed");
+    record(
+      "imperialDefaultRendersFtInLb",
+      imperialFeetVisible &&
+        imperialInchesVisible &&
+        imperialPoundsVisible &&
+        cmHidden &&
+        kgHidden &&
+        ftLbPressed === "true",
+      `feet=${imperialFeetVisible} inches=${imperialInchesVisible} pounds=${imperialPoundsVisible} cmCount=${cmHidden ? 0 : "+"} kgCount=${kgHidden ? 0 : "+"} ftLbPressed=${ftLbPressed}`,
+    );
+    const shotImperial = path.join(SHOTS, "form_imperial_390.png");
+    await page390.screenshot({ path: shotImperial, fullPage: true });
+    report.screenshots.push(shotImperial);
+
+    // N=004 unit toggle — metric (after click)
+    await page390
+      .getByRole("button", { name: /centimeters, kilograms/i })
+      .click();
+    await page390.waitForSelector("#heightCm");
+    const metricCmVisible = await page390.locator("#heightCm").isVisible();
+    const metricKgVisible = await page390.locator("#weightKg").isVisible();
+    const feetGone = (await page390.locator("#feet").count()) === 0;
+    const inchesGone = (await page390.locator("#inches").count()) === 0;
+    const poundsGone = (await page390.locator("#pounds").count()) === 0;
+    const cmKgPressed = await page390
+      .getByRole("button", { name: /centimeters, kilograms/i })
+      .getAttribute("aria-pressed");
+    record(
+      "metricRendersCmKgAfterToggle",
+      metricCmVisible &&
+        metricKgVisible &&
+        feetGone &&
+        inchesGone &&
+        poundsGone &&
+        cmKgPressed === "true",
+      `cm=${metricCmVisible} kg=${metricKgVisible} ftGone=${feetGone} inGone=${inchesGone} lbGone=${poundsGone} cmKgPressed=${cmKgPressed}`,
+    );
+    const shotMetric = path.join(SHOTS, "form_metric_390.png");
+    await page390.screenshot({ path: shotMetric, fullPage: true });
+    report.screenshots.push(shotMetric);
+
     await ctx390.close();
 
     // 1280 × 800 — desktop baseline
