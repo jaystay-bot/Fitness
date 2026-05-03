@@ -25,3 +25,16 @@
 - N=002 Sentinel: GATE OPEN. No contradiction with S1_LOCKED.md.
 - N=002 Watcher: 10/10 drift checks clean.
 - N=002 Judge: 8/8 PASS. Conflict block fires for muscle+sedentary and focus+sleep<6 with the locked messages. /api/og returns 200 image at 44801 bytes default and 30258 bytes parameterized. Ledger renders above form (336 < 678). Conflict banner renders above verdict (872 < 1072). Latent N=001 CSS-pipeline bug discovered and queued — not fixed in this cycle per guardrail.
+
+## N=003 — Apex Protocol styling recovery
+
+- **Date:** 2026-05-03
+- **Commander:** Wrote CURRENT_003.md. Targeted recovery: postcss.config.js + visual baseline regression test. Distribution + trust layer resequenced to N=004.
+- **Architect:** Wrote S1_LOCKED_003.md. Locked 2 new files (postcss.config.js, tests/visual.spec.ts), permitted package.json devDep change for autoprefixer only, froze tailwind.config.ts/globals.css/layout.tsx/page.tsx/components/lib/api routes/tsconfig/next.config/README/.env.example. Banned pulling forward of /r/[slug], SourcesPanel, EmailCapture, /api/subscribe.
+- **Sentinel:** GATE OPEN. Recovery cycle scope verified. No contradiction with S1_LOCKED.md or S1_LOCKED_002.md. The new files (postcss.config.js, tests/visual.spec.ts) do not collide with existing routes or names — verified absent on disk before this cycle. The frozen list is exhaustive: every file authored in N=001 and N=002 is enumerated as frozen in this contract.
+- **Operator:** COMPLETE — three atomic commits landed. `postcss.config.js` added with the exact specified contents. `tests/visual.spec.ts` added with three computed-style assertions (h1>32px, body rgb(10,10,10), CTA rgb(212,255,58)) plus 390 and 1280 screenshots. `package.json` unchanged: `autoprefixer ^10.4.x` was already present from the N=001 scaffold. Post-build CSS bundle grew from 10242 → 22234 bytes; utilities now compile.
+- **Watcher:** 14/14 drift checks clean. AI-powered=0; from/to-purple=0; tailwind.config.ts/globals.css/layout.tsx+page.tsx/components/lib/api diffs all EMPTY against N=002 PASS (5ee93aa); app/r, SourcesPanel, EmailCapture, app/api/subscribe all ABSENT; package.json diff EMPTY; globals.css @tailwind directives preserved.
+- **Judge:** 6/6 PASS. Styling recovery complete. Visual baseline test now part of standard Judge phase. Ready for N=004 distribution layer.
+- N=003 Sentinel: GATE OPEN. Recovery cycle scope verified.
+- N=003 Watcher: 14/14 drift checks clean.
+- N=003 Judge: 6/6 PASS. h1=36px (>32 ✓), body bg rgb(10,10,10) ✓, CTA bg rgb(212,255,58) ✓. Baseline 390 screenshot 226136 bytes vs N=002 unstyled 90951 bytes (+135185). N=002 regressions clean: muscle+sedentary block, /api/og default 200 image/png, /api/og parameterized 200 image/png. CSS bundle 10242 → 22234 bytes; utilities like grid-cols-1/max-w-md/bg-ink/bg-lime/text-paper now present.
