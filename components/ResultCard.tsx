@@ -3,10 +3,13 @@
 import dynamic from "next/dynamic";
 import { AlertTriangle, Calendar, Pill, Salad } from "lucide-react";
 
+import { encodeInput } from "@/lib/slug";
 import type { Recommendation, UserInput } from "@/lib/types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 import { ConflictBanner } from "./ConflictBanner";
+import { EmailCapture } from "./EmailCapture";
 import { EvidenceBar } from "./EvidenceBar";
+import { UpgradeButton } from "./UpgradeButton";
 import { VerdictReveal } from "./VerdictReveal";
 
 const SupplementBottle3D = dynamic(
@@ -20,11 +23,14 @@ const SupplementBottle3D = dynamic(
 export function ResultCard({
   result,
   input,
+  shareSlug,
 }: {
   result: Recommendation;
   input: UserInput;
+  shareSlug?: string;
 }) {
   const featured = result.supplements[0];
+  const slug = shareSlug ?? encodeInput(input);
   return (
     <section
       aria-label="Your Apex Protocol result"
@@ -127,6 +133,14 @@ export function ResultCard({
           </li>
         ))}
       </ul>
+
+      <div className="mt-8 flex justify-start">
+        <UpgradeButton variant="subtle" />
+      </div>
+
+      <div className="mt-6">
+        <EmailCapture verdict={result.verdict} slug={slug} />
+      </div>
     </section>
   );
 }
