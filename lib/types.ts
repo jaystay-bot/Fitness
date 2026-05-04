@@ -56,6 +56,7 @@ export interface SupplementPick {
   studyCount: number;
   whyForYou: string;
   pubmedExample?: string;
+  confidence: number;
 }
 
 export interface Recommendation {
@@ -78,6 +79,7 @@ export interface Recommendation {
     actions: string[];
   }[];
   warnings: string[];
+  variationSeed: number;
 }
 
 export interface SupplementEntry {

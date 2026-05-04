@@ -1,3 +1,4 @@
+import { computeConfidence } from "./confidence";
 import { detectConflict } from "./conflicts";
 import {
   DIET_OVERRIDES,
@@ -14,6 +15,7 @@ import type {
   Symptom,
   UserInput,
 } from "./types";
+import { applyVariation, hashInput } from "./variation";
 import { buildVerdict } from "./verdict";
 
 const TIER_RANK: Record<EvidenceTier, number> = {
@@ -190,6 +192,7 @@ function buildPick(entry: SupplementEntry, input: UserInput): SupplementPick {
     evidenceTier: entry.evidenceTier,
     studyCount: entry.studyCount,
     whyForYou: whyFor(entry, input),
+    confidence: 0,
   };
   if (entry.pubmedExample) {
     pick.pubmedExample = entry.pubmedExample;
@@ -339,10 +342,16 @@ function buildPlan(
 }
 
 export function recommend(input: UserInput): Recommendation {
-  const supplements = buildStack(input);
+  const variationSeed = hashInput(input);
+  const baseStack = buildStack(input);
+  const variedStack = applyVariation(baseStack, variationSeed, input);
+  const supplements = variedStack.slice(0, 7);
+  const warnings = buildWarnings(input, supplements);
+  for (const pick of supplements) {
+    pick.confidence = computeConfidence(pick, input, warnings);
+  }
   const verdict = buildVerdict(input, supplements);
   const goalConflict = detectConflict(input);
-  const warnings = buildWarnings(input, supplements);
   const nutrition = buildNutrition(input);
   const thirtyDayPlan = buildPlan(input, supplements);
 
@@ -354,6 +363,7 @@ export function recommend(input: UserInput): Recommendation {
     nutrition,
     thirtyDayPlan,
     warnings,
+    variationSeed,
   };
 }
 

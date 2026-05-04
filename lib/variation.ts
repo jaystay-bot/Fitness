@@ -117,7 +117,8 @@ function candidateToPick(
     evidenceTier: candidate.evidenceTier,
     studyCount: candidate.studyCount,
     whyForYou: candidate.whyForYou(input),
-  } as SupplementPick;
+    confidence: 0,
+  };
 }
 
 export function applyVariation(
