@@ -16,5 +16,7 @@ export function isStripeConfigured(): boolean {
 
 export const STRIPE_PRICE_MONTHLY = (): string | undefined =>
   process.env.STRIPE_PRICE_ID_MONTHLY;
+export const STRIPE_PRICE_QUARTERLY = (): string | undefined =>
+  process.env.STRIPE_PRICE_ID_QUARTERLY;
 export const STRIPE_PRICE_ANNUAL = (): string | undefined =>
   process.env.STRIPE_PRICE_ID_ANNUAL;

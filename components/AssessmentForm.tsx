@@ -42,6 +42,31 @@ const DEFAULTS: UserInput = {
   symptomToFix: "fatigue",
 };
 
+function normalizeIntegerDisplay(raw: string) {
+  const digits = raw.replace(/\D+/g, "");
+  if (digits.length === 0) return "";
+  return digits.replace(/^0+(?=\d)/, "");
+}
+
+function normalizeDecimalDisplay(raw: string) {
+  const stripped = raw.replace(/[^0-9.]/g, "");
+  if (stripped.length === 0) return "";
+  const firstDot = stripped.indexOf(".");
+  if (firstDot === -1) {
+    return normalizeIntegerDisplay(stripped);
+  }
+  const whole = normalizeIntegerDisplay(stripped.slice(0, firstDot));
+  const fraction = stripped.slice(firstDot + 1).replace(/\./g, "");
+  return `${whole || "0"}.${fraction}`;
+}
+
+function parseDisplayNumber(value: string) {
+  if (value === "") return 0;
+  const parsed = Number(value);
+  if (Number.isNaN(parsed)) return 0;
+  return parsed;
+}
+
 function inImperialBounds(feet: number, inches: number, pounds: number) {
   return (
     feet >= 4 &&
@@ -60,9 +85,23 @@ export function AssessmentForm({
 }) {
   const [input, setInput] = useState<UserInput>(DEFAULTS);
   const [unitSystem, setUnitSystem] = useState<UnitSystem>("imperial");
-  const [feet, setFeet] = useState<number>(DEFAULT_FEET);
-  const [inches, setInches] = useState<number>(DEFAULT_INCHES);
-  const [pounds, setPounds] = useState<number>(DEFAULT_POUNDS);
+  const [ageDisplay, setAgeDisplay] = useState<string>(String(DEFAULTS.age));
+  const [feetDisplay, setFeetDisplay] = useState<string>(String(DEFAULT_FEET));
+  const [inchesDisplay, setInchesDisplay] = useState<string>(
+    String(DEFAULT_INCHES),
+  );
+  const [poundsDisplay, setPoundsDisplay] = useState<string>(
+    String(DEFAULT_POUNDS),
+  );
+  const [sleepDisplay, setSleepDisplay] = useState<string>(
+    String(DEFAULTS.sleepHours),
+  );
+  const [coffeeDisplay, setCoffeeDisplay] = useState<string>(
+    String(DEFAULTS.caffeineCupsPerDay),
+  );
+  const [alcoholDisplay, setAlcoholDisplay] = useState<string>(
+    String(DEFAULTS.alcoholDrinksPerWeek),
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [voiceOpen, setVoiceOpen] = useState(false);
@@ -75,18 +114,21 @@ export function AssessmentForm({
     setInput((prev) => ({ ...prev, ...partial }));
     if (partial.heightCm !== undefined) {
       const { feet: f, inches: i } = cmToImperial(partial.heightCm);
-      setFeet(f);
-      setInches(i);
+      setFeetDisplay(String(f));
+      setInchesDisplay(String(i));
     }
     if (partial.weightKg !== undefined) {
       const lb = kgToPounds(partial.weightKg);
-      setPounds(lb);
+      setPoundsDisplay(String(lb));
     }
     setVoiceOpen(false);
   }
 
   function changeUnitSystem(next: UnitSystem) {
     if (next === unitSystem) return;
+    const feet = parseDisplayNumber(feetDisplay);
+    const inches = parseDisplayNumber(inchesDisplay);
+    const pounds = parseDisplayNumber(poundsDisplay);
     if (next === "metric") {
       const cm = imperialToCm(feet, inches);
       const kg = imperialToKg(pounds);
@@ -108,23 +150,31 @@ export function AssessmentForm({
       const { feet: f, inches: i } = cmToImperial(input.heightCm);
       const lb = kgToPounds(input.weightKg);
       if (inImperialBounds(f, i, lb)) {
-        setFeet(f);
-        setInches(i);
-        setPounds(lb);
+        setFeetDisplay(String(f));
+        setInchesDisplay(String(i));
+        setPoundsDisplay(String(lb));
       } else {
-        setFeet(DEFAULT_FEET);
-        setInches(DEFAULT_INCHES);
-        setPounds(DEFAULT_POUNDS);
+        setFeetDisplay(String(DEFAULT_FEET));
+        setInchesDisplay(String(DEFAULT_INCHES));
+        setPoundsDisplay(String(DEFAULT_POUNDS));
       }
     }
     setUnitSystem(next);
   }
 
+  const parsedFeet = parseDisplayNumber(feetDisplay);
+  const parsedInches = parseDisplayNumber(inchesDisplay);
+  const parsedPounds = parseDisplayNumber(poundsDisplay);
+  const parsedAge = parseDisplayNumber(ageDisplay);
+  const parsedSleepHours = parseDisplayNumber(sleepDisplay);
+  const parsedCoffee = parseDisplayNumber(coffeeDisplay);
+  const parsedAlcohol = parseDisplayNumber(alcoholDisplay);
+
   let derivedHeightCm: number;
   let derivedWeightKg: number;
   if (unitSystem === "imperial") {
-    derivedHeightCm = imperialToCm(feet, inches);
-    derivedWeightKg = imperialToKg(pounds);
+    derivedHeightCm = imperialToCm(parsedFeet, parsedInches);
+    derivedWeightKg = imperialToKg(parsedPounds);
   } else {
     derivedHeightCm = input.heightCm;
     derivedWeightKg = input.weightKg;
@@ -144,8 +194,12 @@ export function AssessmentForm({
     try {
       const payload: UserInput = {
         ...input,
+        age: parsedAge,
         heightCm: derivedHeightCm,
         weightKg: derivedWeightKg,
+        sleepHours: parsedSleepHours,
+        caffeineCupsPerDay: parsedCoffee,
+        alcoholDrinksPerWeek: parsedAlcohol,
       };
       const res = await fetch("/api/recommend", {
         method: "POST",
@@ -201,8 +255,11 @@ export function AssessmentForm({
             max={90}
             inputMode="numeric"
             className={FIELD}
-            value={input.age}
-            onChange={(e) => update("age", Number(e.target.value))}
+            value={ageDisplay}
+            onChange={(e) => {
+              const next = normalizeIntegerDisplay(e.target.value);
+              setAgeDisplay(next);
+            }}
           />
         </Field>
         <Field label="Sex" id="sex">
@@ -237,8 +294,11 @@ export function AssessmentForm({
                     max={7}
                     inputMode="numeric"
                     className={FIELD}
-                    value={feet}
-                    onChange={(e) => setFeet(Number(e.target.value))}
+                    value={feetDisplay}
+                    onChange={(e) => {
+                      const next = normalizeIntegerDisplay(e.target.value);
+                      setFeetDisplay(next);
+                    }}
                   />
                 </Field>
                 <Field label="In" id="inches">
@@ -249,8 +309,11 @@ export function AssessmentForm({
                     max={11}
                     inputMode="numeric"
                     className={FIELD}
-                    value={inches}
-                    onChange={(e) => setInches(Number(e.target.value))}
+                    value={inchesDisplay}
+                    onChange={(e) => {
+                      const next = normalizeIntegerDisplay(e.target.value);
+                      setInchesDisplay(next);
+                    }}
                   />
                 </Field>
               </div>
@@ -263,8 +326,11 @@ export function AssessmentForm({
                 max={440}
                 inputMode="numeric"
                 className={FIELD}
-                value={pounds}
-                onChange={(e) => setPounds(Number(e.target.value))}
+                value={poundsDisplay}
+                onChange={(e) => {
+                  const next = normalizeIntegerDisplay(e.target.value);
+                  setPoundsDisplay(next);
+                }}
               />
             </Field>
           </>
@@ -360,8 +426,11 @@ export function AssessmentForm({
             step={0.5}
             inputMode="decimal"
             className={FIELD}
-            value={input.sleepHours}
-            onChange={(e) => update("sleepHours", Number(e.target.value))}
+            value={sleepDisplay}
+            onChange={(e) => {
+              const next = normalizeDecimalDisplay(e.target.value);
+              setSleepDisplay(next);
+            }}
           />
         </Field>
       </div>
@@ -392,10 +461,11 @@ export function AssessmentForm({
             max={8}
             inputMode="numeric"
             className={FIELD}
-            value={input.caffeineCupsPerDay}
-            onChange={(e) =>
-              update("caffeineCupsPerDay", Number(e.target.value))
-            }
+            value={coffeeDisplay}
+            onChange={(e) => {
+              const next = normalizeIntegerDisplay(e.target.value);
+              setCoffeeDisplay(next);
+            }}
           />
         </Field>
         <Field label="Alcohol (drinks/wk)" id="alcoholDrinksPerWeek">
@@ -406,10 +476,11 @@ export function AssessmentForm({
             max={30}
             inputMode="numeric"
             className={FIELD}
-            value={input.alcoholDrinksPerWeek}
-            onChange={(e) =>
-              update("alcoholDrinksPerWeek", Number(e.target.value))
-            }
+            value={alcoholDisplay}
+            onChange={(e) => {
+              const next = normalizeIntegerDisplay(e.target.value);
+              setAlcoholDisplay(next);
+            }}
           />
         </Field>
       </div>
