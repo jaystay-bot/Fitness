@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Fraunces, JetBrains_Mono } from "next/font/google";
+
+import { FeedbackWidget } from "@/components/FeedbackWidget";
 import "./globals.css";
 
 const CLERK_ENABLED = Boolean(
@@ -50,6 +52,7 @@ export default function RootLayout({
     <html lang="en" className={`${serif.variable} ${mono.variable}`}>
       <body className="min-h-screen bg-ink text-paper antialiased">
         {children}
+        <FeedbackWidget />
       </body>
     </html>
   );
