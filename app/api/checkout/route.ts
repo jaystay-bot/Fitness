@@ -23,7 +23,13 @@ export async function POST(request: Request) {
     );
   }
 
-  const { userId } = auth();
+  let userId: string | null = null;
+  try {
+    userId = auth().userId ?? null;
+  } catch {
+    // Clerk not configured — treat as unauthenticated.
+    userId = null;
+  }
   if (!userId) {
     return NextResponse.json(
       { error: "Authentication required." },
