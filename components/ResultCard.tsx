@@ -93,7 +93,7 @@ export function ResultCard({
   return (
     <section
       aria-label="Your Apex Protocol result"
-      className="mt-10 sm:mt-14 border-t border-paper/15 pt-8 sm:pt-10 min-w-0"
+      className="mt-10 sm:mt-14 border-t border-paper/15 pt-8 sm:pt-10 min-w-0 overflow-x-hidden pb-24"
     >
       {result.goalConflict ? <ConflictBanner flag={result.goalConflict} /> : null}
       <div className="flex flex-col gap-3 min-w-0">
@@ -115,13 +115,27 @@ export function ResultCard({
         </div>
       ) : null}
 
-      <SectionHeader icon={<Pill className="w-4 h-4" aria-hidden="true" />}>
-        Body systems map
-      </SectionHeader>
-      <BodyVisualization
-        picks={result.supplements}
-        warnings={result.warnings}
-      />
+      <details className="group" open>
+        <summary className="cursor-pointer list-none mt-10 mb-3 font-mono text-[11px] uppercase tracking-wider text-lime flex items-center gap-2">
+          <Pill className="w-4 h-4" aria-hidden="true" />
+          <span>Body systems map</span>
+          <span className="ml-auto text-paper/40 group-open:hidden">▼ Show</span>
+          <span className="ml-auto text-paper/40 hidden group-open:inline">▲ Hide</span>
+        </summary>
+        <BodyVisualization
+          picks={result.supplements}
+          warnings={result.warnings}
+        />
+      </details>
+
+      <div className="mt-10 mb-1 flex flex-col gap-1">
+        <p className="text-xs font-mono uppercase tracking-wider text-paper/50">
+          Built from 500+ clinical studies · Strong / Moderate / Emerging evidence tiers
+        </p>
+        <p className="text-sm text-paper/70 italic leading-snug">
+          Most people are wasting money on supplements with no real evidence behind them. This stack is different.
+        </p>
+      </div>
 
       <SectionHeader icon={<Pill className="w-4 h-4" aria-hidden="true" />}>
         Stack ({result.supplements.length} {result.supplements.length === 1 ? "pick" : "picks"})
@@ -171,38 +185,48 @@ export function ResultCard({
         </ProGate>
       </div>
 
-      <SectionHeader icon={<Salad className="w-4 h-4" aria-hidden="true" />}>
-        Daily food protocol
-      </SectionHeader>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
-        <NutritionList title="Eat more" items={result.nutrition.eatMore} positive />
-        <NutritionList title="Eat less" items={result.nutrition.eatLess} />
-      </div>
+      <details className="group">
+        <summary className="cursor-pointer list-none mt-10 mb-3 font-mono text-[11px] uppercase tracking-wider text-lime flex items-center gap-2">
+          <Salad className="w-4 h-4" aria-hidden="true" />
+          <span>Daily food protocol</span>
+          <span className="ml-auto text-paper/40 group-open:hidden">▼ Show</span>
+          <span className="ml-auto text-paper/40 hidden group-open:inline">▲ Hide</span>
+        </summary>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0 mt-3">
+          <NutritionList title="Eat more" items={result.nutrition.eatMore} positive />
+          <NutritionList title="Eat less" items={result.nutrition.eatLess} />
+        </div>
+      </details>
 
-      <SectionHeader icon={<Calendar className="w-4 h-4" aria-hidden="true" />}>
-        30-day execution plan
-      </SectionHeader>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 min-w-0">
-        {result.thirtyDayPlan.map((week) => (
-          <article
-            key={week.week}
-            className="border border-paper/15 rounded-lg p-4 flex flex-col gap-2 min-w-0"
-          >
-            <h3 className="font-mono text-[11px] uppercase tracking-wider text-paper/60">
-              Week {week.week}
-            </h3>
-            <p className="font-serif text-lg leading-tight">{week.focus}</p>
-            <ul className="flex flex-col gap-1.5 text-sm text-paper/80">
-              {week.actions.map((a, i) => (
-                <li key={i} className="flex gap-2">
-                  <span className="text-lime mt-1.5 w-1 h-1 rounded-full bg-lime shrink-0" aria-hidden="true" />
-                  <span>{a}</span>
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
-      </div>
+      <details className="group">
+        <summary className="cursor-pointer list-none mt-10 mb-3 font-mono text-[11px] uppercase tracking-wider text-lime flex items-center gap-2">
+          <Calendar className="w-4 h-4" aria-hidden="true" />
+          <span>30-day execution plan</span>
+          <span className="ml-auto text-paper/40 group-open:hidden">▼ Show</span>
+          <span className="ml-auto text-paper/40 hidden group-open:inline">▲ Hide</span>
+        </summary>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 min-w-0 mt-3">
+          {result.thirtyDayPlan.map((week) => (
+            <article
+              key={week.week}
+              className="border border-paper/15 rounded-lg p-4 flex flex-col gap-2 min-w-0"
+            >
+              <h3 className="font-mono text-[11px] uppercase tracking-wider text-paper/60">
+                Week {week.week}
+              </h3>
+              <p className="font-serif text-lg leading-tight">{week.focus}</p>
+              <ul className="flex flex-col gap-1.5 text-sm text-paper/80">
+                {week.actions.map((a, i) => (
+                  <li key={i} className="flex gap-2">
+                    <span className="text-lime mt-1.5 w-1 h-1 rounded-full bg-lime shrink-0" aria-hidden="true" />
+                    <span>{a}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </details>
 
       <SectionHeader icon={<AlertTriangle className="w-4 h-4" aria-hidden="true" />} accent="clinical">
         Stack warnings
@@ -216,12 +240,25 @@ export function ResultCard({
         ))}
       </ul>
 
-      <div className="mt-8 flex justify-start">
-        <UpgradeButton variant="subtle" />
+      <div className="mt-8">
+        <UpgradeButton variant="primary" />
       </div>
 
       <div className="mt-6">
         <EmailCapture verdict={result.verdict} slug={slug} />
+      </div>
+
+      {/* Sticky CTA — always visible while result is mounted */}
+      <div
+        role="complementary"
+        aria-label="Upgrade prompt"
+        className="fixed bottom-0 left-0 right-0 z-50 bg-ink/95 border-t border-paper/15 backdrop-blur-sm px-4 py-3 flex items-center justify-between gap-4"
+      >
+        <p className="text-sm font-serif text-paper leading-tight">
+          Stop guessing.{" "}
+          <span className="text-lime">Save your stack.</span>
+        </p>
+        <UpgradeButton variant="primary" interval="month" />
       </div>
     </section>
   );

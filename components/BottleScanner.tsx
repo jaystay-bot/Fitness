@@ -128,11 +128,14 @@ export function BottleScanner({ picks }: { picks: SupplementPick[] }) {
         ),
       );
       const res = await fetch("/api/scanner/identify", { method: "POST", body: fd });
+      if (res.status === 401) {
+        throw new Error("Sign in to use the bottle scanner.");
+      }
+      if (res.status === 403) {
+        throw new Error("Pro subscription required — visit /pricing to upgrade.");
+      }
       if (res.status === 503) {
-        const data = (await res.json().catch(() => ({}))) as { reason?: string };
-        throw new Error(
-          "Scanner service is not configured on this deployment.",
-        );
+        throw new Error("Scanner service is not yet available on this deployment.");
       }
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as { error?: string };
