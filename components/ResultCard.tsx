@@ -1,14 +1,16 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import { AlertTriangle, Calendar, Pill, Salad } from "lucide-react";
 
 import { encodeInput } from "@/lib/slug";
-import type { Recommendation, UserInput } from "@/lib/types";
+import type { Recommendation, SubscriptionTier, UserInput } from "@/lib/types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 import { ConflictBanner } from "./ConflictBanner";
 import { EmailCapture } from "./EmailCapture";
 import { EvidenceBar } from "./EvidenceBar";
+import { ProGate } from "./ProGate";
 import { UpgradeButton } from "./UpgradeButton";
 import { VerdictReveal } from "./VerdictReveal";
 
@@ -19,6 +21,54 @@ const SupplementBottle3D = dynamic(
     })),
   { ssr: false },
 );
+
+const TimelineProjection = dynamic(
+  () =>
+    import("./TimelineProjection").then((m) => ({
+      default: m.TimelineProjection,
+    })),
+  { ssr: false },
+);
+
+const LabUpload = dynamic(
+  () => import("./LabUpload").then((m) => ({ default: m.LabUpload })),
+  { ssr: false },
+);
+
+const BottleScanner = dynamic(
+  () => import("./BottleScanner").then((m) => ({ default: m.BottleScanner })),
+  { ssr: false },
+);
+
+function useTier(): SubscriptionTier | null {
+  const [tier, setTier] = useState<SubscriptionTier | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/subscription", { method: "GET" });
+        if (!cancelled) {
+          if (res.status === 401) {
+            setTier("free");
+            return;
+          }
+          if (res.ok) {
+            const data = (await res.json()) as { tier?: SubscriptionTier };
+            setTier(data.tier ?? "free");
+            return;
+          }
+          setTier("free");
+        }
+      } catch {
+        if (!cancelled) setTier("free");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return tier;
+}
 
 export function ResultCard({
   result,
@@ -31,6 +81,7 @@ export function ResultCard({
 }) {
   const featured = result.supplements[0];
   const slug = shareSlug ?? encodeInput(input);
+  const tier = useTier();
   return (
     <section
       aria-label="Your Apex Protocol result"
@@ -87,6 +138,21 @@ export function ResultCard({
             </div>
           </article>
         ))}
+      </div>
+
+      <SectionHeader icon={<Calendar className="w-4 h-4" aria-hidden="true" />}>
+        Pro · clinical companion
+      </SectionHeader>
+      <div className="flex flex-col gap-4">
+        <ProGate userTier={tier} feature="checkin">
+          <TimelineProjection picks={result.supplements} />
+        </ProGate>
+        <ProGate userTier={tier} feature="history">
+          <LabUpload slug={slug} />
+        </ProGate>
+        <ProGate userTier={tier} feature="pdf">
+          <BottleScanner picks={result.supplements} />
+        </ProGate>
       </div>
 
       <SectionHeader icon={<Salad className="w-4 h-4" aria-hidden="true" />}>
