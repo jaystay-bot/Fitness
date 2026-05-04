@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Recommendation, UserInput } from "@/lib/types";
 import { AssessmentForm } from "./AssessmentForm";
 import { EvidenceLedger } from "./EvidenceLedger";
+import { ParallaxLedger } from "./ParallaxLedger";
 import { ResultCard } from "./ResultCard";
 
 export function Hero() {
@@ -57,7 +58,9 @@ export function Hero() {
           </ul>
         </div>
         <div className="lg:sticky lg:top-8 flex flex-col">
-          <EvidenceLedger />
+          <ParallaxLedger>
+            <EvidenceLedger />
+          </ParallaxLedger>
           <AssessmentForm
             onResult={(rec, used) => {
               setResult(rec);
