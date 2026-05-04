@@ -26,12 +26,12 @@ export function Hero() {
   }, [result, input]);
 
   return (
-    <section className="px-5 sm:px-8 lg:px-12 pt-8 sm:pt-14 pb-10 max-w-6xl mx-auto w-full">
-      <header className="flex justify-end mb-4">
+    <section className="px-4 sm:px-8 lg:px-12 pt-8 sm:pt-14 pb-12 sm:pb-14 max-w-6xl mx-auto w-full">
+      <header className="flex justify-end mb-5 sm:mb-6">
         <AccountMenu />
       </header>
-      <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-12 items-start">
-        <div className="flex flex-col gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-7 sm:gap-8 lg:gap-12 items-start">
+        <div className="flex flex-col gap-5 min-w-0">
           <span className="text-[11px] font-mono uppercase tracking-[0.18em] text-lime">
             Evidence-backed protocol
           </span>
@@ -66,7 +66,7 @@ export function Hero() {
             </li>
           </ul>
         </div>
-        <div className="lg:sticky lg:top-8 flex flex-col">
+        <div className="lg:sticky lg:top-8 flex flex-col min-w-0 gap-1 sm:gap-2">
           <ParallaxLedger>
             <EvidenceLedger />
           </ParallaxLedger>
@@ -79,7 +79,7 @@ export function Hero() {
         </div>
       </div>
 
-      <div ref={resultRef}>
+      <div ref={resultRef} className="mt-8 sm:mt-10">
         {result && input ? <ResultCard result={result} input={input} /> : null}
       </div>
     </section>

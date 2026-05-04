@@ -13,7 +13,7 @@ export function EvidenceLedger() {
   return (
     <section
       aria-label="Evidence ledger preview"
-      className="mb-5 sm:mb-7"
+      className="mb-5 sm:mb-7 w-full min-w-0"
     >
       <div className="flex items-center gap-2 mb-3">
         <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-paper/50">
@@ -21,14 +21,14 @@ export function EvidenceLedger() {
         </span>
         <span className="h-px flex-1 bg-paper/15" aria-hidden="true" />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 w-full min-w-0">
         {LEDGER_SAMPLES.map((s) => (
           <article
             key={s.name}
-            className="border border-paper/15 rounded-lg p-3 flex flex-col gap-2"
+            className="border border-paper/15 rounded-lg p-3 flex flex-col gap-2 min-w-0"
           >
             <header className="flex items-start justify-between gap-2">
-              <span className="font-mono text-xs sm:text-sm text-paper">
+              <span className="font-mono text-xs sm:text-sm text-paper break-words">
                 {s.name}
               </span>
               <span
