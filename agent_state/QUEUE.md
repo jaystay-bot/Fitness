@@ -2,7 +2,7 @@
 
 ## ACTIVE
 
-- N=009 — Either re-enable Pro gating with Stripe/Clerk test-mode validation (Track A), or pull two more interactive features (Track B). Awaiting Commander.
+- N=010 — Vault funding (Stripe Treasury or equivalent). Honor the N=009 disclosure that promised funding ships in N=010. Awaiting Commander.
 
 ## DONE
 
@@ -14,10 +14,19 @@
 - N=006 — Launch-readiness commercial layer: Clerk auth + Stripe subscription + Supabase subscriptions table + shareable URLs + post-result email capture + pricing page with explicit "coming soon" labels (PASS).
 - N=007 — Clinical companion pass: 30-day timeline projection (recharts) + lab result PDF parser (Python via spawn) + supplement bottle scanner (Python OCR), all Pro-tier gated. Privacy posture: raw uploads never persist (PASS).
 - N=008 — Interactive expansion: voice-reactive form (Web Speech API + deterministic regex parser) + body-systems SVG visualization + interactive 30-day timeline with play-through + temporary `isProUser` DEV MODE relaxation (PASS).
+- N=009 — Project Spear positioning: SpearHero + SymptomEntry + VaultDashboard (preview only with mandatory disclosure) + UninsuranceThesis. Existing recommendation flow byte-identical to N=008 (PASS).
 
 ## STANDING REMINDERS
 
 - **DEV MODE on `isProUser`** — the verbatim comment block in `lib/subscription.ts` flags that Pro tier gating is currently disabled for testing. Re-enable before commercial launch by reverting the function body to `return tier === "pro";` and removing the comment block.
+- **Vault funding disclosure** — `VaultDashboard` carries the literal `"Vault funding ships in N=010. Provider marketplace ships in N=011."` This disclosure is mandatory until vault funding actually ships. Removing it before the funding flow is real is an ethical failure and a chargeback risk.
+
+## Project Spear cycles queued behind N=010
+
+- N=011 — Provider marketplace (`Find Care` card backing).
+- N=012 — Lab integration (LabCorp / Quest direct-pay).
+- N=013 — Amazon fulfillment loop for the supplement stack.
+- N=014 — IOTA Tangle hashing of verified health actions (the `Health Score` card backing).
 
 ## STANDING JUDGE PRIMITIVES
 
