@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import {
   STRIPE_PRICE_ANNUAL,
   STRIPE_PRICE_MONTHLY,
+  STRIPE_PRICE_QUARTERLY,
   getStripe,
   isStripeConfigured,
 } from "@/lib/stripe";
@@ -12,7 +13,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 interface CheckoutBody {
-  interval?: "month" | "year";
+  interval?: "month" | "quarter" | "year";
 }
 
 export async function POST(request: Request) {
@@ -44,9 +45,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
   }
 
-  const interval = body.interval === "year" ? "year" : "month";
+  const interval =
+    body.interval === "year"
+      ? "year"
+      : body.interval === "quarter"
+        ? "quarter"
+        : "month";
   const price =
-    interval === "year" ? STRIPE_PRICE_ANNUAL() : STRIPE_PRICE_MONTHLY();
+    interval === "year"
+      ? STRIPE_PRICE_ANNUAL()
+      : interval === "quarter"
+        ? STRIPE_PRICE_QUARTERLY()
+        : STRIPE_PRICE_MONTHLY();
   if (!price) {
     return NextResponse.json(
       { error: "Stripe price ID not configured." },
