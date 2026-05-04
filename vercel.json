@@ -1,0 +1,18 @@
+{
+  "functions": {
+    "app/api/labs/parse/route.ts": {
+      "maxDuration": 30
+    },
+    "app/api/labs/recompute/route.ts": {
+      "maxDuration": 10
+    },
+    "app/api/scanner/identify/route.ts": {
+      "maxDuration": 30
+    }
+  },
+  "build": {
+    "env": {
+      "PYTHON_BIN": "python3"
+    }
+  }
+}
