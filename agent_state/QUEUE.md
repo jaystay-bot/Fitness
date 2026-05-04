@@ -2,7 +2,7 @@
 
 ## ACTIVE
 
-- N=007 — Pro feature unlock cycle (account history + 30-day check-in + clinician PDF export + engine-update notifications). Awaiting Commander. Two-week deadline to honor `/pricing` "coming soon" disclosure.
+- N=008 — Practitioner annotation layer (B2B addition). Awaiting Commander. Multi-tenant role system, annotation overlay on `/r/[slug]`, audit log.
 
 ## DONE
 
@@ -12,6 +12,7 @@
 - N=004 — US-first unit toggle: imperial default + metric toggle, engine unchanged (PASS).
 - N=005 — Depth and authority pass: input-driven variation + per-pick confidence + editorial motion + 3D supplement bottle (PASS).
 - N=006 — Launch-readiness commercial layer: Clerk auth + Stripe subscription + Supabase subscriptions table + shareable URLs + post-result email capture + pricing page with explicit "coming soon" labels (PASS).
+- N=007 — Clinical companion pass: 30-day timeline projection (recharts) + lab result PDF parser (Python via spawn) + supplement bottle scanner (Python OCR), all Pro-tier gated. Privacy posture: raw uploads never persist (PASS).
 
 ## STANDING JUDGE PRIMITIVES
 
