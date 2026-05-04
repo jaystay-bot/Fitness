@@ -101,6 +101,32 @@ export interface EmailCapturePayload {
   verdict: string;
 }
 
+// N=008: interactive expansion types — additive only.
+
+export type BodySystem =
+  | "brain"
+  | "heart"
+  | "liver"
+  | "gut"
+  | "muscles"
+  | "bones"
+  | "immune"
+  | "skin";
+
+export interface VoiceParseResult {
+  partial: Partial<UserInput>;
+  matched: (keyof UserInput)[];
+  missing: (keyof UserInput)[];
+}
+
+export interface TimelineDayDetailEntry {
+  name: string;
+  energy: number;
+  focus: number;
+  sleep: number;
+  strength: number;
+}
+
 // N=007: clinical companion types — added without modifying any prior shape.
 
 export interface LabValues {
