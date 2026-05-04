@@ -101,6 +101,48 @@ export interface EmailCapturePayload {
   verdict: string;
 }
 
+// N=007: clinical companion types — added without modifying any prior shape.
+
+export interface LabValues {
+  ferritin_ng_ml?: number;
+  vitamin_d_25oh_ng_ml?: number;
+  b12_pg_ml?: number;
+  magnesium_mg_dl?: number;
+  total_cholesterol_mg_dl?: number;
+  hdl_mg_dl?: number;
+  ldl_mg_dl?: number;
+  triglycerides_mg_dl?: number;
+  glucose_fasting_mg_dl?: number;
+  hba1c_pct?: number;
+}
+
+export interface ParsedLabResponse {
+  ok: boolean;
+  format?: "quest" | "labcorp" | "zrt" | "unknown";
+  values?: LabValues;
+  reason?: string;
+}
+
+export interface ScanIdentification {
+  ok: boolean;
+  identified: string | null;       // canonical supplement id
+  dose_mg: number | null;
+  raw_text: string;
+  confidence: number;              // 0..1
+  reason?: string;
+}
+
+export type ScanMatch = "match" | "mismatch" | "unknown";
+
+export interface BottleMatch {
+  identified: string | null;
+  dose_mg: number | null;
+  confidence: number;
+  comparedTo: string | null;       // protocol pick name, when applicable
+  match: ScanMatch;
+  message: string;
+}
+
 export interface SupplementEntry {
   id: string;
   name: string;
