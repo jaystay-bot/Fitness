@@ -105,7 +105,7 @@ export function SupplementBottle3D({
     });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(width, height, false);
-    renderer.setClearColor(0x000000, 0);
+    renderer.setClearColor(0x0a0a0a, 0);
     mount.appendChild(renderer.domElement);
 
     const group = new THREE.Group();
@@ -133,11 +133,11 @@ export function SupplementBottle3D({
     group.rotation.x = 0.18;
     scene.add(group);
 
-    const directional = new THREE.DirectionalLight(0xffffff, 1.05);
+    const directional = new THREE.DirectionalLight(0xfafaf7, 1.05);
     directional.position.set(-3.5, 4, 5);
     scene.add(directional);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.35);
+    const ambient = new THREE.AmbientLight(0xfafaf7, 0.35);
     scene.add(ambient);
 
     let raf = 0;
