@@ -74,6 +74,7 @@ export function BodyVisualization({
       <div className="grid grid-cols-1 sm:grid-cols-[2fr_3fr] gap-5 items-start">
         <svg
           viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
+          overflow="visible"
           className="w-full max-w-[280px] mx-auto"
           role="img"
           aria-label="Anatomical silhouette with labeled supplement targets"

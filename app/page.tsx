@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-ink text-paper scroll-smooth">
+    <main className="min-h-screen bg-ink text-paper scroll-smooth pb-safe overflow-x-clip">
       <SpearHero />
       <SymptomEntry />
       <VaultDashboard />
