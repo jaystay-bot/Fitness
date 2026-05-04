@@ -6,7 +6,7 @@ import { UpgradeButton } from "@/components/UpgradeButton";
 export const metadata: Metadata = {
   title: "Pricing · Apex Protocol",
   description:
-    "Apex Protocol is free to use. Upgrade to Pro for $5/month or $48/year for account history, the 30-day check-in, and clinician PDF export — all coming soon.",
+    "Start free. Upgrade to Pro for $4.99/month, $9.99/quarter, or $29.99/year.",
 };
 
 const FREE_FEATURES = [
@@ -18,100 +18,121 @@ const FREE_FEATURES = [
   "Email-to-self of your protocol",
 ];
 
-interface ProFeatureRow {
-  label: string;
-  comingSoon: boolean;
-}
-
-const PRO_FEATURES: ProFeatureRow[] = [
-  { label: "Everything in Free", comingSoon: false },
-  {
-    label: "Account history with unlimited recommendations across visits",
-    comingSoon: true,
-  },
-  { label: "30-day protocol check-in", comingSoon: true },
-  { label: "Clinician PDF export", comingSoon: true },
-  { label: "Priority engine update notifications", comingSoon: true },
+const PRO_FEATURES = [
+  "Everything in Free",
+  "Account history across visits",
+  "30-day protocol check-in",
+  "Clinician PDF export",
+  "Priority engine update notifications",
 ];
 
-const LABEL_CLASS =
-  "text-[11px] font-mono uppercase tracking-wider text-paper/60";
+const LABEL = "text-[11px] font-mono uppercase tracking-wider text-paper/60";
+
+function FeatureList({ items }: { items: string[] }) {
+  return (
+    <ul className="flex flex-col gap-2 text-sm text-paper/85 flex-1">
+      {items.map((f) => (
+        <li key={f} className="flex gap-2 items-start">
+          <span
+            className="mt-1.5 w-1 h-1 rounded-full bg-lime shrink-0"
+            aria-hidden="true"
+          />
+          <span>{f}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export default function PricingPage() {
   return (
     <main className="min-h-screen bg-ink text-paper">
-      <section className="max-w-4xl mx-auto px-5 sm:px-8 lg:px-12 pt-12 sm:pt-16 pb-12 flex flex-col gap-8">
+      <section className="max-w-5xl mx-auto px-5 sm:px-8 lg:px-12 pt-12 sm:pt-16 pb-16 flex flex-col gap-10">
         <header className="flex flex-col gap-3">
           <span className="text-[11px] font-mono uppercase tracking-[0.18em] text-lime">
             Pricing
           </span>
           <h1 className="font-serif text-4xl sm:text-5xl tracking-tight leading-[1.05]">
-            Free to use. Pro for the long arc.
+            Free to start. Pro for the long arc.
           </h1>
           <p className="text-base text-paper/75 max-w-xl">
-            The full personalized recommendation is free, forever. Pro adds
-            longitudinal value — history, follow-up, and export — none of which
-            gates the current free experience.
+            The full recommendation is free, forever. Pro unlocks history,
+            check-ins, and export — choose the plan that fits.
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Free tier */}
+        <article className="border border-paper/15 rounded-lg p-5 sm:p-6 flex flex-col gap-4 max-w-sm">
+          <header className="flex items-baseline justify-between">
+            <h2 className="font-serif text-2xl">Free</h2>
+            <span className="font-mono text-sm text-paper/60">$0</span>
+          </header>
+          <FeatureList items={FREE_FEATURES} />
+          <Link
+            href="/"
+            className="mt-auto inline-flex items-center justify-center border border-paper/30 text-paper font-semibold uppercase tracking-wider text-sm rounded-md px-4 py-3 hover:border-lime"
+          >
+            Start Free
+          </Link>
+        </article>
+
+        {/* 3 paid plans */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-stretch">
+
+          {/* Monthly */}
           <article className="border border-paper/15 rounded-lg p-5 sm:p-6 flex flex-col gap-4">
-            <header className="flex items-baseline justify-between">
-              <h2 className="font-serif text-2xl">Free</h2>
-              <span className="font-mono text-sm text-paper/60">$0</span>
+            <header className="flex flex-col gap-1">
+              <h2 className="font-serif text-2xl">Monthly</h2>
+              <div className="flex items-baseline gap-1">
+                <span className="font-serif text-3xl">$4.99</span>
+                <span className="font-mono text-xs text-paper/60">/ month</span>
+              </div>
+              <p className="text-sm text-paper/60 mt-1">Start simple.</p>
             </header>
-            <ul className="flex flex-col gap-2 text-sm text-paper/85">
-              {FREE_FEATURES.map((f) => (
-                <li key={f} className="flex gap-2">
-                  <span
-                    className="text-lime mt-1.5 w-1 h-1 rounded-full bg-lime shrink-0"
-                    aria-hidden="true"
-                  />
-                  <span>{f}</span>
-                </li>
-              ))}
-            </ul>
-            <Link
-              href="/"
-              className="mt-2 inline-flex items-center justify-center bg-lime text-ink font-semibold uppercase tracking-wider text-sm rounded-md px-4 py-3 hover:brightness-95"
-            >
-              Start free
-            </Link>
+            <FeatureList items={PRO_FEATURES} />
+            <UpgradeButton variant="primary" interval="month" />
           </article>
 
-          <article className="border border-paper/15 rounded-lg p-5 sm:p-6 flex flex-col gap-4">
-            <header className="flex items-baseline justify-between flex-wrap gap-x-3">
-              <h2 className="font-serif text-2xl">Pro</h2>
-              <span className="font-mono text-sm text-paper/60">
-                $5/mo · $48/yr
+          {/* Smart Stack — primary conversion */}
+          <article className="relative border-2 border-lime rounded-lg p-5 sm:p-6 flex flex-col gap-4">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+              <span className="bg-lime text-ink font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">
+                Most Popular
               </span>
+            </div>
+            <header className="flex flex-col gap-1 mt-2">
+              <h2 className="font-serif text-2xl">Smart Stack</h2>
+              <div className="flex items-baseline gap-1">
+                <span className="font-serif text-3xl">$9.99</span>
+                <span className="font-mono text-xs text-paper/60">/ 3 months</span>
+              </div>
+              <p className="text-sm text-paper/60 mt-1">
+                Stop guessing. Start improving.
+              </p>
             </header>
-            <ul className="flex flex-col gap-2 text-sm text-paper/85">
-              {PRO_FEATURES.map((f) => (
-                <li key={f.label} className="flex gap-2 items-start">
-                  <span
-                    className="text-lime mt-1.5 w-1 h-1 rounded-full bg-lime shrink-0"
-                    aria-hidden="true"
-                  />
-                  <span className="flex-1">
-                    {f.label}
-                    {f.comingSoon ? (
-                      <span className="ml-2 inline-block px-1.5 py-0.5 text-[10px] font-mono uppercase tracking-wider rounded-sm border border-clinical/60 text-clinical">
-                        coming soon
-                      </span>
-                    ) : null}
-                  </span>
-                </li>
-              ))}
-            </ul>
-            <UpgradeButton variant="primary" />
+            <FeatureList items={PRO_FEATURES} />
+            <UpgradeButton variant="primary" interval="quarter" />
           </article>
+
+          {/* Yearly */}
+          <article className="border border-paper/15 rounded-lg p-5 sm:p-6 flex flex-col gap-4">
+            <header className="flex flex-col gap-1">
+              <h2 className="font-serif text-2xl">Full Year Access</h2>
+              <div className="flex items-baseline gap-1">
+                <span className="font-serif text-3xl">$29.99</span>
+                <span className="font-mono text-xs text-paper/60">/ year</span>
+              </div>
+              <p className="text-sm text-paper/60 mt-1">Best value.</p>
+            </header>
+            <FeatureList items={PRO_FEATURES} />
+            <UpgradeButton variant="primary" interval="year" />
+          </article>
+
         </div>
 
-        <p className={LABEL_CLASS}>
-          Pro features marked “coming soon” are explicitly not yet shipped at
-          launch. We do not charge until they ship for paying users.
+        <p className={LABEL}>
+          Pro features are actively in development. We do not charge until each
+          feature ships for paying users.
         </p>
       </section>
     </main>

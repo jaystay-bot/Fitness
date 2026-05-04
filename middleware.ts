@@ -15,6 +15,8 @@ const isPublicRoute = createRouteMatcher([
   "/api/og",
   "/api/email/result",
   "/api/webhooks/(.*)",
+  "/api/checkout",
+  "/api/subscription",
 ]);
 
 const passthrough = (_req: NextRequest) => NextResponse.next();
