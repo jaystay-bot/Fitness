@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { encodeInput } from "@/lib/slug";
 import type { Recommendation, UserInput } from "@/lib/types";
+import { AccountMenu } from "./AccountMenu";
 import { AssessmentForm } from "./AssessmentForm";
 import { EvidenceLedger } from "./EvidenceLedger";
 import { ParallaxLedger } from "./ParallaxLedger";
@@ -17,10 +19,17 @@ export function Hero() {
     if (result && resultRef.current) {
       resultRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [result]);
+    if (result && input && typeof window !== "undefined") {
+      const slug = encodeInput(input);
+      window.history.replaceState(null, "", `/r/${slug}`);
+    }
+  }, [result, input]);
 
   return (
     <section className="px-5 sm:px-8 lg:px-12 pt-8 sm:pt-14 pb-10 max-w-6xl mx-auto w-full">
+      <header className="flex justify-end mb-4">
+        <AccountMenu />
+      </header>
       <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-8 lg:gap-12 items-start">
         <div className="flex flex-col gap-5">
           <span className="text-[11px] font-mono uppercase tracking-[0.18em] text-lime">
