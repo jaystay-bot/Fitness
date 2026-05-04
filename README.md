@@ -30,6 +30,16 @@ The free recommendation works without any env vars. Auth, payment, and email req
 
 Configure Clerk webhooks pointing at `/api/webhooks/clerk` (event `user.created`) and Stripe webhooks at `/api/webhooks/stripe` (`checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`).
 
+## Pro features (N=007)
+
+The Pro tier unlocks three clinical companion tools, all rendered inside the result card behind `<ProGate>`:
+
+- **30-day timeline projection** — deterministic onset-of-effect curves for the active stack, charted via `recharts`.
+- **Lab result parser** — drag-drop PDF upload, format-aware extraction (Quest / LabCorp / ZRT) via the Python service in `python/parse_labs.py`, side-by-side recommendation diff.
+- **Bottle scanner** — camera or file capture, OCR + fuzzy match via `python/scan_bottle.py`. Identifies compound + dose and compares to your protocol.
+
+The Python services run on the Vercel Python runtime (configured in `vercel.json`). Install Python deps locally with `pip install -r python/requirements.txt`. Raw uploaded files are never persisted; only structured extracted values are stored, and only for Pro users.
+
 ## Disclaimer
 
 Educational only. Not medical advice. Consult a clinician before any supplement.
