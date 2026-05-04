@@ -45,9 +45,28 @@ function inRange(value: unknown, min: number, max: number): value is number {
   );
 }
 
+// Use plain base64 + URL-safe character swap so the same code path works in
+// both Node (server components, API routes) and the browser (post-submit
+// slug update via window.history). Node's Buffer in webpack's browser
+// polyfill does not implement the "base64url" encoding name, so we cannot
+// rely on it for the client-side encode call.
+function toBase64Url(json: string): string {
+  return Buffer.from(json, "utf-8")
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "");
+}
+
+function fromBase64Url(slug: string): string {
+  const padded =
+    slug.replace(/-/g, "+").replace(/_/g, "/") +
+    "===".slice(0, (4 - (slug.length % 4)) % 4);
+  return Buffer.from(padded, "base64").toString("utf-8");
+}
+
 export function encodeInput(input: UserInput): string {
-  const json = JSON.stringify(input);
-  return Buffer.from(json, "utf-8").toString("base64url");
+  return toBase64Url(JSON.stringify(input));
 }
 
 export function decodeSlug(slug: string): UserInput | null {
@@ -56,7 +75,7 @@ export function decodeSlug(slug: string): UserInput | null {
   }
   let json: string;
   try {
-    json = Buffer.from(slug, "base64url").toString("utf-8");
+    json = fromBase64Url(slug);
   } catch {
     return null;
   }
