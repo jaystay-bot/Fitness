@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Fraunces, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+
+const CLERK_ENABLED = Boolean(
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+);
 
 const serif = Fraunces({
   subsets: ["latin"],
@@ -41,11 +46,29 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
+  const tree = (
     <html lang="en" className={`${serif.variable} ${mono.variable}`}>
       <body className="min-h-screen bg-ink text-paper antialiased">
         {children}
       </body>
     </html>
+  );
+
+  if (!CLERK_ENABLED) {
+    return tree;
+  }
+
+  return (
+    <ClerkProvider
+      appearance={{
+        variables: {
+          colorPrimary: "#D4FF3A",
+          colorText: "#FAFAF7",
+          colorBackground: "#0A0A0A",
+        },
+      }}
+    >
+      {tree}
+    </ClerkProvider>
   );
 }
