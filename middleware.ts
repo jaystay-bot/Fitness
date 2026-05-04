@@ -17,6 +17,9 @@ const isPublicRoute = createRouteMatcher([
   "/api/webhooks/(.*)",
   "/api/checkout",
   "/api/subscription",
+  // N=010: feedback widget must work for anonymous users; admin uses env-password gate.
+  "/api/feedback/submit",
+  "/admin/feedback",
 ]);
 
 const passthrough = (_req: NextRequest) => NextResponse.next();
