@@ -341,7 +341,16 @@ function buildPlan(
   ];
 }
 
-export function recommend(input: UserInput): Recommendation {
+// N=007: optional `labValues` parameter is reserved for downstream auditing.
+// Override semantics live in `lib/labMapping.ts` and translate lab values
+// into the existing `UserInput` enum surface BEFORE this function is called.
+// When `labValues` is undefined (or any time it does not change the semantic
+// inputs), `recommend` is byte-identical to N=005/N=006.
+export function recommend(
+  input: UserInput,
+  labValues?: import("./types").LabValues,
+): Recommendation {
+  void labValues;
   const variationSeed = hashInput(input);
   const baseStack = buildStack(input);
   const variedStack = applyVariation(baseStack, variationSeed, input);
