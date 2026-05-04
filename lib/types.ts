@@ -82,6 +82,25 @@ export interface Recommendation {
   variationSeed: number;
 }
 
+export type SubscriptionTier = "free" | "pro";
+
+export type SubscriptionStatus =
+  | "active"
+  | "past_due"
+  | "canceled"
+  | "trialing";
+
+export interface ShareableResult {
+  slug: string;
+  input: UserInput;
+}
+
+export interface EmailCapturePayload {
+  email: string;
+  slug: string;
+  verdict: string;
+}
+
 export interface SupplementEntry {
   id: string;
   name: string;
