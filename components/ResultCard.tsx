@@ -22,10 +22,18 @@ const SupplementBottle3D = dynamic(
   { ssr: false },
 );
 
-const TimelineProjection = dynamic(
+const InteractiveTimeline = dynamic(
   () =>
-    import("./TimelineProjection").then((m) => ({
-      default: m.TimelineProjection,
+    import("./InteractiveTimeline").then((m) => ({
+      default: m.InteractiveTimeline,
+    })),
+  { ssr: false },
+);
+
+const BodyVisualization = dynamic(
+  () =>
+    import("./BodyVisualization").then((m) => ({
+      default: m.BodyVisualization,
     })),
   { ssr: false },
 );
@@ -108,6 +116,14 @@ export function ResultCard({
       ) : null}
 
       <SectionHeader icon={<Pill className="w-4 h-4" aria-hidden="true" />}>
+        Body systems map
+      </SectionHeader>
+      <BodyVisualization
+        picks={result.supplements}
+        warnings={result.warnings}
+      />
+
+      <SectionHeader icon={<Pill className="w-4 h-4" aria-hidden="true" />}>
         Stack ({result.supplements.length} {result.supplements.length === 1 ? "pick" : "picks"})
       </SectionHeader>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -145,7 +161,7 @@ export function ResultCard({
       </SectionHeader>
       <div className="flex flex-col gap-4">
         <ProGate userTier={tier} feature="checkin">
-          <TimelineProjection picks={result.supplements} />
+          <InteractiveTimeline picks={result.supplements} />
         </ProGate>
         <ProGate userTier={tier} feature="history">
           <LabUpload slug={slug} />
