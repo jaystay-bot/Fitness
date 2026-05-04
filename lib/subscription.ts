@@ -6,8 +6,16 @@ export type ProFeature =
   | "pdf"
   | "notifications";
 
+// ============================================================
+// DEV MODE: Pro tier gating temporarily disabled for testing.
+// All Pro features are accessible to every user, including
+// anonymous users, until production Stripe and Clerk are
+// configured. Re-enable gating in a future cycle by reverting
+// this function to its prior implementation.
+// ============================================================
 export function isProUser(tier: SubscriptionTier | null | undefined): boolean {
-  return tier === "pro";
+  void tier;
+  return true;
 }
 
 export function canAccess(

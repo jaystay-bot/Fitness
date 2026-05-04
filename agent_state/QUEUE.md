@@ -2,7 +2,7 @@
 
 ## ACTIVE
 
-- N=008 — Practitioner annotation layer (B2B addition). Awaiting Commander. Multi-tenant role system, annotation overlay on `/r/[slug]`, audit log.
+- N=009 — Either re-enable Pro gating with Stripe/Clerk test-mode validation (Track A), or pull two more interactive features (Track B). Awaiting Commander.
 
 ## DONE
 
@@ -13,6 +13,11 @@
 - N=005 — Depth and authority pass: input-driven variation + per-pick confidence + editorial motion + 3D supplement bottle (PASS).
 - N=006 — Launch-readiness commercial layer: Clerk auth + Stripe subscription + Supabase subscriptions table + shareable URLs + post-result email capture + pricing page with explicit "coming soon" labels (PASS).
 - N=007 — Clinical companion pass: 30-day timeline projection (recharts) + lab result PDF parser (Python via spawn) + supplement bottle scanner (Python OCR), all Pro-tier gated. Privacy posture: raw uploads never persist (PASS).
+- N=008 — Interactive expansion: voice-reactive form (Web Speech API + deterministic regex parser) + body-systems SVG visualization + interactive 30-day timeline with play-through + temporary `isProUser` DEV MODE relaxation (PASS).
+
+## STANDING REMINDERS
+
+- **DEV MODE on `isProUser`** — the verbatim comment block in `lib/subscription.ts` flags that Pro tier gating is currently disabled for testing. Re-enable before commercial launch by reverting the function body to `return tier === "pro";` and removing the comment block.
 
 ## STANDING JUDGE PRIMITIVES
 

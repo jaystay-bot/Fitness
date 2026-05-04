@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Mic } from "lucide-react";
 
 import type { Recommendation, UserInput } from "@/lib/types";
 import {
@@ -12,6 +12,7 @@ import {
   type UnitSystem,
 } from "@/lib/units";
 import { UnitToggle } from "./UnitToggle";
+import { VoiceInput } from "./VoiceInput";
 
 const FIELD =
   "w-full bg-ink border border-paper/20 rounded-md px-3 py-2 text-sm text-paper placeholder:text-paper/40 focus:outline-none focus:border-lime";
@@ -103,9 +104,24 @@ export function AssessmentForm({
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [voiceOpen, setVoiceOpen] = useState(false);
 
   function update<K extends keyof UserInput>(key: K, value: UserInput[K]) {
     setInput((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function applyVoicePartial(partial: Partial<UserInput>) {
+    setInput((prev) => ({ ...prev, ...partial }));
+    if (partial.heightCm !== undefined) {
+      const { feet: f, inches: i } = cmToImperial(partial.heightCm);
+      setFeetDisplay(String(f));
+      setInchesDisplay(String(i));
+    }
+    if (partial.weightKg !== undefined) {
+      const lb = kgToPounds(partial.weightKg);
+      setPoundsDisplay(String(lb));
+    }
+    setVoiceOpen(false);
   }
 
   function changeUnitSystem(next: UnitSystem) {
@@ -211,6 +227,25 @@ export function AssessmentForm({
       aria-label="Apex Protocol assessment form"
       className="w-full max-w-md bg-ink border border-paper/15 rounded-lg p-5 sm:p-6 flex flex-col gap-4"
     >
+      <div className="flex items-center justify-between">
+        <span className={LABEL}>Quick start</span>
+        <button
+          type="button"
+          onClick={() => setVoiceOpen((v) => !v)}
+          aria-label="Open voice input"
+          aria-expanded={voiceOpen}
+          className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-lime border border-lime/40 rounded-md px-2.5 py-1 hover:border-lime"
+        >
+          <Mic className="w-3 h-3" aria-hidden="true" />
+          Speak protocol
+        </button>
+      </div>
+      {voiceOpen ? (
+        <VoiceInput
+          onCommit={applyVoicePartial}
+          onClose={() => setVoiceOpen(false)}
+        />
+      ) : null}
       <div className="grid grid-cols-2 gap-3">
         <Field label="Age" id="age">
           <input
