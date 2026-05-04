@@ -1,9 +1,21 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import { AlertTriangle, Calendar, Pill, Salad } from "lucide-react";
 
 import type { Recommendation, UserInput } from "@/lib/types";
+import { ConfidenceBadge } from "./ConfidenceBadge";
 import { ConflictBanner } from "./ConflictBanner";
-import { EvidenceTier } from "./EvidenceTier";
-import { Verdict } from "./Verdict";
+import { EvidenceBar } from "./EvidenceBar";
+import { VerdictReveal } from "./VerdictReveal";
+
+const SupplementBottle3D = dynamic(
+  () =>
+    import("./SupplementBottle3D").then((m) => ({
+      default: m.SupplementBottle3D,
+    })),
+  { ssr: false },
+);
 
 export function ResultCard({
   result,
@@ -12,6 +24,7 @@ export function ResultCard({
   result: Recommendation;
   input: UserInput;
 }) {
+  const featured = result.supplements[0];
   return (
     <section
       aria-label="Your Apex Protocol result"
@@ -22,7 +35,7 @@ export function ResultCard({
         <span className="text-[11px] font-mono uppercase tracking-wider text-lime">
           Your protocol — {input.primaryGoal}
         </span>
-        <Verdict text={result.verdict} />
+        <VerdictReveal text={result.verdict} />
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs font-mono uppercase tracking-wider text-paper/60">
           <span>BMI {result.bmi}</span>
           <span>Protein {result.nutrition.dailyTargets.proteinGrams} g/day</span>
@@ -30,6 +43,12 @@ export function ResultCard({
           <span>Sleep {result.nutrition.dailyTargets.sleepHours} h/night</span>
         </div>
       </div>
+
+      {featured ? (
+        <div className="mt-8 flex justify-center">
+          <SupplementBottle3D name={featured.name} tier={featured.evidenceTier} />
+        </div>
+      ) : null}
 
       <SectionHeader icon={<Pill className="w-4 h-4" aria-hidden="true" />}>
         Stack ({result.supplements.length} {result.supplements.length === 1 ? "pick" : "picks"})
@@ -42,7 +61,7 @@ export function ResultCard({
           >
             <header className="flex items-start justify-between gap-3">
               <h3 className="font-serif text-lg leading-tight">{s.name}</h3>
-              <EvidenceTier tier={s.evidenceTier} studyCount={s.studyCount} />
+              <EvidenceBar tier={s.evidenceTier} studyCount={s.studyCount} />
             </header>
             <dl className="text-xs font-mono uppercase tracking-wider text-paper/60 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
               <dt>Dose</dt>
@@ -57,6 +76,9 @@ export function ResultCard({
               ) : null}
             </dl>
             <p className="text-sm text-paper/80">{s.whyForYou}</p>
+            <div className="flex justify-end mt-1">
+              <ConfidenceBadge confidence={s.confidence} />
+            </div>
           </article>
         ))}
       </div>
