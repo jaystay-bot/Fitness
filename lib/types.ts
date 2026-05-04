@@ -127,6 +127,21 @@ export interface TimelineDayDetailEntry {
   strength: number;
 }
 
+// N=009: Project Spear positioning types — additive only.
+
+export type SpearEntryPath = "what-hurts" | "what-do-i-need" | "i-know-product";
+
+export interface VaultPreview {
+  balance: number;
+  savedThisMonth: number;
+  healthScore: number;
+}
+
+export interface UninsuranceCopy {
+  bullets: readonly string[];
+  closer: string;
+}
+
 // N=007: clinical companion types — added without modifying any prior shape.
 
 export interface LabValues {
