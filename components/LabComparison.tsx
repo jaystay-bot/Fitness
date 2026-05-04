@@ -33,25 +33,25 @@ export function LabComparison({
   deltas: Deltas;
 }) {
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4 min-w-0">
+      <div className="flex flex-col gap-2 min-w-0">
         <span className="font-mono text-[11px] uppercase tracking-wider text-lime">
           Extracted lab values
         </span>
-        <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
+        <dl className="grid grid-cols-[auto_1fr] gap-x-3 sm:gap-x-4 gap-y-1 text-sm min-w-0">
           {(Object.keys(values) as (keyof LabValues)[]).map((k) => (
             <div key={k} className="contents">
               <dt className="font-mono text-[11px] uppercase tracking-wider text-paper/60 self-center">
                 {LABEL[k] ?? k}
               </dt>
-              <dd className="text-paper/90 self-center font-mono">{values[k]}</dd>
+              <dd className="text-paper/90 self-center font-mono break-all">{values[k]}</dd>
             </div>
           ))}
         </dl>
       </div>
 
       {overrides.length > 0 ? (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 min-w-0">
           <span className="font-mono text-[11px] uppercase tracking-wider text-clinical">
             Engine overrides triggered
           </span>
@@ -69,8 +69,8 @@ export function LabComparison({
         </div>
       ) : null}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div className="border border-paper/15 rounded-md p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
+        <div className="border border-paper/15 rounded-md p-4 min-w-0">
           <h4 className="font-mono text-[11px] uppercase tracking-wider text-paper/60 mb-2">
             Original recommendation
           </h4>
@@ -83,7 +83,7 @@ export function LabComparison({
             ))}
           </ul>
         </div>
-        <div className="border border-lime/40 rounded-md p-4">
+        <div className="border border-lime/40 rounded-md p-4 min-w-0">
           <h4 className="font-mono text-[11px] uppercase tracking-wider text-lime mb-2">
             Lab-adjusted recommendation
           </h4>
@@ -133,3 +133,4 @@ export function LabComparison({
     </div>
   );
 }
+

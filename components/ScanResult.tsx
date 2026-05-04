@@ -27,16 +27,16 @@ export function ScanResult({
     <aside
       role="status"
       aria-live="polite"
-      className="border border-paper/15 rounded-md p-4 flex gap-3"
+      className="border border-paper/15 rounded-md p-4 flex gap-3 min-w-0"
     >
       <Icon className={`w-5 h-5 ${tone.color} shrink-0 mt-0.5`} aria-hidden="true" />
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-1.5 min-w-0">
         <span className={`font-mono text-[11px] uppercase tracking-wider ${tone.color}`}>
           {tone.label}
         </span>
-        <p className="text-sm text-paper/90 leading-snug">{message}</p>
+        <p className="text-sm text-paper/90 leading-snug break-words">{message}</p>
         {identified ? (
-          <dl className="text-xs font-mono uppercase tracking-wider text-paper/60 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 mt-1">
+          <dl className="text-xs font-mono uppercase tracking-wider text-paper/60 grid grid-cols-[auto_1fr] gap-x-2 sm:gap-x-3 gap-y-1 mt-1 min-w-0">
             <dt>Identified</dt>
             <dd className="text-paper/90 normal-case tracking-normal font-sans">{identified}</dd>
             {doseMg !== null ? (
@@ -57,3 +57,4 @@ export function ScanResult({
     </aside>
   );
 }
+

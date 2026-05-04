@@ -76,13 +76,13 @@ export function LabUpload({ slug }: { slug: string }) {
   return (
     <section
       aria-label="Lab result upload"
-      className="border border-paper/15 rounded-lg p-5 sm:p-6 flex flex-col gap-4"
+      className="border border-paper/15 rounded-lg p-4 sm:p-6 flex flex-col gap-4 min-w-0 overflow-hidden"
     >
-      <div className="flex items-baseline justify-between gap-3 flex-wrap">
-        <h3 className="font-serif text-xl sm:text-2xl text-paper leading-tight">
+      <div className="flex items-baseline justify-between gap-3 flex-wrap min-w-0">
+        <h3 className="font-serif text-xl sm:text-2xl text-paper leading-tight break-words">
           Upload bloodwork. Re-run the engine on measured values.
         </h3>
-        <span className="font-mono text-[11px] uppercase tracking-wider text-paper/60">
+        <span className="font-mono text-[11px] uppercase tracking-wider text-paper/60 shrink-0">
           Pro · Lab integration
         </span>
       </div>
@@ -93,10 +93,10 @@ export function LabUpload({ slug }: { slug: string }) {
 
       <label
         htmlFor="lab-pdf"
-        className="flex items-center gap-3 border border-dashed border-paper/30 rounded-md px-4 py-3 cursor-pointer hover:border-lime"
+        className="flex items-center gap-3 border border-dashed border-paper/30 rounded-md px-3 sm:px-4 py-3 cursor-pointer hover:border-lime min-w-0"
       >
         <Upload className="w-4 h-4 text-lime" aria-hidden="true" />
-        <span className="font-mono text-[11px] uppercase tracking-wider text-paper/70">
+        <span className="font-mono text-[11px] uppercase tracking-wider text-paper/70 break-words">
           {stage === "uploading"
             ? "Parsing PDF…"
             : stage === "recomputing"
@@ -134,3 +134,4 @@ export function LabUpload({ slug }: { slug: string }) {
     </section>
   );
 }
+

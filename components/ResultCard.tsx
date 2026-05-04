@@ -93,15 +93,15 @@ export function ResultCard({
   return (
     <section
       aria-label="Your Apex Protocol result"
-      className="mt-12 sm:mt-16 border-t border-paper/15 pt-10"
+      className="mt-10 sm:mt-14 border-t border-paper/15 pt-8 sm:pt-10 min-w-0"
     >
       {result.goalConflict ? <ConflictBanner flag={result.goalConflict} /> : null}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 min-w-0">
         <span className="text-[11px] font-mono uppercase tracking-wider text-lime">
           Your protocol — {input.primaryGoal}
         </span>
         <VerdictReveal text={result.verdict} />
-        <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs font-mono uppercase tracking-wider text-paper/60">
+        <div className="flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-2 text-xs font-mono uppercase tracking-wider text-paper/60 min-w-0">
           <span>BMI {result.bmi}</span>
           <span>Protein {result.nutrition.dailyTargets.proteinGrams} g/day</span>
           <span>Water {result.nutrition.dailyTargets.waterLiters} L/day</span>
@@ -126,14 +126,14 @@ export function ResultCard({
       <SectionHeader icon={<Pill className="w-4 h-4" aria-hidden="true" />}>
         Stack ({result.supplements.length} {result.supplements.length === 1 ? "pick" : "picks"})
       </SectionHeader>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
         {result.supplements.map((s) => (
           <article
             key={s.name}
-            className="border border-paper/15 rounded-lg p-4 flex flex-col gap-2"
+            className="border border-paper/15 rounded-lg p-4 flex flex-col gap-2 min-w-0"
           >
             <header className="flex items-start justify-between gap-3">
-              <h3 className="font-serif text-lg leading-tight">{s.name}</h3>
+              <h3 className="font-serif text-lg leading-tight break-words">{s.name}</h3>
               <EvidenceBar tier={s.evidenceTier} studyCount={s.studyCount} />
             </header>
             <dl className="text-xs font-mono uppercase tracking-wider text-paper/60 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
@@ -159,7 +159,7 @@ export function ResultCard({
       <SectionHeader icon={<Calendar className="w-4 h-4" aria-hidden="true" />}>
         Pro · clinical companion
       </SectionHeader>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 min-w-0">
         <ProGate userTier={tier} feature="checkin">
           <InteractiveTimeline picks={result.supplements} />
         </ProGate>
@@ -174,7 +174,7 @@ export function ResultCard({
       <SectionHeader icon={<Salad className="w-4 h-4" aria-hidden="true" />}>
         Daily food protocol
       </SectionHeader>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
         <NutritionList title="Eat more" items={result.nutrition.eatMore} positive />
         <NutritionList title="Eat less" items={result.nutrition.eatLess} />
       </div>
@@ -182,11 +182,11 @@ export function ResultCard({
       <SectionHeader icon={<Calendar className="w-4 h-4" aria-hidden="true" />}>
         30-day execution plan
       </SectionHeader>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 min-w-0">
         {result.thirtyDayPlan.map((week) => (
           <article
             key={week.week}
-            className="border border-paper/15 rounded-lg p-4 flex flex-col gap-2"
+            className="border border-paper/15 rounded-lg p-4 flex flex-col gap-2 min-w-0"
           >
             <h3 className="font-mono text-[11px] uppercase tracking-wider text-paper/60">
               Week {week.week}

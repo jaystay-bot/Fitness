@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function Page() {
   return (
-    <main className="min-h-screen bg-ink text-paper">
+    <main className="min-h-screen bg-ink text-paper pb-safe overflow-x-clip">
       <Hero />
       <HowItWorks />
       <Differentiators />

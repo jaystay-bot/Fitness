@@ -31,18 +31,18 @@ export function TimelineProjection({ picks }: { picks: SupplementPick[] }) {
   return (
     <section
       aria-label="30-day expected effects timeline"
-      className="border border-paper/15 rounded-lg p-5 sm:p-6 flex flex-col gap-4"
+      className="border border-paper/15 rounded-lg p-4 sm:p-6 flex flex-col gap-4 min-w-0 overflow-hidden"
     >
-      <div className="flex items-baseline justify-between gap-3 flex-wrap">
-        <h3 className="font-serif text-xl sm:text-2xl text-paper leading-tight">
+      <div className="flex items-baseline justify-between gap-3 flex-wrap min-w-0">
+        <h3 className="font-serif text-xl sm:text-2xl text-paper leading-tight break-words">
           What to expect, day by day
         </h3>
-        <span className="font-mono text-[11px] uppercase tracking-wider text-paper/60">
+        <span className="font-mono text-[11px] uppercase tracking-wider text-paper/60 shrink-0">
           Pro · 30-day projection
         </span>
       </div>
 
-      <div className="h-[260px] w-full">
+      <div className="h-[230px] sm:h-[260px] w-full min-w-0">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
             data={data}
@@ -130,3 +130,4 @@ export function TimelineProjection({ picks }: { picks: SupplementPick[] }) {
     </section>
   );
 }
+
