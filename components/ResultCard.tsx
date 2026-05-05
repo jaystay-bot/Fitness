@@ -10,6 +10,7 @@ import { ConfidenceBadge } from "./ConfidenceBadge";
 import { ConflictBanner } from "./ConflictBanner";
 import { EmailCapture } from "./EmailCapture";
 import { EvidenceBar } from "./EvidenceBar";
+import { FulfillButton } from "./FulfillButton";
 import { ProGate } from "./ProGate";
 import { UpgradeButton } from "./UpgradeButton";
 import { VerdictReveal } from "./VerdictReveal";
@@ -163,7 +164,8 @@ export function ResultCard({
               ) : null}
             </dl>
             <p className="text-sm text-paper/80">{s.whyForYou}</p>
-            <div className="flex justify-end mt-1">
+            <div className="flex items-center justify-between gap-3 mt-1">
+              <FulfillButton supplementName={s.name} />
               <ConfidenceBadge confidence={s.confidence} />
             </div>
           </article>
