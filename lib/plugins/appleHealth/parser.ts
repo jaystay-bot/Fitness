@@ -55,10 +55,16 @@ function minutesBetween(startISO: string, endISO: string): number {
 
 function extractRecords(xml: string, type: string): string[] {
   // Match <Record ... type="..." .../> with optional inner content. Apple's
-  // export uses self-closing tags for these record types.
+  // export uses self-closing tags for these record types but newer exports
+  // may include child <MetadataEntry> tags inside a non-self-closing
+  // <Record>...</Record> wrapper. The regex below tolerates both shapes
+  // and is case-insensitive so future Apple naming variations don't
+  // silently drop records.
+  //
+  // N=018 hardening: case-insensitive; whitespace tolerance before `/>`.
   const re = new RegExp(
-    `<Record\\b[^>]*type="${type}"[^>]*\\/?>`,
-    "g",
+    `<Record\\b[^>]*type="${type}"[^>]*\\s*/?>`,
+    "gi",
   );
   return xml.match(re) ?? [];
 }
