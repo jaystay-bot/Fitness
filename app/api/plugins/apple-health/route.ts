@@ -67,7 +67,25 @@ export async function POST(request: Request) {
 
   try {
     const tagged = appleHealthPlugin.normalize(xml);
-    const summary = summarizeAppleHealth(parseAppleHealthExport(xml));
+    const parsedExport = parseAppleHealthExport(xml);
+    const summary = summarizeAppleHealth(parsedExport);
+    // N=018: server-side log of parser output for Vercel log inspection.
+    // No PII — only counts of records by type plus the bytes processed.
+    // Helps debug future "Connected but empty" reports without
+    // requiring a re-upload.
+    console.log(
+      JSON.stringify({
+        event: "apple_health_normalize",
+        taggedCount: tagged.length,
+        summary,
+        recordCounts: {
+          steps: parsedExport.steps.length,
+          sleep: parsedExport.sleep.length,
+          restingHeartRate: parsedExport.restingHeartRate.length,
+        },
+        xmlBytes: xml.length,
+      }),
+    );
     return NextResponse.json({ tagged, summary });
   } catch {
     // Fail silently per the plugin layer contract.
