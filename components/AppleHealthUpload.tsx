@@ -5,10 +5,17 @@
 // device, or who choose not to upload, can ignore this card entirely
 // and the assessment form behaves byte-identically to N=013.
 //
+// N=018 bug fix: the "Connected" visual is now gated on the API's
+// returned `tagged` array being non-empty. Empty results render an
+// honest "No recent data found" state with an AlertCircle icon, distinct
+// from the idle and connected states. This pattern fixes the
+// false-Connected blank-dash bug Jay reported and becomes the standard
+// for all future plugin connection UIs.
+//
 // Locked palette only — no hex literals.
 
 import { useRef, useState } from "react";
-import { Check, Loader2, Upload } from "lucide-react";
+import { AlertCircle, Check, Loader2, Upload } from "lucide-react";
 
 import type { TaggedUserInput } from "@/lib/types";
 
@@ -32,15 +39,27 @@ export function AppleHealthUpload({
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [connected, setConnected] = useState(false);
+  // N=018: distinct "no data found" state, separate from idle and
+  // connected. Eliminates the false-Connected blank-dash render path.
+  const [emptyResult, setEmptyResult] = useState(false);
   const [summary, setSummary] = useState<AppleHealthSummary>({});
 
   function pickFile() {
     inputRef.current?.click();
   }
 
+  function resetToIdle() {
+    setConnected(false);
+    setEmptyResult(false);
+    setSummary({});
+    setFile(null);
+    onTagged?.([]);
+  }
+
   async function upload() {
     if (!file || loading) return;
     setLoading(true);
+    setEmptyResult(false);
     try {
       const form = new FormData();
       form.append("file", file);
@@ -54,15 +73,57 @@ export function AppleHealthUpload({
         tagged: [],
         summary: {},
       }))) as UploadResponse;
-      setSummary(data.summary ?? {});
-      setConnected(true);
-      onTagged?.(Array.isArray(data.tagged) ? data.tagged : []);
+      const tagged = Array.isArray(data.tagged) ? data.tagged : [];
+      const summaryObj = data.summary ?? {};
+      setSummary(summaryObj);
+      // N=018 BUG FIX: gate Connected on actual data extraction.
+      // Empty array → distinct "No recent data found" state.
+      if (tagged.length > 0) {
+        setConnected(true);
+        setEmptyResult(false);
+      } else {
+        setConnected(false);
+        setEmptyResult(true);
+      }
+      onTagged?.(tagged);
     } catch {
-      // Fail silently — leave the card in its idle state.
+      // Network or JSON failure — surface as an empty-result so the
+      // user gets actionable feedback instead of a silent no-op.
       setConnected(false);
+      setEmptyResult(true);
+      onTagged?.([]);
     } finally {
       setLoading(false);
     }
+  }
+
+  if (emptyResult) {
+    return (
+      <section
+        data-testid="apple-health-upload"
+        aria-label="Apple Health no recent data"
+        className="w-full max-w-md bg-ink border border-paper/15 rounded-lg p-4 sm:p-5 flex flex-col gap-3"
+      >
+        <header className="flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 text-clinical" aria-hidden="true" />
+          <span className="font-mono text-[11px] uppercase tracking-wider text-clinical">
+            No recent data found · Apple Health
+          </span>
+        </header>
+        <p className="text-sm text-paper/80 leading-snug">
+          The export contains no step, sleep, or resting-heart-rate records within the last 30 days. Re-export from iOS Health (profile icon → Export All Health Data) and try again.
+        </p>
+        <div>
+          <button
+            type="button"
+            onClick={resetToIdle}
+            className="inline-flex items-center gap-1.5 border border-paper/30 text-paper font-mono text-[11px] uppercase tracking-wider rounded-md px-3 py-2 hover:border-lime"
+          >
+            Try another export
+          </button>
+        </div>
+      </section>
+    );
   }
 
   if (connected) {
