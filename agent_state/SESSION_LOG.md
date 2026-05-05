@@ -107,3 +107,50 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 
 - N=008 Sentinel: GATE OPEN. Engine preserved. Data model preserved. Only presentational fixes permitted.
 - N=008 Watcher: 13/13 drift checks clean. Engine preserved. Agent state now tracked in git.
+
+---
+
+## RECONSTRUCTION NOTE — 2026-05-04
+
+N=009, N=010, and N=011 shipped product work that was committed directly to the repo without running through the full six-hat loop. No CURRENT, S1_LOCKED, A1_OUTPUT, or TRUTH_RESULT files were written for those cycles at the time of execution. This gap was detected at the start of N=012 by the mandatory read-order check.
+
+The following three cycles have been reconstructed post-hoc from git history by Claude Sonnet 4.6 on 2026-05-04, committed on branch `agent_state/reconstruct-009-011`. Reconstruction files carry the explicit prefix "RECONSTRUCTED FROM GIT HISTORY" and must not be treated as authoritative test evidence.
+
+| Cycle | Commit | Date | Description |
+|-------|--------|------|-------------|
+| N=009 | e00095f45abd2c8372aa175c1e1022892d918386 | 2026-05-04 14:21 | UI polish: BodyVisualization SVG fix, BottleScanner error messages, ResultCard progressive reveal + trust copy + sticky CTA |
+| N=010 | 89780428988132cc3d6c02954d54fc7685c5a513 | 2026-05-04 14:29 | Hotfix: add /api/checkout and /api/subscription to Clerk public routes |
+| N=011 | cb5daa04fc6f7701af73441f5a49afa0b6c409d6 | 2026-05-04 14:39 | Pricing: 3-tier paid plans with correct Stripe routing |
+
+---
+
+## N=009 — UI polish pass (RECONSTRUCTED)
+
+- **Date:** 2026-05-04 (reconstructed 2026-05-04)
+- **Status:** INFERRED PASS — see RECONSTRUCTION NOTE above. Full six-hat loop did not run.
+- **Commit:** e00095f — 3 files changed, 86 insertions(+), 45 deletions(-)
+- **Changes:** BodyVisualization overflow=visible; BottleScanner 401/403 specific messages; ResultCard progressive reveal, trust copy, sticky CTA, primary UpgradeButton.
+- **Engine:** Unchanged.
+- **Deps:** None added.
+- **Formal Judge:** NOT RUN. State files written as reconstruction on 2026-05-04.
+
+## N=010 — Middleware public-route hotfix (RECONSTRUCTED)
+
+- **Date:** 2026-05-04 (reconstructed 2026-05-04)
+- **Status:** INFERRED PASS — see RECONSTRUCTION NOTE above. Full six-hat loop did not run.
+- **Commit:** 8978042 — 1 file changed, 2 insertions(+)
+- **Changes:** middleware.ts — /api/checkout and /api/subscription added to public matcher so Clerk passes requests through to the routes' own 401 guards.
+- **Engine:** Unchanged.
+- **Deps:** None added.
+- **Formal Judge:** NOT RUN. State files written as reconstruction on 2026-05-04.
+
+## N=011 — 3-tier pricing with Stripe routing (RECONSTRUCTED)
+
+- **Date:** 2026-05-04 (reconstructed 2026-05-04)
+- **Status:** INFERRED PASS — see RECONSTRUCTION NOTE above. Full six-hat loop did not run.
+- **Commit:** cb5daa0 — 4 files changed, 123 insertions(+), 77 deletions(-)
+- **Changes:** lib/stripe.ts STRIPE_PRICE_QUARTERLY; api/checkout quarter interval branch; UpgradeButton quarter type + per-plan labels; pricing/page.tsx 4-tier layout (Free / $4.99/mo / $9.99/3mo MOST POPULAR / $29.99/yr).
+- **Engine:** Unchanged.
+- **Deps:** None added.
+- **Formal Judge:** NOT RUN. State files written as reconstruction on 2026-05-04.
+- **N=012 baseline:** Engine contract, all frozen lib files, all components, all API routes, package.json — all confirmed unchanged from N=008 PASS baseline. DEV MODE isProUser relaxation still present per N=008 standing reminder.
