@@ -13,17 +13,40 @@ import {
   type PluginNormalization,
 } from "./pluginContract";
 import { appleHealthPlugin } from "./plugins/appleHealth";
+import { amazonPlugin } from "./plugins/amazon";
+import type { ActionPluginNormalization } from "./types";
 
 // N=014: Apple Health is the first plugin to register against the locked
 // PluginNormalization contract. Subsequent cycles add more plugins by
 // importing them here (or by calling registerPlugin at runtime). The
 // engine never reads this registry directly — engine purity preserved.
-const registered: PluginNormalization[] = [appleHealthPlugin];
+//
+// N=015: Amazon registers as the second entry — the first action plugin.
+// Action plugins implement an outbound URL surface (ActionPluginNormalization)
+// rather than the inbound TaggedUserInput[] surface signal plugins emit.
+// The registry now holds a discriminated union; the runtime guard
+// `isPluginNormalization` continues to validate ONLY the signal variant
+// (action plugins skip the guard since their shape is different and the
+// `kind: "action"` discriminator narrows the union at the type level).
 
-export function registerPlugin(plugin: PluginNormalization): void {
-  if (!isPluginNormalization(plugin)) {
+export type RegisteredPlugin = PluginNormalization | ActionPluginNormalization;
+
+const registered: RegisteredPlugin[] = [appleHealthPlugin, amazonPlugin];
+
+export function registerPlugin(plugin: RegisteredPlugin): void {
+  // Signal plugins are validated at runtime by the N=012 type guard.
+  // Action plugins are checked structurally: name + kind discriminator +
+  // generateActionUrl function.
+  const isSignal = isPluginNormalization(plugin as PluginNormalization);
+  const isAction =
+    typeof plugin === "object" &&
+    plugin !== null &&
+    typeof (plugin as ActionPluginNormalization).name === "string" &&
+    (plugin as ActionPluginNormalization).kind === "action" &&
+    typeof (plugin as ActionPluginNormalization).generateActionUrl === "function";
+  if (!isSignal && !isAction) {
     throw new TypeError(
-      "registerPlugin: argument does not satisfy PluginNormalization contract",
+      "registerPlugin: argument does not satisfy PluginNormalization or ActionPluginNormalization contract",
     );
   }
   // Names are unique. Re-registering a plugin with the same name replaces
@@ -33,7 +56,7 @@ export function registerPlugin(plugin: PluginNormalization): void {
   else registered.push(plugin);
 }
 
-export function getActivePlugins(): ReadonlyArray<PluginNormalization> {
+export function getActivePlugins(): ReadonlyArray<RegisteredPlugin> {
   return registered;
 }
 
