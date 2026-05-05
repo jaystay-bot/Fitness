@@ -14,6 +14,7 @@ import {
 } from "./pluginContract";
 import { appleHealthPlugin } from "./plugins/appleHealth";
 import { amazonPlugin } from "./plugins/amazon";
+import { telehealthPlugin } from "./plugins/telehealth";
 import type { ActionPluginNormalization } from "./types";
 
 // N=014: Apple Health is the first plugin to register against the locked
@@ -28,10 +29,18 @@ import type { ActionPluginNormalization } from "./types";
 // `isPluginNormalization` continues to validate ONLY the signal variant
 // (action plugins skip the guard since their shape is different and the
 // `kind: "action"` discriminator narrows the union at the type level).
+//
+// N=016: telehealth registers as the third entry — the second action plugin.
+// Confirms the contract supports multiple action plugins simultaneously
+// without further contract modification.
 
 export type RegisteredPlugin = PluginNormalization | ActionPluginNormalization;
 
-const registered: RegisteredPlugin[] = [appleHealthPlugin, amazonPlugin];
+const registered: RegisteredPlugin[] = [
+  appleHealthPlugin,
+  amazonPlugin,
+  telehealthPlugin,
+];
 
 export function registerPlugin(plugin: RegisteredPlugin): void {
   // Signal plugins are validated at runtime by the N=012 type guard.
