@@ -13,6 +13,7 @@ import {
 } from "@/lib/units";
 import { AppleHealthUpload } from "./AppleHealthUpload";
 import { LabValuesEntry } from "./LabValuesEntry";
+import { OuraConnect } from "./OuraConnect";
 import { UnitToggle } from "./UnitToggle";
 import { VoiceInput } from "./VoiceInput";
 import { WhoopConnect } from "./WhoopConnect";
@@ -123,6 +124,12 @@ export function AssessmentForm({
   // priority resolver's recency tie-break within a layer picks the more
   // recent reading.
   const [whoopTaggedInputs, setWhoopTaggedInputs] = useState<TaggedUserInput[]>([]);
+  // N=019: optional Oura wearable tagged inputs. Empty array when the
+  // user skips the connect card. Three wearable plugins now coexist
+  // (Apple Health, Whoop, Oura) — the priority resolver's within-layer
+  // recency tie-break resolves three-way conflicts on the same field
+  // without any contract modification.
+  const [ouraTaggedInputs, setOuraTaggedInputs] = useState<TaggedUserInput[]>([]);
 
   function update<K extends keyof UserInput>(key: K, value: UserInput[K]) {
     setInput((prev) => ({ ...prev, [key]: value }));
@@ -226,6 +233,7 @@ export function AssessmentForm({
         ...taggedInputs,
         ...labTaggedInputs,
         ...whoopTaggedInputs,
+        ...ouraTaggedInputs,
       ];
       if (allTagged.length > 0) {
         requestBody.taggedInputs = allTagged;
@@ -255,6 +263,7 @@ export function AssessmentForm({
       <AppleHealthUpload onTagged={setTaggedInputs} />
       <LabValuesEntry onTagged={setLabTaggedInputs} />
       <WhoopConnect onTagged={setWhoopTaggedInputs} />
+      <OuraConnect onTagged={setOuraTaggedInputs} />
       <form
         onSubmit={submit}
         aria-label="Apex Protocol assessment form"
