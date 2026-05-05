@@ -17,6 +17,7 @@ import { amazonPlugin } from "./plugins/amazon";
 import { telehealthPlugin } from "./plugins/telehealth";
 import { labPlaceholderPlugin } from "./plugins/labPlaceholder";
 import { whoopPlugin } from "./plugins/whoop";
+import { ouraPlugin } from "./plugins/oura";
 import type { ActionPluginNormalization } from "./types";
 
 // N=014: Apple Health is the first plugin to register against the locked
@@ -47,6 +48,13 @@ import type { ActionPluginNormalization } from "./types";
 // Two wearable plugins now contribute to the same layer simultaneously;
 // the priority resolver's within-layer recency tie-break selects the
 // more-recent reading when both target the same UserInput field.
+//
+// N=019: oura registers as the sixth entry — the fourth signal plugin
+// and the THIRD wearable signal source (after Apple Health and Whoop).
+// The wearable layer now holds three coexisting plugins; the priority
+// resolver's within-layer recency tie-break is exercised three-way for
+// the first time. The locked priority build order's wearable-expansion
+// phase completes here.
 
 export type RegisteredPlugin = PluginNormalization | ActionPluginNormalization;
 
@@ -56,6 +64,7 @@ const registered: RegisteredPlugin[] = [
   telehealthPlugin,
   labPlaceholderPlugin,
   whoopPlugin,
+  ouraPlugin,
 ];
 
 export function registerPlugin(plugin: RegisteredPlugin): void {
