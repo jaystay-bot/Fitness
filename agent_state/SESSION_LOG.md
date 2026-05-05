@@ -154,3 +154,17 @@ The following three cycles have been reconstructed post-hoc from git history by 
 - **Deps:** None added.
 - **Formal Judge:** NOT RUN. State files written as reconstruction on 2026-05-04.
 - **N=012 baseline:** Engine contract, all frozen lib files, all components, all API routes, package.json — all confirmed unchanged from N=008 PASS baseline. DEV MODE isProUser relaxation still present per N=008 standing reminder.
+
+---
+
+## N=012 — Signal Stack and Plugin Layer foundation
+
+- **Date:** 2026-05-04
+- **Commander:** Wrote CURRENT_012.md. Intent: three foundational additions — tagged input system (SignalLayer enum, TaggedValue type), priority resolution function (resolveTaggedInputs: labs > wearables > behavior, recency breaks ties), plugin normalization contract (PluginNormalization interface + empty typed registry). No user-facing changes. Backward compatibility unconditional.
+- **Architect:** Wrote S1_LOCKED_012.md. Four new files (signalLayers, signalPriority, pluginContract, pluginRegistry), two modifications (engine.ts optional third param, types.ts additive re-exports). All components, routes, and frozen lib files locked. Zero new dependencies. Eight acceptance criteria defined.
+- **Sentinel:** GATE OPEN. Engine signature extended additively (optional third param). All existing callers (0, 1, or 2 args) remain valid. Four new file slots verified absent from disk before this cycle. No frozen file in the modify list. No new runtime deps. No external API calls possible in pure type/constant files.
+- **Operator:** COMPLETE — 9 atomic commits. signalLayers.ts → signalPriority.ts with inline unit tests → pluginContract.ts → pluginRegistry.ts → engine.ts integration → types.ts re-exports → A1_OUTPUT_012.md manifest. Two interleaved Jay commits (7cccd2c visual polish, ce097bc middleware fix) noted in audit but not N=012 operator work.
+- **Watcher:** PASS — all 6 N=012 operator commits touch only allowed files (lib/signalLayers, lib/signalPriority, lib/pluginContract, lib/pluginRegistry, lib/engine, lib/types, agent_state/). Zero external API calls in new modules. Zero storage usage. package.json unchanged. Pre-existing Windows build trace ENOENT confirmed on prior-cycle commit.
+- **Judge:** 8/8 PASS. See TRUTH_RESULT_012.md.
+- **Status:** N=012 PASS. TRUTH_RESULT_012.md and NEXT_013.md written.
+- **Next direction:** N=013 — audit trail infrastructure cycle to enforce agent_state file presence before product commits, preventing future reconstruction gaps. Plugin work (Apple Health, Oura, etc.) deferred until loop integrity is guaranteed.
