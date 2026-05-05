@@ -5,6 +5,7 @@ import {
   GOAL_NUTRITION,
   SYMPTOM_OVERRIDES,
 } from "./nutrition";
+import { resolveTaggedInputs, type TaggedUserInput } from "./signalPriority";
 import { SUPPLEMENTS, getSupplement } from "./supplements";
 import type {
   EvidenceTier,
@@ -346,27 +347,39 @@ function buildPlan(
 // into the existing `UserInput` enum surface BEFORE this function is called.
 // When `labValues` is undefined (or any time it does not change the semantic
 // inputs), `recommend` is byte-identical to N=005/N=006.
+//
+// N=012: optional `taggedInputs` (third param) activates the Signal Stack
+// priority resolution. When provided and non-empty, resolveTaggedInputs merges
+// higher-priority layer values over the base input before engine logic runs.
+// Omitting this parameter preserves byte-identical behavior for all existing
+// callers.
 export function recommend(
   input: UserInput,
   labValues?: import("./types").LabValues,
+  taggedInputs?: TaggedUserInput[],
 ): Recommendation {
   void labValues;
-  const variationSeed = hashInput(input);
-  const baseStack = buildStack(input);
-  const variedStack = applyVariation(baseStack, variationSeed, input);
+
+  const effectiveInput: UserInput =
+    taggedInputs && taggedInputs.length > 0
+      ? { ...input, ...resolveTaggedInputs(taggedInputs) }
+      : input;
+  const variationSeed = hashInput(effectiveInput);
+  const baseStack = buildStack(effectiveInput);
+  const variedStack = applyVariation(baseStack, variationSeed, effectiveInput);
   const supplements = variedStack.slice(0, 7);
-  const warnings = buildWarnings(input, supplements);
+  const warnings = buildWarnings(effectiveInput, supplements);
   for (const pick of supplements) {
-    pick.confidence = computeConfidence(pick, input, warnings);
+    pick.confidence = computeConfidence(pick, effectiveInput, warnings);
   }
-  const verdict = buildVerdict(input, supplements);
-  const goalConflict = detectConflict(input);
-  const nutrition = buildNutrition(input);
-  const thirtyDayPlan = buildPlan(input, supplements);
+  const verdict = buildVerdict(effectiveInput, supplements);
+  const goalConflict = detectConflict(effectiveInput);
+  const nutrition = buildNutrition(effectiveInput);
+  const thirtyDayPlan = buildPlan(effectiveInput, supplements);
 
   return {
     verdict,
-    bmi: bmi(input),
+    bmi: bmi(effectiveInput),
     goalConflict,
     supplements,
     nutrition,
