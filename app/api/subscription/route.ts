@@ -1,6 +1,7 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
+import { isAllowlistedEmail } from "@/lib/proAccess";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import type { SubscriptionTier } from "@/lib/types";
 
@@ -12,6 +13,21 @@ export async function GET() {
   if (!userId) {
     return NextResponse.json({ tier: null }, { status: 401 });
   }
+
+  // Per-email allowlist short-circuit. Lets named testers (e.g. founders,
+  // internal QA) hold Pro tier without going through Stripe. Survives
+  // DEV MODE revert.
+  const user = await currentUser();
+  const primaryEmail = user?.emailAddresses?.[0]?.emailAddress ?? null;
+  if (isAllowlistedEmail(primaryEmail)) {
+    return NextResponse.json({
+      tier: "pro" as SubscriptionTier,
+      status: "active",
+      currentPeriodEnd: null,
+      source: "allowlist",
+    });
+  }
+
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     return NextResponse.json({ tier: "free" as SubscriptionTier });
