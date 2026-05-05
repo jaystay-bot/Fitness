@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Loader2, Mic } from "lucide-react";
 
-import type { Recommendation, UserInput } from "@/lib/types";
+import type { Recommendation, TaggedUserInput, UserInput } from "@/lib/types";
 import {
   cmToImperial,
   imperialToCm,
@@ -11,6 +11,7 @@ import {
   kgToPounds,
   type UnitSystem,
 } from "@/lib/units";
+import { AppleHealthUpload } from "./AppleHealthUpload";
 import { UnitToggle } from "./UnitToggle";
 import { VoiceInput } from "./VoiceInput";
 
@@ -105,6 +106,10 @@ export function AssessmentForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [voiceOpen, setVoiceOpen] = useState(false);
+  // N=014: optional Apple Health tagged inputs. Empty array when the user
+  // skips the upload card; the form's POST body is byte-identical to N=013
+  // in that case.
+  const [taggedInputs, setTaggedInputs] = useState<TaggedUserInput[]>([]);
 
   function update<K extends keyof UserInput>(key: K, value: UserInput[K]) {
     setInput((prev) => ({ ...prev, [key]: value }));
@@ -201,10 +206,16 @@ export function AssessmentForm({
         caffeineCupsPerDay: parsedCoffee,
         alcoholDrinksPerWeek: parsedAlcohol,
       };
+      const requestBody: { input?: never; taggedInputs?: TaggedUserInput[] } & UserInput = {
+        ...payload,
+      };
+      if (taggedInputs.length > 0) {
+        requestBody.taggedInputs = taggedInputs;
+      }
       const res = await fetch("/api/recommend", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(requestBody),
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as {
@@ -222,11 +233,13 @@ export function AssessmentForm({
   }
 
   return (
-    <form
-      onSubmit={submit}
-      aria-label="Apex Protocol assessment form"
-      className="w-full max-w-md bg-ink border border-paper/15 rounded-lg p-5 sm:p-6 flex flex-col gap-4"
-    >
+    <div className="w-full max-w-md flex flex-col gap-3">
+      <AppleHealthUpload onTagged={setTaggedInputs} />
+      <form
+        onSubmit={submit}
+        aria-label="Apex Protocol assessment form"
+        className="w-full bg-ink border border-paper/15 rounded-lg p-5 sm:p-6 flex flex-col gap-4"
+      >
       <div className="flex items-center justify-between">
         <span className={LABEL}>Quick start</span>
         <button
@@ -530,7 +543,8 @@ export function AssessmentForm({
       <p className="text-[11px] font-mono uppercase tracking-wider text-paper/40 text-center">
         No email. No account. Result loads in seconds.
       </p>
-    </form>
+      </form>
+    </div>
   );
 }
 
