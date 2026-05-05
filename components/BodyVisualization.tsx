@@ -75,11 +75,11 @@ export function BodyVisualization({
         <svg
           viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
           overflow="visible"
-          className="w-full max-w-[280px] mx-auto"
+          className="w-full max-w-[320px] mx-auto sm:mx-0"
           role="img"
           aria-label="Anatomical silhouette with labeled supplement targets"
         >
-          {/* Hand-coded silhouette: head, neck, torso, arms, legs. */}
+          {/* Cleaner hand-coded silhouette: simplified proportions, smoother curves. */}
           <g
             stroke="#FAFAF7"
             strokeOpacity="0.5"
@@ -88,14 +88,14 @@ export function BodyVisualization({
             fillOpacity="0.06"
           >
             {/* Head */}
-            <ellipse cx="200" cy="60" rx="40" ry="46" />
+            <ellipse cx="200" cy="62" rx="38" ry="44" />
             {/* Neck */}
-            <rect x="190" y="100" width="20" height="20" />
-            {/* Shoulders + torso */}
-            <path d="M 110 130 Q 200 110 290 130 L 295 220 Q 295 320 280 380 L 230 480 L 230 600 L 195 600 L 195 480 L 200 380 Q 200 320 200 220 L 200 380 L 170 480 L 170 600 L 205 600 L 205 480 L 120 380 Q 105 320 105 220 Z" />
-            {/* Arms */}
-            <path d="M 110 130 L 70 220 L 65 350 L 80 360 L 95 250 L 110 200 Z" />
-            <path d="M 290 130 L 330 220 L 335 350 L 320 360 L 305 250 L 290 200 Z" />
+            <path d="M 186 104 Q 200 96 214 104 L 214 128 Q 200 136 186 128 Z" />
+            {/* Torso */}
+            <path d="M 120 140 Q 200 116 280 140 Q 296 166 292 210 L 286 300 Q 280 360 262 410 Q 242 468 232 520 L 232 620 L 208 620 L 208 526 Q 208 478 200 430 Q 192 478 192 526 L 192 620 L 168 620 L 168 520 Q 158 468 138 410 Q 120 360 114 300 L 108 210 Q 104 166 120 140 Z" />
+            {/* Arms (kept subtle to avoid visual noise on mobile) */}
+            <path d="M 124 154 Q 92 220 92 288 Q 92 332 108 368 Q 118 390 130 386 Q 120 344 122 288 Q 124 224 142 176 Z" />
+            <path d="M 276 154 Q 308 220 308 288 Q 308 332 292 368 Q 282 390 270 386 Q 280 344 278 288 Q 276 224 258 176 Z" />
           </g>
           {/* Subtle line dividers between major regions. */}
           <g
@@ -108,32 +108,30 @@ export function BodyVisualization({
             <line x1="40" y1="280" x2="360" y2="280" />
             <line x1="40" y1="380" x2="360" y2="380" />
           </g>
-          {/* Tag connectors and labels per body system. */}
+          {/* Pins and short labels per body system.
+              Avoid long supplement-name text inside the SVG to prevent overlaps. */}
           {Array.from(grouped.entries()).map(([system, list]) => {
             const pos = SVG_POSITIONS[system];
+            const hasWarning = list.some((t) => t.warning);
             return (
               <g key={system}>
                 <circle
                   cx={pos.cx}
                   cy={pos.cy}
                   r="4"
-                  fill={
-                    list.some((t) => t.warning) ? "#FF6B35" : "#D4FF3A"
-                  }
+                  fill={hasWarning ? "#FF6B35" : "#D4FF3A"}
                 />
-                {list.map((t, i) => (
-                  <text
-                    key={`${system}-${t.name}-${i}`}
-                    x={pos.cx + 12}
-                    y={pos.cy + i * 14 - (list.length - 1) * 7}
-                    fontFamily="ui-monospace, monospace"
-                    fontSize="11"
-                    fill={t.warning ? "#FF6B35" : "#FAFAF7"}
-                    aria-label={`${t.name} targets ${system}`}
-                  >
-                    {t.name}
-                  </text>
-                ))}
+                <text
+                  x={pos.cx + 10}
+                  y={pos.cy + 4}
+                  fontFamily="ui-monospace, monospace"
+                  fontSize="10.5"
+                  fill={hasWarning ? "#FF6B35" : "#FAFAF7"}
+                  opacity="0.9"
+                  aria-label={`${system} targeted by ${list.length} supplements`}
+                >
+                  {system}{list.length > 1 ? ` (${list.length})` : ""}
+                </text>
               </g>
             );
           })}

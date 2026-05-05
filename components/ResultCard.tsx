@@ -14,14 +14,6 @@ import { ProGate } from "./ProGate";
 import { UpgradeButton } from "./UpgradeButton";
 import { VerdictReveal } from "./VerdictReveal";
 
-const SupplementBottle3D = dynamic(
-  () =>
-    import("./SupplementBottle3D").then((m) => ({
-      default: m.SupplementBottle3D,
-    })),
-  { ssr: false },
-);
-
 const InteractiveTimeline = dynamic(
   () =>
     import("./InteractiveTimeline").then((m) => ({
@@ -90,6 +82,7 @@ export function ResultCard({
   const featured = result.supplements[0];
   const slug = shareSlug ?? encodeInput(input);
   const tier = useTier();
+  const topPicks = result.supplements.slice(0, 5);
   return (
     <section
       aria-label="Your Apex Protocol result"
@@ -109,9 +102,38 @@ export function ResultCard({
         </div>
       </div>
 
-      {featured ? (
-        <div className="mt-8 flex justify-center">
-          <SupplementBottle3D name={featured.name} tier={featured.evidenceTier} />
+      {/* Removed the oversized floating 3D bottle visual for now.
+          Keep this section compact and non-overlapping on mobile. */}
+      {topPicks.length ? (
+        <div className="mt-7 sm:mt-8 border border-paper/15 rounded-lg p-4 sm:p-5 bg-ink/30 min-w-0">
+          <div className="flex items-baseline justify-between gap-3 flex-wrap min-w-0">
+            <h3 className="font-serif text-lg sm:text-xl text-paper leading-tight">
+              Top picks
+            </h3>
+            <span className="font-mono text-[11px] uppercase tracking-wider text-paper/60">
+              Stack preview
+            </span>
+          </div>
+          <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 min-w-0">
+            {topPicks.map((s) => (
+              <li
+                key={s.name}
+                className="border border-paper/15 rounded-md px-3 py-2 flex items-center justify-between gap-3 min-w-0"
+              >
+                <span className="text-sm text-paper/90 truncate">
+                  {s.name}
+                </span>
+                <span className="shrink-0">
+                  <ConfidenceBadge confidence={s.confidence} />
+                </span>
+              </li>
+            ))}
+          </ul>
+          {result.supplements.length > topPicks.length ? (
+            <p className="mt-2 text-xs text-paper/55">
+              +{result.supplements.length - topPicks.length} more in your full stack below.
+            </p>
+          ) : null}
         </div>
       ) : null}
 
