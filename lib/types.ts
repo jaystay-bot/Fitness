@@ -270,3 +270,19 @@ export interface TelehealthDeepLink {
   url: string;
   reason: TelehealthEscalationReason | null;
 }
+
+// N=017: lab placeholder (manual entry) types — additive only.
+// Each field is the canonical biomarker name + measurement unit. Optional
+// because users may enter only the markers they have on hand.
+
+export interface ManualLabValue {
+  ferritin_ng_ml?: number;
+  vitamin_d_25oh_ng_ml?: number;
+  b12_pg_ml?: number;
+  magnesium_mg_dl?: number;
+  tsh_uiu_ml?: number;
+}
+
+export interface LabPlaceholderInput {
+  values: ManualLabValue;
+}

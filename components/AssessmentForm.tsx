@@ -12,6 +12,7 @@ import {
   type UnitSystem,
 } from "@/lib/units";
 import { AppleHealthUpload } from "./AppleHealthUpload";
+import { LabValuesEntry } from "./LabValuesEntry";
 import { UnitToggle } from "./UnitToggle";
 import { VoiceInput } from "./VoiceInput";
 
@@ -110,6 +111,11 @@ export function AssessmentForm({
   // skips the upload card; the form's POST body is byte-identical to N=013
   // in that case.
   const [taggedInputs, setTaggedInputs] = useState<TaggedUserInput[]>([]);
+  // N=017: optional lab-placeholder tagged inputs. Empty array when the
+  // user skips the entry card. Concatenated with the Apple Health array
+  // on submission; the priority resolver from N=012 handles layer
+  // weighting (lab > wearable > behavior).
+  const [labTaggedInputs, setLabTaggedInputs] = useState<TaggedUserInput[]>([]);
 
   function update<K extends keyof UserInput>(key: K, value: UserInput[K]) {
     setInput((prev) => ({ ...prev, [key]: value }));
@@ -209,8 +215,9 @@ export function AssessmentForm({
       const requestBody: { input?: never; taggedInputs?: TaggedUserInput[] } & UserInput = {
         ...payload,
       };
-      if (taggedInputs.length > 0) {
-        requestBody.taggedInputs = taggedInputs;
+      const allTagged = [...taggedInputs, ...labTaggedInputs];
+      if (allTagged.length > 0) {
+        requestBody.taggedInputs = allTagged;
       }
       const res = await fetch("/api/recommend", {
         method: "POST",
@@ -235,6 +242,7 @@ export function AssessmentForm({
   return (
     <div className="w-full max-w-md flex flex-col gap-3">
       <AppleHealthUpload onTagged={setTaggedInputs} />
+      <LabValuesEntry onTagged={setLabTaggedInputs} />
       <form
         onSubmit={submit}
         aria-label="Apex Protocol assessment form"
