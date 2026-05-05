@@ -223,3 +223,27 @@ export interface TaggedUserInput<K extends keyof UserInput = keyof UserInput> {
   confidence: number;     // [0, 1]
   timestamp: string;      // ISO 8601
 }
+
+// N=015: action-plugin + fulfillment types — additive only.
+// Action plugins implement an outbound action surface (e.g. affiliate
+// links, telehealth booking, lab kit checkout). Distinguished from the
+// signal-plugin variant in lib/pluginContract.ts via the `kind` discriminator.
+
+export interface ActionPluginNormalization {
+  readonly name: string;
+  readonly kind: "action";
+  /**
+   * Pure function. Maps a supplement name to a fully-qualified outbound
+   * URL the user can open in a new tab. Implementations may read
+   * environment variables at call time (NOT at module load time) to
+   * pull configuration like affiliate tags.
+   */
+  generateActionUrl(supplementName: string): string;
+}
+
+export interface FulfillmentClick {
+  supplementName: string;
+  affiliateUrl: string;
+  userId?: string | null;
+  clickedAt?: string;
+}
