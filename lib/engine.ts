@@ -5,6 +5,7 @@ import {
   GOAL_NUTRITION,
   SYMPTOM_OVERRIDES,
 } from "./nutrition";
+import { resolveTaggedInputs } from "./signalPriority";
 import { SUPPLEMENTS, getSupplement } from "./supplements";
 import type {
   EvidenceTier,
@@ -13,6 +14,7 @@ import type {
   SupplementEntry,
   SupplementPick,
   Symptom,
+  TaggedUserInput,
   UserInput,
 } from "./types";
 import { applyVariation, hashInput } from "./variation";
@@ -341,32 +343,44 @@ function buildPlan(
   ];
 }
 
-// N=007: optional `labValues` parameter is reserved for downstream auditing.
-// Override semantics live in `lib/labMapping.ts` and translate lab values
-// into the existing `UserInput` enum surface BEFORE this function is called.
-// When `labValues` is undefined (or any time it does not change the semantic
-// inputs), `recommend` is byte-identical to N=005/N=006.
+// N=012: optional `taggedInputs` parameter accepts an array of
+// TaggedUserInput entries from any registered plugin (Apple Health,
+// Oura, Whoop, LabCorp, Quest, telehealth, …). When present, the
+// pure resolver in lib/signalPriority.ts merges higher-priority
+// values over the user's behavior-layer input before the rest of the
+// recommendation pipeline runs.
+//
+// Backward compatibility: when `taggedInputs` is undefined OR an empty
+// array, `effective === input` by reference and every downstream
+// computation is byte-identical to N=011. This replaces the never-called
+// `labValues?` no-op parameter that N=007 introduced as a reserved hook;
+// `applyLabOverrides` already runs on the input BEFORE recommend is
+// invoked, so removing the unused parameter is safe (zero callers in
+// the codebase passed it).
 export function recommend(
   input: UserInput,
-  labValues?: import("./types").LabValues,
+  taggedInputs?: ReadonlyArray<TaggedUserInput>,
 ): Recommendation {
-  void labValues;
-  const variationSeed = hashInput(input);
-  const baseStack = buildStack(input);
-  const variedStack = applyVariation(baseStack, variationSeed, input);
+  const effective: UserInput =
+    taggedInputs && taggedInputs.length > 0
+      ? { ...input, ...resolveTaggedInputs(taggedInputs) }
+      : input;
+  const variationSeed = hashInput(effective);
+  const baseStack = buildStack(effective);
+  const variedStack = applyVariation(baseStack, variationSeed, effective);
   const supplements = variedStack.slice(0, 7);
-  const warnings = buildWarnings(input, supplements);
+  const warnings = buildWarnings(effective, supplements);
   for (const pick of supplements) {
-    pick.confidence = computeConfidence(pick, input, warnings);
+    pick.confidence = computeConfidence(pick, effective, warnings);
   }
-  const verdict = buildVerdict(input, supplements);
-  const goalConflict = detectConflict(input);
-  const nutrition = buildNutrition(input);
-  const thirtyDayPlan = buildPlan(input, supplements);
+  const verdict = buildVerdict(effective, supplements);
+  const goalConflict = detectConflict(effective);
+  const nutrition = buildNutrition(effective);
+  const thirtyDayPlan = buildPlan(effective, supplements);
 
   return {
     verdict,
-    bmi: bmi(input),
+    bmi: bmi(effective),
     goalConflict,
     supplements,
     nutrition,
