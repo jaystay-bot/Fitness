@@ -12,8 +12,13 @@ import {
   isPluginNormalization,
   type PluginNormalization,
 } from "./pluginContract";
+import { appleHealthPlugin } from "./plugins/appleHealth";
 
-const registered: PluginNormalization[] = [];
+// N=014: Apple Health is the first plugin to register against the locked
+// PluginNormalization contract. Subsequent cycles add more plugins by
+// importing them here (or by calling registerPlugin at runtime). The
+// engine never reads this registry directly — engine purity preserved.
+const registered: PluginNormalization[] = [appleHealthPlugin];
 
 export function registerPlugin(plugin: PluginNormalization): void {
   if (!isPluginNormalization(plugin)) {

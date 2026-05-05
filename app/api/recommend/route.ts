@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 
 import { recommend } from "@/lib/engine";
-import type { UserInput } from "@/lib/types";
+import { isValidLayer } from "@/lib/signalLayers";
+import type { TaggedUserInput, UserInput } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -49,6 +50,50 @@ function oneOf<T extends readonly string[]>(
   return value as T[number];
 }
 
+// N=014: contract-spirit-honoring micro-extension. Additively accept an
+// optional `taggedInputs` array in the request body; pass it to
+// recommend(input, taggedInputs). When the field is absent or empty,
+// recommend() is byte-identical to N=013 per the N=012 contract.
+const USER_INPUT_FIELDS: ReadonlySet<keyof UserInput> = new Set<keyof UserInput>([
+  "age",
+  "sex",
+  "heightCm",
+  "weightKg",
+  "activityLevel",
+  "sleepHours",
+  "primaryGoal",
+  "dietPattern",
+  "caffeineCupsPerDay",
+  "alcoholDrinksPerWeek",
+  "symptomToFix",
+]);
+
+function parseTaggedInputs(raw: unknown): TaggedUserInput[] | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const arr = (raw as Record<string, unknown>).taggedInputs;
+  if (!Array.isArray(arr)) return undefined;
+  const out: TaggedUserInput[] = [];
+  for (const entry of arr) {
+    if (!entry || typeof entry !== "object") continue;
+    const e = entry as Record<string, unknown>;
+    if (typeof e.field !== "string") continue;
+    if (!USER_INPUT_FIELDS.has(e.field as keyof UserInput)) continue;
+    if (!isValidLayer(e.layer)) continue;
+    if (typeof e.confidence !== "number" || !Number.isFinite(e.confidence)) continue;
+    if (e.confidence < 0 || e.confidence > 1) continue;
+    if (typeof e.timestamp !== "string" || e.timestamp.length === 0) continue;
+    if (e.value === undefined || e.value === null) continue;
+    out.push({
+      field: e.field as keyof UserInput,
+      value: e.value as never,
+      layer: e.layer,
+      confidence: e.confidence,
+      timestamp: e.timestamp,
+    });
+  }
+  return out.length > 0 ? out : undefined;
+}
+
 function parseInput(raw: unknown): UserInput {
   if (typeof raw !== "object" || raw === null) {
     throw new Error("Body must be a JSON object.");
@@ -91,7 +136,8 @@ export async function POST(request: Request) {
   }
   try {
     const input = parseInput(body);
-    const result = recommend(input);
+    const tagged = parseTaggedInputs(body);
+    const result = recommend(input, tagged);
     return NextResponse.json(result);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Bad request.";
