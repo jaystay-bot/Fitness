@@ -7,9 +7,15 @@
 //   - Sleep  → 7-day average → sleepHours number    → behavior layer, conf 0.7
 //   - RestHR → most recent   → activityLevel bucket → wearable layer, conf 0.85
 //
-// Records older than 30 days are filtered out before aggregation. The
-// `now` parameter is injectable so unit tests can pin the recency window
-// deterministically.
+// N=018 fix (production bug): the 7-day window is now anchored to the
+// most-recent-record date in the export, not to `nowMs`. Users export
+// their iOS Health data and may not upload it for weeks; anchoring to
+// "now" silently drops every record from a stale export and produces
+// the falsely-Connected blank-dash state Jay reported. When the 7-day
+// window is empty (sparse data within the 30-day cutoff), we fall back
+// to averaging across the entire 30-day recency window. The `now`
+// parameter is preserved for API compatibility with N=014 callers but
+// is no longer the window anchor.
 
 import type { ActivityLevel, TaggedUserInput, UserInput } from "@/lib/types";
 import type {
@@ -40,15 +46,42 @@ function withinRecency(records: { date: string }[], cutoffMs: number): typeof re
   });
 }
 
-function withinLastSevenDays<T extends { date: string }>(
+// N=018 BUG FIX: anchor the 7-day window to the MOST RECENT record's date
+// in the export, not to `nowMs`. A user who exports data on April 18 and
+// uploads on May 5 has records dated Apr 11–Apr 18; with the prior
+// nowMs-anchored implementation, all records pass the 30-day recency
+// cutoff but ALL FAIL the 7-day window relative to "now", producing
+// empty arrays and the falsely-Connected blank-dash state. The fix
+// anchors to the export's own most-recent timestamp.
+function withinLastSevenDaysOfMostRecent<T extends { date: string }>(
   records: T[],
-  nowMs: number,
 ): T[] {
-  const cutoff = nowMs - SEVEN_DAYS_MS;
+  if (records.length === 0) return [];
+  let mostRecentMs = -Infinity;
+  for (const r of records) {
+    const t = tsMs(r.date);
+    if (Number.isFinite(t) && t > mostRecentMs) mostRecentMs = t;
+  }
+  if (!Number.isFinite(mostRecentMs)) return [];
+  const cutoff = mostRecentMs - SEVEN_DAYS_MS;
   return records.filter((r) => {
     const t = tsMs(r.date);
-    return Number.isFinite(t) && t >= cutoff && t <= nowMs;
+    return Number.isFinite(t) && t >= cutoff && t <= mostRecentMs;
   });
+}
+
+// N=018: when the most-recent-7-days window is empty (sparse data
+// within the 30-day cutoff), fall back to averaging the entire 30-day
+// recency-filtered set. This guarantees that any export with at least
+// one record in the last 30 days produces non-empty TaggedUserInput[]
+// rather than the false-Connected state.
+function selectWindowedRecords<T extends { date: string }>(
+  recencyFiltered: T[],
+): T[] {
+  if (recencyFiltered.length === 0) return [];
+  const sevenDay = withinLastSevenDaysOfMostRecent(recencyFiltered);
+  if (sevenDay.length > 0) return sevenDay;
+  return recencyFiltered;
 }
 
 function avg(numbers: number[]): number {
@@ -145,7 +178,8 @@ export function normalizeAppleHealthRecords(
   const out: TaggedUserInput[] = [];
 
   // -- Steps → activityLevel (behavior layer) -------------------------
-  const stepsLast7 = withinLastSevenDays(recentSteps, nowMs);
+  // N=018: anchor to most-recent record + 30-day fallback (see header).
+  const stepsLast7 = selectWindowedRecords(recentSteps);
   if (stepsLast7.length > 0) {
     const dailyTotals = dailyTotalsByDay(stepsLast7, (r) => r.count);
     const avgSteps = avg(dailyTotals.map((d) => d.total));
@@ -162,7 +196,8 @@ export function normalizeAppleHealthRecords(
   }
 
   // -- Sleep → sleepHours (behavior layer) ----------------------------
-  const sleepLast7 = withinLastSevenDays(recentSleep, nowMs);
+  // N=018: anchor to most-recent record + 30-day fallback (see header).
+  const sleepLast7 = selectWindowedRecords(recentSleep);
   if (sleepLast7.length > 0) {
     const dailyTotals = dailyTotalsByDay(sleepLast7, (r) => r.durationMinutes);
     const avgMin = avg(dailyTotals.map((d) => d.total));
@@ -228,14 +263,14 @@ export function summarizeAppleHealth(
   const summary: AppleHealthSummary = {};
 
   const recentSteps = withinRecency(parsed.steps ?? [], recencyCutoff) as AppleHealthStepRecord[];
-  const stepsLast7 = withinLastSevenDays(recentSteps, nowMs);
+  const stepsLast7 = selectWindowedRecords(recentSteps);
   if (stepsLast7.length > 0) {
     const totals = dailyTotalsByDay(stepsLast7, (r) => r.count).map((d) => d.total);
     summary.averageDailySteps = Math.round(avg(totals));
   }
 
   const recentSleep = withinRecency(parsed.sleep ?? [], recencyCutoff) as AppleHealthSleepRecord[];
-  const sleepLast7 = withinLastSevenDays(recentSleep, nowMs);
+  const sleepLast7 = selectWindowedRecords(recentSleep);
   if (sleepLast7.length > 0) {
     const totals = dailyTotalsByDay(sleepLast7, (r) => r.durationMinutes).map((d) => d.total);
     summary.averageSleepHours = Math.round((avg(totals) / 60) * 10) / 10;
