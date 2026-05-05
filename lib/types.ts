@@ -169,6 +169,12 @@ export interface BottleMatch {
   message: string;
 }
 
+// N=012: Signal Stack and Plugin Layer types — additive only.
+
+export type { SignalLayer, TaggedValue } from "./signalLayers";
+export type { TaggedUserInput } from "./signalPriority";
+export type { PluginNormalization, PluginRegistration } from "./pluginContract";
+
 export interface SupplementEntry {
   id: string;
   name: string;
