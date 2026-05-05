@@ -26,7 +26,7 @@ export interface TaggedValue<T = unknown> {
   timestamp: string;      // ISO 8601, e.g. "2026-05-05T12:00:00Z"
 }
 
-const VALID_LAYERS: ReadonlySet<SignalLayer> = new Set([
+const VALID_LAYERS: ReadonlySet<SignalLayer> = new Set<SignalLayer>([
   "behavior",
   "wearable",
   "lab",
