@@ -286,3 +286,19 @@ export interface ManualLabValue {
 export interface LabPlaceholderInput {
   values: ManualLabValue;
 }
+
+// N=018: Whoop wearable plugin types — additive only. The token is
+// provided by the user at paste time and discarded server-side after
+// the upstream API calls. WhoopMetrics describes the recovery + strain
+// shape the API client returns (parsed from Whoop's /recovery and
+// /cycle endpoints).
+
+export interface WhoopToken {
+  token: string;
+}
+
+export interface WhoopMetrics {
+  recoveryScore: number | null;       // 0..100 (Whoop "%")
+  dayStrain: number | null;           // 0..21 (Whoop strain scale)
+  asOf: string;                       // ISO 8601, most recent reading timestamp
+}
