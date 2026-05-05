@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { AlertTriangle, Calendar, Pill, Salad } from "lucide-react";
 
 import { encodeInput } from "@/lib/slug";
+import { telehealthPlugin } from "@/lib/plugins/telehealth";
 import type { Recommendation, SubscriptionTier, UserInput } from "@/lib/types";
 import { ConfidenceBadge } from "./ConfidenceBadge";
 import { ConflictBanner } from "./ConflictBanner";
@@ -12,6 +13,7 @@ import { EmailCapture } from "./EmailCapture";
 import { EvidenceBar } from "./EvidenceBar";
 import { FulfillButton } from "./FulfillButton";
 import { ProGate } from "./ProGate";
+import { SpeakToDoctorButton } from "./SpeakToDoctorButton";
 import { UpgradeButton } from "./UpgradeButton";
 import { VerdictReveal } from "./VerdictReveal";
 
@@ -91,6 +93,11 @@ export function ResultCard({
   const featured = result.supplements[0];
   const slug = shareSlug ?? encodeInput(input);
   const tier = useTier();
+  // N=016: conservative escalation. The button only renders when the
+  // engine flagged a goal conflict OR the stack contains a supplement
+  // requiring clinician oversight. Routine recommendations get a result
+  // page byte-identical to N=015.
+  const showEscalation = telehealthPlugin.shouldRender(result);
   return (
     <section
       aria-label="Your Apex Protocol result"
@@ -137,6 +144,12 @@ export function ResultCard({
           Most people are wasting money on supplements with no real evidence behind them. This stack is different.
         </p>
       </div>
+
+      {showEscalation ? (
+        <div className="mt-6">
+          <SpeakToDoctorButton />
+        </div>
+      ) : null}
 
       <SectionHeader icon={<Pill className="w-4 h-4" aria-hidden="true" />}>
         Stack ({result.supplements.length} {result.supplements.length === 1 ? "pick" : "picks"})
