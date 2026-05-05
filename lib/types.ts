@@ -239,6 +239,14 @@ export interface ActionPluginNormalization {
    * pull configuration like affiliate tags.
    */
   generateActionUrl(supplementName: string): string;
+  /**
+   * N=016: optional. Returns true when this action plugin's button should
+   * render for the given recommendation. Implementations that always want
+   * to render (e.g. Amazon FulfillButton on every supplement card) leave
+   * this undefined. Implementations that escalate conservatively (e.g.
+   * the telehealth SpeakToDoctorButton) implement it.
+   */
+  shouldRender?(recommendation: Recommendation): boolean;
 }
 
 export interface FulfillmentClick {
@@ -246,4 +254,19 @@ export interface FulfillmentClick {
   affiliateUrl: string;
   userId?: string | null;
   clickedAt?: string;
+  // N=016: which plugin generated the click. Defaults to "amazon" for
+  // backward compatibility with N=015 rows that pre-date the column.
+  pluginName?: "amazon" | "telehealth";
+}
+
+// N=016: telehealth deep-link types — additive only.
+
+export type TelehealthEscalationReason =
+  | "medical-clearance"
+  | "goal-conflict"
+  | "clinician-oversight-supplement";
+
+export interface TelehealthDeepLink {
+  url: string;
+  reason: TelehealthEscalationReason | null;
 }
