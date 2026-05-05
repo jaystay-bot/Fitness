@@ -15,6 +15,7 @@ import { AppleHealthUpload } from "./AppleHealthUpload";
 import { LabValuesEntry } from "./LabValuesEntry";
 import { UnitToggle } from "./UnitToggle";
 import { VoiceInput } from "./VoiceInput";
+import { WhoopConnect } from "./WhoopConnect";
 
 const FIELD =
   "w-full bg-ink border border-paper/20 rounded-md px-3 py-2 text-sm text-paper placeholder:text-paper/40 focus:outline-none focus:border-lime";
@@ -116,6 +117,12 @@ export function AssessmentForm({
   // on submission; the priority resolver from N=012 handles layer
   // weighting (lab > wearable > behavior).
   const [labTaggedInputs, setLabTaggedInputs] = useState<TaggedUserInput[]>([]);
+  // N=018: optional Whoop wearable tagged inputs. Empty array when the
+  // user skips the connect card. Both Apple Health and Whoop emit at the
+  // wearable layer; when they target the same UserInput field, the
+  // priority resolver's recency tie-break within a layer picks the more
+  // recent reading.
+  const [whoopTaggedInputs, setWhoopTaggedInputs] = useState<TaggedUserInput[]>([]);
 
   function update<K extends keyof UserInput>(key: K, value: UserInput[K]) {
     setInput((prev) => ({ ...prev, [key]: value }));
@@ -215,7 +222,11 @@ export function AssessmentForm({
       const requestBody: { input?: never; taggedInputs?: TaggedUserInput[] } & UserInput = {
         ...payload,
       };
-      const allTagged = [...taggedInputs, ...labTaggedInputs];
+      const allTagged = [
+        ...taggedInputs,
+        ...labTaggedInputs,
+        ...whoopTaggedInputs,
+      ];
       if (allTagged.length > 0) {
         requestBody.taggedInputs = allTagged;
       }
@@ -243,6 +254,7 @@ export function AssessmentForm({
     <div className="w-full max-w-md flex flex-col gap-3">
       <AppleHealthUpload onTagged={setTaggedInputs} />
       <LabValuesEntry onTagged={setLabTaggedInputs} />
+      <WhoopConnect onTagged={setWhoopTaggedInputs} />
       <form
         onSubmit={submit}
         aria-label="Apex Protocol assessment form"
