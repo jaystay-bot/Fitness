@@ -16,13 +16,15 @@ import { Activity, AlertCircle, Check, Loader2 } from "lucide-react";
 
 import type { TaggedUserInput } from "@/lib/types";
 
+interface WhoopSummary {
+  recoveryScore: number | null;
+  dayStrain: number | null;
+  asOf: string | null;
+}
+
 interface PostResponse {
   tagged: TaggedUserInput[];
-  summary?: {
-    recoveryScore: number | null;
-    dayStrain: number | null;
-    asOf: string | null;
-  };
+  summary?: WhoopSummary;
   error?: string;
 }
 
@@ -36,7 +38,7 @@ export function WhoopConnect({
   const [token, setToken] = useState("");
   const [state, setState] = useState<CardState>("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [summary, setSummary] = useState<PostResponse["summary"]>(null);
+  const [summary, setSummary] = useState<WhoopSummary | null>(null);
 
   function reset() {
     setState("idle");
