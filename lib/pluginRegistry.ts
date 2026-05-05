@@ -16,6 +16,7 @@ import { appleHealthPlugin } from "./plugins/appleHealth";
 import { amazonPlugin } from "./plugins/amazon";
 import { telehealthPlugin } from "./plugins/telehealth";
 import { labPlaceholderPlugin } from "./plugins/labPlaceholder";
+import { whoopPlugin } from "./plugins/whoop";
 import type { ActionPluginNormalization } from "./types";
 
 // N=014: Apple Health is the first plugin to register against the locked
@@ -40,6 +41,12 @@ import type { ActionPluginNormalization } from "./types";
 // registration the priority resolver from N=012 is exercised across all
 // three Signal Stack layers (behavior < wearable < lab) for the first
 // time: the lab layer wins on conflicting fields per the locked weights.
+//
+// N=018: whoop registers as the fifth entry — the third signal plugin
+// and the second wearable signal source (after N=014 Apple Health).
+// Two wearable plugins now contribute to the same layer simultaneously;
+// the priority resolver's within-layer recency tie-break selects the
+// more-recent reading when both target the same UserInput field.
 
 export type RegisteredPlugin = PluginNormalization | ActionPluginNormalization;
 
@@ -48,6 +55,7 @@ const registered: RegisteredPlugin[] = [
   amazonPlugin,
   telehealthPlugin,
   labPlaceholderPlugin,
+  whoopPlugin,
 ];
 
 export function registerPlugin(plugin: RegisteredPlugin): void {
