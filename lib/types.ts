@@ -205,3 +205,21 @@ export interface SupplementEntry {
   pubmedExample?: string;
   contraindications: string[];
 }
+
+// N=012: signal-stack tagged input types — additive only.
+
+export type { SignalLayer, TaggedValue } from "./signalLayers";
+
+/**
+ * A tagged binding of one UserInput field to a value carrying its
+ * source layer, confidence, and timestamp. The generic parameter K
+ * preserves type safety at construction sites — e.g. a
+ * TaggedUserInput<"age"> has `value: number` automatically.
+ */
+export interface TaggedUserInput<K extends keyof UserInput = keyof UserInput> {
+  field: K;
+  value: UserInput[K];
+  layer: import("./signalLayers").SignalLayer;
+  confidence: number;     // [0, 1]
+  timestamp: string;      // ISO 8601
+}
