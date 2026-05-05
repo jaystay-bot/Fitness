@@ -101,6 +101,15 @@ export interface EmailCapturePayload {
   verdict: string;
 }
 
+// N=010: feedback widget types — additive only.
+
+export interface FeedbackSubmission {
+  message: string;
+  userEmail?: string | null;
+  pageUrl?: string | null;
+  userAgent?: string | null;
+}
+
 // N=008: interactive expansion types — additive only.
 
 export type BodySystem =
