@@ -64,15 +64,64 @@ The combination produces the false-Connected blank-dash state Jay reported. Both
 
 ## SUMMARY
 
-Coordinated **bug fix + feature** cycle. Apple Health card now honestly reports connection state. Whoop registers as the fifth plugin, third signal plugin, second wearable. Zero new dependencies. Engine + Signal Stack core + N=015/N=016/N=017 plugin code FROZEN.
+Coordinated **bug fix + feature** cycle. Apple Health card now honestly reports connection state — production false-Connected blank-dash bug Jay reported is fixed. Whoop registers as the fifth plugin, third signal plugin, second wearable signal source. Zero new dependencies. Engine + Signal Stack core + N=015/N=016/N=017 plugin code FROZEN.
+
+**32/32 smoke tests PASS** including the critical regression test: a 15+-day-old Apple Health export now produces 3 tagged entries with correct summary (steps=10229, sleep=7.4hrs, bpm=56) where pre-fix would have been empty.
 
 ## COMMITS
 
 ```
 340e83d  N=018 commander: define Apple Health bug fix and Whoop plugin integration cycle
 42f0d33  N=018 architect: lock Apple Health bug fix and Whoop plugin integration contract
-(this)   N=018 operator: write A1_OUTPUT_018 diagnosis section (Apple Health failure modes)
-... subsequent operator commits append details below ...
+a5f2e40  N=018 operator: write A1_OUTPUT_018 diagnosis section (Apple Health failure modes)
+
+# Apple Health bug fix:
+d371893  N=018 operator: harden parser regex for case variation (defense-in-depth)
+fd36c23  N=018 operator: anchor 7-day window to most-recent-record + add 30-day fallback (CRITICAL FIX)
+3080b09  N=018 operator: gate AppleHealthUpload Connected state on tagged.length > 0 + add empty-result state
+76d4bcc  N=018 operator: log parser record counts in /api/plugins/apple-health route
+
+# Whoop integration:
+442e85a  N=018 operator: add lib/plugins/whoop/tokenAuth.ts (paste-token validation + minimal Whoop API client)
+47b9b01  N=018 operator: add lib/plugins/whoop/normalizer.ts (recovery + strain → wearable-layer TaggedUserInput[])
+49327f3  N=018 operator: add lib/plugins/whoop/index.ts (PluginNormalization at wearable layer)
+52006c1  N=018 operator: add components/WhoopConnect.tsx (paste-token card with honest connection state)
+227fa12  N=018 operator: fix WhoopConnect summary state to allow null explicitly
+e0de7e4  N=018 operator: add app/api/plugins/whoop/route.ts (POST endpoint validates + fetches + normalizes; never persists)
+a8a614a  N=018 operator: register whoop as 5th entry in lib/pluginRegistry.ts
+fabd8f6  N=018 operator: mount WhoopConnect below LabValuesEntry + thread Whoop tagged inputs in AssessmentForm
+cfb4a41  N=018 operator: add WhoopToken + WhoopMetrics to lib/types.ts (additive only)
+(this)   N=018 operator: finalize A1_OUTPUT_018 manifest
+```
+
+## SMOKE-TEST VERIFICATION SUMMARY
+
+```
+=== Apple Health bug fix ===
+PASS  Parser extracts 7 step + 7 sleep + 5 HR records from a 15+-day-stale fixture
+PASS  Stale export (15+ days old) produces 3 TaggedUserInput entries (PRE-FIX: empty)
+PASS  Summary has averageDailySteps=10229 / averageSleepHours=7.4 / restingHeartRate=56
+PASS  Empty export → empty TaggedUserInput[] + empty summary
+PASS  All-stale export (>30 days old) → empty TaggedUserInput[] (recency cutoff still applies)
+
+=== Whoop plugin ===
+PASS  validateWhoopToken('') / 'malformed' / '   ' all return invalid with helpful error
+PASS  normalizeWhoopMetrics(red recovery + high strain) emits 2 wearable-layer entries
+PASS  normalizeWhoopMetrics(green recovery + low strain) emits 1 entry (activityLevel=light)
+PASS  All Whoop entries carry confidence 0.85 + ts from API asOf
+PASS  whoopPlugin shape: name=whoop, layer=wearable, recency=7 days
+
+=== Registry order ===
+PASS  [0]=apple-health, [1]=amazon, [2]=telehealth, [3]=lab-placeholder, [4]=whoop
+
+=== Within-layer recency tie-break (T15) ===
+PASS  Apple Health (older) + Whoop (newer) both at wearable layer: Whoop wins via recency tie-break
+
+=== Engine byte-identical regression ===
+PASS  recommend(input) byte-identical to recommend(input, undefined) and recommend(input, [])
+baseline_json_length=2711 (unchanged)
+
+ALL 32 PASS
 ```
 
 ## FILES TOUCHED (will be filled in as commits land)
