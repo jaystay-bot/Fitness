@@ -37,37 +37,37 @@ function noteForDay(
   curr: Record<Metric, number>,
 ): string {
   if (day === 1) {
-    return "Day one. Start the stack. Felt effects are not the goal yet — consistency is.";
+    return "Day one. Take your stack today. You will not feel much yet — that is normal. The goal this week is to take it every day at the same time.";
   }
-  // Find the metric with the largest delta from yesterday.
+  // Find the metric with the largest jump from yesterday.
   let best: { metric: Metric; delta: number } | null = null;
   for (const m of METRICS) {
     const delta = curr[m] - prev[m];
     if (!best || delta > best.delta) best = { metric: m, delta };
   }
   if (day === 3) {
-    return "Day three. Sleep aids and stimulants begin to register. Other compounds are still loading.";
+    return "Day three. Sleep helpers and the morning energy boost are starting to show up. Most other pills are still building up in your body.";
   }
   if (day === 7) {
-    return "Day seven. Magnesium and adaptogens settle in; energy floor begins to lift if deficiencies were present.";
+    return "Day seven. One full week in. Magnesium and the stress-resilience herbs feel settled. If you were running low on a vitamin, your energy floor is starting to lift.";
   }
   if (day === 14) {
-    return "Day fourteen. Strength markers start tracking with creatine; cognitive picks (omega-3, B12) measurably contribute.";
+    return "Day fourteen. Two weeks in. Workouts feel a little stronger thanks to creatine. Brain-support picks like omega-3 and vitamin B12 are clearly doing their job.";
   }
   if (day === 21) {
-    return "Day twenty-one. Creatine reaches saturation. Most compounds are now near plateau effect.";
+    return "Day twenty-one. Three weeks in. Creatine has fully built up in your muscles. Most pills are now giving you close to their full effect.";
   }
   if (day === 30) {
-    return "Day thirty. Plateau for fast-onset picks; long-half-life compounds (vitamin D, omega-3) still trending up.";
+    return "Day thirty. One month in. Quick-acting pills have leveled off. Slower ones like vitamin D and fish oil are still building. Keep going.";
   }
   if (best && best.delta > 1) {
     const m = best.metric;
-    if (m === "energy") return `Day ${day}. Energy curve trending up; observe morning baseline before caffeine.`;
-    if (m === "focus") return `Day ${day}. Focus support deepening; protect deep-work blocks early in the day.`;
-    if (m === "sleep") return `Day ${day}. Sleep effects compounding; keep wake time fixed and screens off after 9pm.`;
-    if (m === "strength") return `Day ${day}. Strength substrate is loading; train 3+ sessions this week.`;
+    if (m === "energy") return `Day ${day}. Your energy is trending up. Notice how you feel in the morning before any coffee — that is your real baseline.`;
+    if (m === "focus") return `Day ${day}. Mental clarity is getting stronger. Try to do your hardest thinking in the first half of the day.`;
+    if (m === "sleep") return `Day ${day}. Sleep is improving. Keep your wake-up time fixed and put the phone down after 9 p.m.`;
+    if (m === "strength") return `Day ${day}. Your muscles are getting more building blocks. Aim for at least three workouts this week.`;
   }
-  return `Day ${day}. Steady-state. Take the stack as scheduled.`;
+  return `Day ${day}. Steady day. Take the stack as planned.`;
 }
 
 function clamp01(x: number): number {
