@@ -4,6 +4,7 @@ import { Activity } from "lucide-react";
 import { ResearchFeed } from "@/components/research/ResearchFeed";
 import { StatStrip } from "@/components/research/StatStrip";
 import { STANDARD_DISCLAIMER } from "@/lib/commerce/compliance";
+import { getLiveResearchItems } from "@/lib/research/live";
 
 export const metadata: Metadata = {
   title: "The Wire — read the science | Apex Protocol",
@@ -11,7 +12,13 @@ export const metadata: Metadata = {
     "A read-only feed of the evidence behind common supplements: evidence tier, study volume, and a one-click link to the primary source on PubMed. No posting, no hype.",
 };
 
-export default function ResearchPage() {
+// Refresh live PubMed counts at most every 6 hours (ISR). Falls back to the
+// curated estimates when the fetch is unavailable (e.g. the dev sandbox).
+export const revalidate = 21600;
+
+export default async function ResearchPage() {
+  const { items, live, fetchedAt } = await getLiveResearchItems();
+
   return (
     <main className="min-h-screen bg-ink text-paper overflow-x-clip">
       <section className="px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 pb-10 max-w-6xl mx-auto w-full">
@@ -31,11 +38,11 @@ export default function ResearchPage() {
       </section>
 
       <section className="px-5 sm:px-8 lg:px-12 pb-10 max-w-6xl mx-auto w-full">
-        <StatStrip />
+        <StatStrip items={items} live={live} fetchedAt={fetchedAt} />
       </section>
 
       <section className="px-5 sm:px-8 lg:px-12 pb-16 max-w-6xl mx-auto w-full">
-        <ResearchFeed />
+        <ResearchFeed items={items} />
         <p className="mt-10 text-[11px] text-paper/45 leading-snug max-w-3xl">
           Study counts are bucketed estimates, not exact figures, and these are
           plain-language summaries that link to primary sources — not original

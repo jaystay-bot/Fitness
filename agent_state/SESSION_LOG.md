@@ -411,3 +411,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_037 — tsc+build 0; live flow shows personalized feed + daily read; no hydration errors.
 - **Watcher audit:** `verify-audit-trail [N=037]: OK`
 - N=037 | PASS | <$1.00 | tsc+build+live | Your Channel personalized Wire
+
+## N=038 — Live PubMed feed for The Wire
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** Build the live auto-updating study feed.
+- **Architect:** S1_LOCKED_038 — server-side NCBI esearch with ISR + safe fallback; production-only fetch; no user setting needed.
+- **Operator:** A1_OUTPUT_038 — live.ts (chunked, timeout-guarded, fallback); feed/StatStrip take items as props; page async + revalidate 6h; "Live · PubMed" indicator.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_038 — tsc+build 0; sandbox fallback renders clean (estimates, 15 cards, 0 errors); live path runs on Vercel by design.
