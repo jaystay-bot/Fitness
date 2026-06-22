@@ -2,8 +2,9 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { AlertTriangle, Calendar, Pill, Salad } from "lucide-react";
+import { AlertTriangle, Calendar, Pill, Salad, Store } from "lucide-react";
 
+import { shopHrefForSupplement } from "@/lib/commerce/match";
 import { encodeInput } from "@/lib/slug";
 import { telehealthPlugin } from "@/lib/plugins/telehealth";
 import type { Recommendation, SubscriptionTier, UserInput } from "@/lib/types";
@@ -158,7 +159,7 @@ export function ResultCard({
         {result.supplements.map((s) => (
           <article
             key={s.name}
-            className="border border-paper/15 rounded-lg p-4 flex flex-col gap-2 min-w-0"
+            className="bg-surface border border-paper/10 rounded-xl p-4 flex flex-col gap-2 min-w-0 shadow-card transition-colors hover:border-lime/30"
           >
             <header className="flex items-start justify-between gap-3">
               <h3 className="font-serif text-lg leading-tight break-words">{s.name}</h3>
@@ -178,7 +179,18 @@ export function ResultCard({
             </dl>
             <p className="text-sm text-paper/80">{s.whyForYou}</p>
             <div className="flex items-center justify-between gap-3 mt-1">
-              <FulfillButton supplementName={s.name} />
+              <div className="flex items-center gap-2 flex-wrap">
+                <FulfillButton supplementName={s.name} />
+                {shopHrefForSupplement(s.name) ? (
+                  <a
+                    href={shopHrefForSupplement(s.name) as string}
+                    className="inline-flex items-center gap-1.5 border border-paper/20 text-paper/85 font-mono text-[11px] uppercase tracking-wider rounded-md px-2.5 py-1.5 transition hover:border-lime hover:text-paper"
+                  >
+                    <Store className="w-3 h-3" aria-hidden="true" />
+                    Where to buy
+                  </a>
+                ) : null}
+              </div>
               <ConfidenceBadge confidence={s.confidence} />
             </div>
           </article>
@@ -224,7 +236,7 @@ export function ResultCard({
           {result.thirtyDayPlan.map((week) => (
             <article
               key={week.week}
-              className="border border-paper/15 rounded-lg p-4 flex flex-col gap-2 min-w-0"
+              className="bg-surface border border-paper/10 rounded-xl p-4 flex flex-col gap-2 min-w-0 shadow-card"
             >
               <h3 className="font-mono text-[11px] uppercase tracking-wider text-paper/60">
                 Week {week.week}
@@ -310,7 +322,7 @@ function NutritionList({
 }) {
   const dotColor = positive ? "bg-lime" : "bg-clinical";
   return (
-    <div className="border border-paper/15 rounded-lg p-4">
+    <div className="bg-surface border border-paper/10 rounded-xl p-4 shadow-card">
       <h3 className="font-mono text-[11px] uppercase tracking-wider text-paper/60 mb-2">
         {title}
       </h3>

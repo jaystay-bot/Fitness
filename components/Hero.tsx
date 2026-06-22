@@ -40,7 +40,7 @@ export function Hero() {
             <span className="italic text-lime">written by the science.</span>
           </h1>
           <p className="text-base sm:text-lg text-paper/75 max-w-md">
-            Answer nine questions. Get a ranked supplement and nutrition
+            Answer a few quick questions. Get a ranked supplement and nutrition
             protocol with the evidence tier behind every pick. About sixty
             seconds.
           </p>

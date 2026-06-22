@@ -19,7 +19,7 @@ import { VoiceInput } from "./VoiceInput";
 import { WhoopConnect } from "./WhoopConnect";
 
 const FIELD =
-  "w-full bg-ink border border-paper/20 rounded-md px-3 py-2 text-sm text-paper placeholder:text-paper/40 focus:outline-none focus:border-lime";
+  "w-full bg-elevate border border-paper/15 rounded-lg px-3 py-2.5 text-sm text-paper placeholder:text-paper/40 transition-colors focus:outline-none focus:border-lime/70 hover:border-paper/25";
 const LABEL =
   "text-[11px] font-mono uppercase tracking-wider text-paper/60";
 
@@ -44,6 +44,7 @@ const DEFAULTS: UserInput = {
   caffeineCupsPerDay: 2,
   alcoholDrinksPerWeek: 3,
   symptomToFix: "fatigue",
+  inflammation: "unknown",
 };
 
 function normalizeIntegerDisplay(raw: string) {
@@ -267,7 +268,7 @@ export function AssessmentForm({
       <form
         onSubmit={submit}
         aria-label="Apex Protocol assessment form"
-        className="w-full bg-ink border border-paper/15 rounded-lg p-5 sm:p-6 flex flex-col gap-4"
+        className="w-full bg-surface border border-paper/10 rounded-2xl p-5 sm:p-6 flex flex-col gap-4 shadow-card"
       >
       <div className="flex items-center justify-between">
         <span className={LABEL}>Quick start</span>
@@ -435,11 +436,20 @@ export function AssessmentForm({
           <option value="energy">Energy</option>
           <option value="muscle">Muscle</option>
           <option value="fat-loss">Fat loss</option>
+          <option value="gain-weight">Gain weight</option>
           <option value="longevity">Longevity</option>
           <option value="focus">Focus</option>
         </select>
       </Field>
 
+      <details className="group">
+        <summary className="cursor-pointer list-none flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-paper/60 hover:text-paper">
+          <span>Fine-tune (optional)</span>
+          <span className="h-px flex-1 bg-paper/15" aria-hidden="true" />
+          <span className="text-paper/40 group-open:hidden">▼ Show</span>
+          <span className="text-paper/40 hidden group-open:inline">▲ Hide</span>
+        </summary>
+        <div className="flex flex-col gap-4 mt-4">
       <div className="grid grid-cols-2 gap-3">
         <Field label="Activity" id="activityLevel">
           <select
@@ -545,6 +555,27 @@ export function AssessmentForm({
         </select>
       </Field>
 
+      <Field label="Inflammation (optional)" id="inflammation">
+        <select
+          id="inflammation"
+          className={FIELD}
+          value={input.inflammation ?? "unknown"}
+          onChange={(e) =>
+            update(
+              "inflammation",
+              e.target.value as UserInput["inflammation"],
+            )
+          }
+        >
+          <option value="unknown">Not sure</option>
+          <option value="low">Low / none</option>
+          <option value="elevated">Elevated (sore, puffy, slow recovery)</option>
+          <option value="high">High (known high CRP / flare)</option>
+        </select>
+      </Field>
+        </div>
+      </details>
+
       {error ? (
         <p
           role="alert"
@@ -558,7 +589,7 @@ export function AssessmentForm({
         type="submit"
         aria-label="Build my evidence-backed protocol"
         disabled={loading || validationDisabled}
-        className="mt-1 inline-flex items-center justify-center gap-2 bg-lime text-ink font-semibold uppercase tracking-wider text-sm rounded-md px-4 py-3 hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed"
+        className="mt-1 inline-flex items-center justify-center gap-2 bg-lime text-ink font-semibold uppercase tracking-wider text-sm rounded-xl px-4 py-3.5 transition hover:brightness-105 hover:shadow-glow disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:shadow-none"
       >
         {loading ? (
           <>

@@ -2,7 +2,13 @@
 
 ## ACTIVE
 
-- N=010 — Vault funding (Stripe Treasury or equivalent). Honor the N=009 disclosure that promised funding ships in N=010. Awaiting Commander.
+- N=021 — Mission logic: unify protein target + inflammation-aware protein + underweight → healthy weight gain (NO peptides). See NEXT_021.md. (Commander redirect 2026-06-22.)
+- N=022 — Minimal-input mode: reduce the form to the fewest questions that still yield useful guidance.
+- N=023 — Real data research: replace hand-typed `studyCount` with real PubMed counts via a build-time fetch script (NIH ODS / DSLD references).
+
+## DEFERRED (Commander redirect 2026-06-22)
+
+- N=010-style Vault funding (Stripe Treasury). Deferred behind the redesign + mission cycles. The N=009 "Vault funding ships in N=010" disclosure stays in place and honest until funding actually ships — no ethical/chargeback debt.
 
 ## DONE
 
@@ -19,7 +25,7 @@
 ## STANDING REMINDERS
 
 - **DEV MODE on `isProUser`** — the verbatim comment block in `lib/subscription.ts` flags that Pro tier gating is currently disabled for testing. Re-enable before commercial launch by reverting the function body to `return tier === "pro";` and removing the comment block.
-- **Vault funding disclosure** — `VaultDashboard` carries the literal `"Vault funding ships in N=010. Provider marketplace ships in N=011."` This disclosure is mandatory until vault funding actually ships. Removing it before the funding flow is real is an ethical failure and a chargeback risk.
+- **Vault funding disclosure** — RESOLVED in N=024. The `VaultDashboard` no longer makes any vault FUNDING CLAIM (the "$2,400 balance / health score / kept by you" cards were removed when the top-of-page was re-pointed to the supplement mission). With no funding promise rendered, the mandatory disclosure is no longer applicable and was removed together with the claims — honest by construction. Do NOT reintroduce vault/insurance financial claims without restoring a disclosure AND a real funding flow.
 
 ## Project Spear cycles queued behind N=010
 
@@ -30,7 +36,7 @@
 
 ## STANDING JUDGE PRIMITIVES
 
-- **Visual baseline regression test (`tests/visual.spec.ts`)** is part of the standard Judge phase. Three N=003 computed-style assertions: hero `h1` font-size > 32px, `body.backgroundColor === rgb(10, 10, 10)`, primary CTA `backgroundColor === rgb(212, 255, 58)`. As of N=004, the same file also asserts the unit-toggle invariants: imperial-default mode (`#feet`, `#inches`, `#pounds` visible; FT/LB `aria-pressed="true"`) and metric-after-toggle mode (`#heightCm`, `#weightKg` visible; CM/KG `aria-pressed="true"`).
+- **Visual baseline regression test (`tests/visual.spec.ts`)** is part of the standard Judge phase. Three computed-style assertions: hero `h1` font-size > 32px, and the locked palette. **As of N=035 ("Daylight" light theme, Commander-authorized re-freeze) the locked colors are `body.backgroundColor === rgb(247, 249, 252)` and primary CTA `backgroundColor === rgb(37, 99, 235)`** (white canvas + vivid-blue CTA). Prior locks retired: N=003 → N=020 → N=026 dark → N=035 light (current). The same file also asserts the unit-toggle invariants: imperial-default mode (`#feet`, `#inches`, `#pounds` visible; FT/LB `aria-pressed="true"`) and metric-after-toggle mode (`#heightCm`, `#weightKg` visible; CM/KG `aria-pressed="true"`).
 - **Positioning tripwire** (added N=005): every Judge phase re-runs a rendered-HTML banned-pattern check against `streak`, `unlock`, `achievement`, `level up`, `limited time`, `people viewing`, `earn xp/points/rewards`, and any `\d+:\d{2}` countdown timer. The Watcher's source-grep mirrors this list (`earn xp`, etc.).
 - **Engine determinism**: `recommend(input)` must remain pure synchronous and `JSON.stringify`-identical across calls with the same input, including `variationSeed` and every `SupplementPick.confidence`.
 
@@ -43,3 +49,14 @@
 - Award-surface positioning packets (Webby, FastCo IxD, Communication Arts)
 
 These are queued for cycles beyond N=007.
+
+## COMMERCE FOLLOW-UPS (after N=029)
+
+- Live price + exact-SKU resolution via retailer APIs / affiliate feeds (needs egress). Set priceCents + lastVerifiedAt; "Best price" badge then activates.
+- Real, license-verified bottle photography (needs egress to verify/download + attribution).
+- Nav link to /shop + per-recommendation "where to buy" deep links from ResultCard.
+- Wire the existing Amazon affiliate plugin (lib/plugins/amazon) into BuyBox server-side for attributed Amazon links.
+
+## FUTURE VISION (logged, not scoped)
+
+- **THE WIRE** — a living, citation-backed evidence newsroom personalized to the compounds in a user's protocol, graded on the existing evidence tiers, able to recompute the stack when new evidence lands. Sources only (PubMed/Europe PMC, ClinicalTrials.gov, Cochrane, journal RSS); no human posts, no engagement metrics; every card one click from the primary source with funding/COI shown. Braids with Dream-State Dosing, The Negotiator, and self-trial publishing. Large multi-N initiative — needs egress + a Commander scope before any build.

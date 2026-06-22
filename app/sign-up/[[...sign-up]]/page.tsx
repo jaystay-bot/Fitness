@@ -10,11 +10,11 @@ export default function SignUpPage() {
       <SignUp
         appearance={{
           variables: {
-            colorPrimary: "#D4FF3A",
-            colorText: "#FAFAF7",
-            colorBackground: "#0A0A0A",
-            colorInputBackground: "#0A0A0A",
-            colorInputText: "#FAFAF7",
+            colorPrimary: "#2563EB",
+            colorText: "#0F1B2D",
+            colorBackground: "#FFFFFF",
+            colorInputBackground: "#FFFFFF",
+            colorInputText: "#0F1B2D",
           },
         }}
       />

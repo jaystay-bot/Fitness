@@ -7,7 +7,13 @@ export type PrimaryGoal =
   | "muscle"
   | "fat-loss"
   | "longevity"
-  | "focus";
+  | "focus"
+  | "gain-weight";
+
+// Self-reported (or lab-informed) systemic inflammation level. Drives a higher
+// protein target and anti-inflammatory food/supplement emphasis. "unknown" is
+// the safe default and behaves like the pre-N=022 path.
+export type InflammationLevel = "unknown" | "low" | "elevated" | "high";
 
 export type DietPattern =
   | "omnivore"
@@ -46,6 +52,9 @@ export interface UserInput {
   caffeineCupsPerDay: number;
   alcoholDrinksPerWeek: number;
   symptomToFix: Symptom;
+  // Optional so every existing UserInput construction site stays valid. When
+  // absent the engine treats it as "unknown".
+  inflammation?: InflammationLevel;
 }
 
 export interface SupplementPick {

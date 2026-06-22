@@ -8,13 +8,44 @@
 
 html,
 body {
-  background-color: #0a0a0a;
-  color: #fafaf7;
+  background-color: #f7f9fc;
+  color: #0f1b2d;
 }
 
 body {
   font-feature-settings: "ss01", "cv11";
   overflow-x: clip;
+  /* Daylight canvas — a clean white with soft, vibrant blue / emerald / amber
+     washes so the page feels colorful and alive without going dark. */
+  background-image:
+    radial-gradient(
+      120% 85% at 50% -12%,
+      rgba(37, 99, 235, 0.1) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      85% 65% at 96% 2%,
+      rgba(245, 196, 56, 0.12) 0%,
+      transparent 52%
+    ),
+    radial-gradient(
+      80% 70% at 2% 16%,
+      rgba(16, 185, 129, 0.1) 0%,
+      transparent 55%
+    );
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }
 
 input,
@@ -25,9 +56,16 @@ button {
   color: inherit;
 }
 
+/* Consistent, premium focus ring instead of the default browser outline. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #f7f9fc, 0 0 0 4px rgba(37, 99, 235, 0.55);
+  border-radius: 6px;
+}
+
 ::selection {
-  background: #d4ff3a;
-  color: #0a0a0a;
+  background: #2563eb;
+  color: #ffffff;
 }
 
 .pb-safe {

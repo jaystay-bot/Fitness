@@ -12,17 +12,17 @@ import { ASSESSMENT_FORM_ANCHOR } from "@/lib/spearCopy";
 
 export const metadata: Metadata = {
   openGraph: {
-    title: "Apex Protocol — un-insurance, built around your protocol",
+    title: "Apex Protocol — your supplement stack, written by the science",
     description:
-      "Insurance hopes you get sick and do not use it. We hope you stay healthy and keep your money.",
+      "Answer a few quick questions and get an evidence-tiered supplement and nutrition plan: protein and water targets, the picks worth taking, and what to skip.",
     images: [{ url: "/api/og", width: 1200, height: 630 }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Apex Protocol — Project Spear",
+    title: "Apex Protocol — your supplement stack, written by the science",
     description:
-      "Insurance hopes you get sick and do not use it. We hope you stay healthy and keep your money.",
+      "Evidence-tiered supplement and nutrition guidance from the least information possible. No email gate.",
     images: ["/api/og"],
   },
 };

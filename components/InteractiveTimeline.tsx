@@ -25,13 +25,13 @@ const PLAY_DURATION_MS = 30_000;
 const STEP_MS = PLAY_DURATION_MS / (HORIZON - 1);
 
 const LINE_COLORS = [
-  "#D4FF3A",
-  "#FAFAF7",
-  "#FF6B35",
-  "rgba(250, 250, 247, 0.55)",
-  "rgba(212, 255, 58, 0.6)",
-  "rgba(255, 107, 53, 0.6)",
-  "rgba(250, 250, 247, 0.3)",
+  "#2563EB", // blue
+  "#7C3AED", // violet
+  "#F59E0B", // amber
+  "#047857", // emerald
+  "#E11D48", // rose
+  "#0EA5E9", // sky
+  "#9333EA", // purple
 ] as const;
 
 const METRICS = ["energy", "focus", "sleep", "strength"] as const;
@@ -250,7 +250,7 @@ export function InteractiveTimeline({ picks }: { picks: SupplementPick[] }) {
           className="w-full"
         >
           {/* Horizontal gridlines. */}
-          <g stroke="#FAFAF7" strokeOpacity="0.08" strokeWidth="1">
+          <g stroke="#0F1B2D" strokeOpacity="0.08" strokeWidth="1">
             {[0, 25, 50, 75, 100].map((v, i) => {
               const y = PAD.top + (1 - v / 100) * (VIEW_H - PAD.top - PAD.bottom);
               return (
@@ -268,7 +268,7 @@ export function InteractiveTimeline({ picks }: { picks: SupplementPick[] }) {
           <g
             fontFamily="ui-monospace, monospace"
             fontSize="9"
-            fill="#FAFAF7"
+            fill="#0F1B2D"
             fillOpacity="0.5"
           >
             {[
@@ -288,7 +288,7 @@ export function InteractiveTimeline({ picks }: { picks: SupplementPick[] }) {
           <g
             fontFamily="ui-monospace, monospace"
             fontSize="9"
-            fill="#FAFAF7"
+            fill="#0F1B2D"
             fillOpacity="0.5"
           >
             {[1, 7, 14, 21, 30].map((d) => {
@@ -304,7 +304,7 @@ export function InteractiveTimeline({ picks }: { picks: SupplementPick[] }) {
           <path
             d={aggregatePath(aggregate)}
             fill="none"
-            stroke="#FAFAF7"
+            stroke="#0F1B2D"
             strokeOpacity="0.25"
             strokeWidth="1"
             strokeDasharray="2 4"
@@ -329,7 +329,7 @@ export function InteractiveTimeline({ picks }: { picks: SupplementPick[] }) {
             x2={PAD.left + (day - 1) * xStep}
             y1={PAD.top}
             y2={VIEW_H - PAD.bottom}
-            stroke="#D4FF3A"
+            stroke="#2563EB"
             strokeOpacity="0.7"
             strokeWidth="1.5"
           />
@@ -349,8 +349,8 @@ export function InteractiveTimeline({ picks }: { picks: SupplementPick[] }) {
                   (VIEW_H - PAD.top - PAD.bottom)
               }
               r={4}
-              fill="#D4FF3A"
-              stroke="#0A0A0A"
+              fill="#2563EB"
+              stroke="#FFFFFF"
               strokeWidth="1.5"
             />
           ) : null}

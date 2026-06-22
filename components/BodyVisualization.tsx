@@ -81,10 +81,10 @@ export function BodyVisualization({
         >
           {/* Hand-coded silhouette: head, neck, torso, arms, legs. */}
           <g
-            stroke="#FAFAF7"
+            stroke="#0F1B2D"
             strokeOpacity="0.5"
             strokeWidth="1.5"
-            fill="#FAFAF7"
+            fill="#0F1B2D"
             fillOpacity="0.06"
           >
             {/* Head */}
@@ -99,7 +99,7 @@ export function BodyVisualization({
           </g>
           {/* Subtle line dividers between major regions. */}
           <g
-            stroke="#FAFAF7"
+            stroke="#0F1B2D"
             strokeOpacity="0.15"
             strokeDasharray="3 4"
             fill="none"
@@ -118,7 +118,7 @@ export function BodyVisualization({
                   cy={pos.cy}
                   r="4"
                   fill={
-                    list.some((t) => t.warning) ? "#FF6B35" : "#D4FF3A"
+                    list.some((t) => t.warning) ? "#E11D48" : "#2563EB"
                   }
                 />
                 {list.map((t, i) => (
@@ -128,7 +128,7 @@ export function BodyVisualization({
                     y={pos.cy + i * 14 - (list.length - 1) * 7}
                     fontFamily="ui-monospace, monospace"
                     fontSize="11"
-                    fill={t.warning ? "#FF6B35" : "#FAFAF7"}
+                    fill={t.warning ? "#E11D48" : "#0F1B2D"}
                     aria-label={`${t.name} targets ${system}`}
                   >
                     {t.name}

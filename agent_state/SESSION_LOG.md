@@ -220,3 +220,183 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Operator:** COMPLETE — 9 atomic source commits + state commits. lib/plugins/oura/tokenAuth → normalizer → plugin index → components/OuraConnect → app/api/plugins/oura/route → registry seed → AssessmentForm mount + 4th tagged-input slot → types extension → A1_OUTPUT_019 manifest. `npx tsc --noEmit` clean. 26/26 smoke tests PASS including three-way wearable recency tie-break (Oura newest wins; reordered with Whoop newest, Whoop wins).
 - **Watcher:** 13/13 drift checks clean against N=018 head (`fa8631b`). package.json + lock diff EMPTY. Engine + signalLayers + signalPriority + pluginContract diffs EMPTY. ALL N=014–N=018 plugin code (Apple Health parser/normalizer/index, Amazon affiliateUrl/index, telehealth deepLink/index, lab-placeholder manualEntry/index, Whoop tokenAuth/normalizer/index) and their components (AppleHealthUpload, FulfillButton, SpeakToDoctorButton, LabValuesEntry, WhoopConnect) diffs EMPTY. All 24 other frozen `lib/*` files diff EMPTY. API routes: only new `/api/plugins/oura` diffs (+97 lines). Components: only AssessmentForm (+41 lines, mount + concatenate) and new OuraConnect (+267 lines) diff. App pages + middleware + 7 config files + .gitignore + .env.example + scripts/verify-audit-trail.sh diffs EMPTY. AUDIT_TRAIL_PROTOCOL.md unchanged. Banned-string scan: 0 hits in new code. OuraConnect contains 7 references to "tagged.length > 0" and "AlertCircle" (honest connection state pattern verified). Prior 5 migrations diff EMPTY. Byte-identical engine regression: `recommend(FIXTURE)` JSON identical between this branch and N=018 head. `bash scripts/verify-audit-trail.sh` → exit 0. `npm run build` clean.
 - **Judge:** 14/14 PASS. T1 deps unchanged (0-byte diff vs N=018 head). T2 build clean. T3 verify-audit-trail.sh exits 0. T4 validateOuraToken('')/'malformed'/'   ' all return invalid via live API. T5 fetchOuraMetrics returns null on network failure (sandbox unreachable). T6 normalizeOuraMetrics(50,55) emits 2 wearable-layer entries (symptomToFix=poor-sleep + symptomToFix=fatigue) at confidence 0.85. T7 getActivePlugins().length=6 with [apple-health, amazon, telehealth, lab-placeholder, whoop, oura] in order. T8 DOM offsets verify card order: apple (14359) < lab (16310) < whoop (20502) < oura (22816). T9 POST oura with JWT-shaped token returns 200 with network-error path (sandbox). T10 POST oura with empty token returns 200 with helpful "Invalid token" guidance + AlertCircle invalid-token state. T11 distinct empty-data state encoded in OuraConnect — distinct from invalid-token state, never falsely Connected. T12 three-way wearable recency tie-break verified TWICE: Oura newest → poor-sleep wins; reordered with Whoop newest → fatigue wins. T13 /api/recommend without taggedInputs byte-identical to N=018 head (2719 bytes). T14 N=018 regression intact: 5 fulfill buttons, 0 speak-to-doctor on routine, all N=014–N=018 plugin code byte-identical. Mobile screenshots saved: /tmp/n019_oura_idle_390.png (idle CONNECT OURA card with Circle icon below CONNECT WHOOP), /tmp/n019_oura_invalid_390.png (orange INVALID TOKEN · OURA with AlertCircle + TRY ANOTHER TOKEN reset, mirrors WhoopConnect verbatim), /tmp/n019_four_cards_390.png (full-page stack of all four plugin cards). NEXT_020.md proposes vault funding cycle — converts the now-9-cycles-stale "Vault funding ships in N=010" disclosure from N=009 into actual Stripe Treasury integration, compounding with subscription + Amazon affiliate revenue.
+
+## N=020 — Premium visual redesign (Commander redirect)
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** Redirect — product "looks like AI slop," "color scheme way off." Make it premium. Deferred prior NEXT_020 (vault funding). Also installed the 8-Hat protocol into the repo (8HAT_SYSTEM.md + AGENTS.md).
+- **Drift caught:** Operator had edited 7 files pre-lock (redesign + half-done mission logic). Reverted lib/types.ts + lib/engine.ts to keep N=020 atomic; tree restored to compilable. Mission logic re-queued as N=021.
+- **Architect:** S1_LOCKED_020 — refine 4 theme tokens + add surface/elevate/shadows; global-CSS depth; surface fills on cards/inputs/button; update locked visual test. lib/** and app/api/** forbidden.
+- **Sentinel:** GATE OPEN after revert made scope atomic + compilable.
+- **Operator:** A1_OUTPUT_020 — palette + surface refactor via tokens; cards no longer flat. No logic/engine/route/dep change.
+- **Watcher:** PASS — no forbidden files touched; engine + routes byte-identical; visual locked-color primitive changed intentionally + test updated in lockstep (Commander-authorized).
+- **Judge:** TRUTH_RESULT_020 — `npx tsc --noEmit && npm run build` exit 0. Screenshot proof deferred (no chromium binary this cycle); build+tsc is the binding verify.
+- **Status:** N=020 PASS. NEXT_021 (mission logic) written.
+- N=020 | PASS | <$1.00 | tsc+build exit 0 | premium palette + surface depth; 8-Hat protocol installed
+
+## N=021 — Mobile overlap fix (ParallaxLedger)
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_021 — gate parallax to lg+ / no-reduced-motion; clear transform when off; re-evaluate on MQ change. Only ParallaxLedger.tsx allowed.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_021 — parallax no longer runs on stacked mobile layouts; ledger renders in normal flow. Desktop unchanged.
+- **Watcher:** PASS — only components/ParallaxLedger.tsx changed.
+- **Judge:** TRUTH_RESULT_021 — tsc+build exit 0; 390px screenshot confirms hero bullets readable, ledger stacked cleanly (overlap gone).
+- N=021 | PASS | <$1.00 | tsc+build exit 0 + screenshot | mobile ledger overlap fixed
+
+## N=022 — Mission logic (inflammation + weight gain + unified protein)
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_022 — unify protein target; inflammation-aware protein + foods; underweight/gain-weight support (no peptides). Allowed: types, engine, nutrition, verdict, slug, recommend route, AssessmentForm (+ VoiceInput type-forced).
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_022 — proteinTargetGrams() single source of truth; gain-weight goal + BMI<18.5 auto-detect; inflammation omega-3 + food override; no-peptides + inflammation warnings; optional inflammation threaded through slug + route + form.
+- **Watcher:** verify-audit-trail.sh result recorded below. No forbidden files; VoiceInput was a type-forced label add, added to the lock before editing.
+- **Judge:** TRUTH_RESULT_022 — tsc+build exit 0. Live double-POST determinism IDENTICAL (legacy + new input). Protein unified 148g across card/target/plan (was 131 vs 148). Underweight BMI 15.7 → "built to add healthy weight", 106g protein (2.2/kg), protein+creatine+omega-3 stack, anti-inflammatory foods first, food-first/no-peptides warnings. Peptide substring only in the no-peptides warning.
+- **Watcher audit:** `verify-audit-trail [N=022]: OK — CURRENT, S1_LOCKED, A1_OUTPUT all committed`
+- N=022 | PASS | <$1.00 | tsc+build+live determinism | mission logic shipped
+
+## N=024 — Reposition copy from insurance/vault to the supplement mission
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** The insurance/vault top-of-page was "misconstrued / saying the wrong thing." Re-point to the actual supplement + nutrition mission.
+- **Architect:** S1_LOCKED_024 — rewrite spearCopy + SpearHero + VaultDashboard + UninsuranceThesis + page metadata. Content only; remove fabricated vault financials AND the now-moot disclosure together (honesty-critical).
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_024 — mission copy cascaded via spearCopy; SpearHero aside → "what you get"; VaultDashboard → protocol-output preview; metadata re-pointed.
+- **Watcher:** verify-audit-trail OK (below). No forbidden files; banned-pattern scan clean; no rendered insurance/vault text remains.
+- **Judge:** TRUTH_RESULT_024 — tsc+build exit 0; desktop+mobile screenshots confirm the new mission-focused top. Engine/theme untouched.
+- **Watcher audit:** `verify-audit-trail [N=024]: OK`
+- N=024 | PASS | <$1.00 | tsc+build+screenshots | insurance/vault copy re-pointed to mission
+
+## N=025 — Minimal-input mode
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_025 — collapse non-essential fields into an optional "Fine-tune" <details>; keep essentials + unit fields visible (visual tripwire). Only AssessmentForm.tsx + Hero.tsx.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_025 — activity/sleep/diet/coffee/alcohol/symptom/inflammation collapsed; defaults still submit. Hero copy updated to "a few quick questions".
+- **Watcher:** verify-audit-trail OK (below). Only the two allowed files changed.
+- **Judge:** TRUTH_RESULT_025 — tsc+build exit 0; live 390px assertion: optional field hidden, core unit + goal fields visible.
+- **Watcher audit:** `verify-audit-trail [N=025]: OK`
+- N=025 | PASS | <$1.00 | tsc+build+visibility assertion | minimal-input mode shipped
+
+## N=026 — Elite Apothecary colorway + premium canvas
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** Full creative runway — rebrand to an elite premium wellness brand; change colorways, background, motion. No basic emojis. Least friction/questions.
+- **Architect:** S1_LOCKED_026 — redefine theme tokens (mint primary, gold accent, evergreen canvas, bone text) + aurora/grain global + motion keyframes; re-freeze visual lock. tailwind/globals/layout/visual.spec only.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_026 — palette cascaded via tokens; layered evergreen aurora + SVG grain; pure-CSS motion keyframes; Clerk vars updated.
+- **Watcher:** verify-audit-trail OK (below). No engine/route/component change.
+- **Judge:** TRUTH_RESULT_026 — tsc+build 0; live body bg rgb(11,14,12); desktop screenshot confirms elite canvas.
+- **Watcher audit:** `verify-audit-trail [N=026]: OK`
+- N=026 | PASS | <$1.00 | tsc+build+screenshot | elite colorway shipped
+
+## N=027 — Kinetic hero (elite first impression)
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_027 — rewrite SpearHero into a cinematic hero (aurora + botanical SVG, entrance motion, gold-italic headline, mint CTA, trust line, glass panel). SpearHero.tsx only; lucide icons, no emoji, no dep.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_027 — aurora/float blooms + concentric motif; staggered fade-up; "Build my protocol" CTA → #assessment-form; trust line; floating glass panel.
+- **Watcher:** verify-audit-trail OK (below). Only SpearHero.tsx changed; tokens/engine untouched.
+- **Judge:** TRUTH_RESULT_027 — tsc+build 0; emoji guard clean; desktop+mobile screenshots confirm an elite hero.
+- **Watcher audit:** `verify-audit-trail [N=027]: OK`
+- N=027 | PASS | <$1.00 | tsc+build+screenshots | kinetic elite hero shipped
+
+## N=028 — Commerce data foundation (vitamin buy-box)
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** Build a premium vitamin buy-box + licensed-imagery system (spec N1-N7). No fake prices/claims/checkout; outbound retailer links only; placeholder over unsafe image; least questions.
+- **Architect:** S1_LOCKED_028 — pure data/logic layer (types, retailers, products, images, compliance). 5 new lib/commerce files only.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_028 — 4 typed models, retailer registry + deterministic buildOffers/rankOffers, 5 seed vitamins (no brand/price), image metadata + placeholder, compliance disclaimers + blocked-claim guard (build-time enforced).
+- **Watcher:** verify-audit-trail OK (below). All-new files; no existing code/dep touched.
+- **Judge:** TRUTH_RESULT_028 — tsc+build exit 0; compliance guard did not throw (seed copy clean); zero fabricated prices.
+- **Watcher audit:** `verify-audit-trail [N=028]: OK`
+- N=028 | PASS | <$1.00 | tsc+build exit 0 | commerce data foundation
+
+## N=029 — Premium buy-box UI + /shop demo
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_029 — buy-box components + /shop page consuming N=028 data. New files only.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_029 — BottleVisual (illustration), BuyBox (CTA + compare <details> + best-price + disclaimers), ProductCard, AttributionFooter, /shop page.
+- **Watcher:** verify-audit-trail OK (below). New files only; no existing code/dep touched.
+- **Judge:** TRUTH_RESULT_029 — tsc+build 0; /shop static; screenshots confirm cards, compare drawer (6 retailers), "Check price", outbound links, disclaimers. No fake price/claim/checkout.
+- **Watcher audit:** `verify-audit-trail [N=029]: OK`
+- N=029 | PASS | <$1.00 | tsc+build+screenshots | buy-box UI + /shop shipped
+
+## N=030 — Commerce expansion loop + docs (spec N7)
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_030 — document the future-agent loop; update LESSONS/QUEUE; log THE WIRE. Docs only.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_030 — lib/commerce/EXPANSION.md (recipes + default decisions + ask-Jay triggers); LESSONS + QUEUE updated.
+- **Watcher:** verify-audit-trail OK (below). Docs only; no code/dep change.
+- **Judge:** TRUTH_RESULT_030 — tsc+build 0; buy-box spec N1-N7 complete.
+- **Watcher audit:** `verify-audit-trail [N=030]: OK`
+- N=030 | PASS | <$1.00 | tsc+build exit 0 | commerce expansion loop; spec N1-N7 complete
+
+## N=031 — Wire recommendations to the buy boxes
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_031 — "Where to buy" per matched supplement → /shop deep link; footer /shop link. match.ts + ResultCard + Footer + ProductCard.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_031 — shopHrefForSupplement matcher; ResultCard link; Footer "Compare prices"; ProductCard id anchor.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_031 — tsc+build 0; live result rendered 4 correct deep links; unmatched picks show Fulfill only.
+- **Watcher audit:** `verify-audit-trail [N=031]: OK`
+- N=031 | PASS | <$1.00 | tsc+build+live | recommendations wired to buy boxes
+
+## N=032 — Top nav + landing motion language
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_032 — /shop nav + fade-up/hover on SymptomEntry + VaultDashboard cards.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_032 — SpearHero slim nav ("Compare prices" → /shop); staggered fade-up + hover lift on front-door + preview cards.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_032 — tsc+build 0; screenshots confirm nav + motion.
+- **Watcher audit:** `verify-audit-trail [N=032]: OK`
+- N=032 | PASS | <$1.00 | tsc+build+screenshots | top nav + landing motion
+
+## N=033 — Fix 403 auth-gating (middleware public routes)
+
+- **Date:** 2026-06-22
+- **Trigger:** Commander hit a 403 running results on the Vercel preview.
+- **Architect:** S1_LOCKED_033 — add /shop, /api/fulfillment/click, /api/plugins/(.*) to isPublicRoute. middleware.ts only.
+- **Operator:** A1_OUTPUT_033 — added the three public routes.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_033 — tsc+build 0. Note: a Vercel Deployment Protection 403 is a platform setting, flagged to Commander separately.
+- **Watcher audit:** `verify-audit-trail [N=033]: OK`
+- N=033 | PASS | <$1.00 | tsc+build 0 | middleware public routes fix
+
+## N=034 — Fix /api/subscription 500 (Clerk unconfigured)
+
+- **Date:** 2026-06-22
+- **Trigger:** Local verification screenshot run surfaced a 500 on GET /api/subscription.
+- **Architect:** S1_LOCKED_034 — guard auth() behind CLERK_ENABLED; return free when Clerk absent. subscription route only.
+- **Operator:** A1_OUTPUT_034 — early free-tier return when Clerk keys absent.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_034 — tsc+build 0; GET /api/subscription 200 {"tier":"free"} (was 500); full result run shows 0 5xx.
+- **Watcher audit:** `verify-audit-trail [N=034]: OK`
+- N=034 | PASS | <$1.00 | tsc+build + live 200 | subscription 500 fixed
+
+## N=035 — "Daylight" light vibrant theme
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** The dark green theme reads generic/"meathead"; wants light — whites, blues, vibrant green/yellow. Also fix overlap/config glitches.
+- **Architect:** S1_LOCKED_035 — flip tokens to light; rebuild canvas; fix hardcoded dark-only chart/viz colors; re-freeze visual lock.
+- **Operator:** A1_OUTPUT_035 — Daylight palette (white/blue/emerald/amber/rose); white canvas + vibrant washes; bottle illustration recolored; charts re-hued to 4-6 vibrant lines on white; Clerk widgets relit; all old neon hexes removed.
+- **Watcher:** verify-audit-trail OK (below). No engine/route/dep change.
+- **Judge:** TRUTH_RESULT_035 — tsc+build 0; screenshots confirm legible light theme across landing/result/shop/mobile; charts legible; no overlap found.
+- **Watcher audit:** `verify-audit-trail [N=035]: OK`
+- N=035 | PASS | <$1.00 | tsc+build+screenshots | Daylight light theme
+
+## N=036 — "The Wire" research feed (/research)
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** Build the research/studies evidence page as a social-feed-style stream you READ (not post) — charts, data, statistics on supplements, linking to studies.
+- **Architect:** S1_LOCKED_036 — read-only feed from real engine evidence data; honesty rules (no fabricated stats; compliance guard; PubMed links).
+- **Operator:** A1_OUTPUT_036 — feed data + Sparkline meters + ResearchCard + StatStrip (density chart) + client filter feed + /research page + nav links.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_036 — tsc+build 0; compliance guard clean; screenshots confirm feed + chart + filters + PubMed links; mobile clean. No fabricated statistics.
+- **Watcher audit:** `verify-audit-trail [N=036]: OK`
+- N=036 | PASS | <$1.00 | tsc+build+screenshots | The Wire research feed shipped

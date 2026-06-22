@@ -4,23 +4,41 @@ import { useEffect, useRef, useState } from "react";
 
 const SPEED = 0.6;
 
-function prefersReducedMotion(): boolean {
-  if (typeof window === "undefined" || !window.matchMedia) return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
+// Parallax only runs on large screens, where the ledger lives in the sticky
+// side column. On stacked mobile/tablet layouts the vertical transform shifts
+// the ledger over the hero copy and the text overlaps — so below this width
+// the component renders in normal flow with no transform.
+const PARALLAX_QUERY = "(min-width: 1024px)";
 
 export function ParallaxLedger({ children }: { children: React.ReactNode }) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const innerRef = useRef<HTMLDivElement | null>(null);
-  const [reduced, setReduced] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+
+  // Decide whether parallax should run, and keep it correct across resizes
+  // and reduced-motion changes.
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const sizeMql = window.matchMedia(PARALLAX_QUERY);
+    const motionMql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const evaluate = () => setEnabled(sizeMql.matches && !motionMql.matches);
+    evaluate();
+    sizeMql.addEventListener("change", evaluate);
+    motionMql.addEventListener("change", evaluate);
+    return () => {
+      sizeMql.removeEventListener("change", evaluate);
+      motionMql.removeEventListener("change", evaluate);
+    };
+  }, []);
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
-      setReduced(true);
+    const inner = innerRef.current;
+    if (!enabled) {
+      // Clear any leftover transform when parallax is off (e.g. resized down).
+      if (inner) inner.style.transform = "";
       return;
     }
     const wrap = wrapRef.current;
-    const inner = innerRef.current;
     if (!wrap || !inner) return;
 
     let frame = 0;
@@ -65,11 +83,11 @@ export function ParallaxLedger({ children }: { children: React.ReactNode }) {
       if (frame) window.cancelAnimationFrame(frame);
       inner.style.transform = "";
     };
-  }, []);
+  }, [enabled]);
 
   return (
     <div ref={wrapRef} className="will-change-transform">
-      <div ref={innerRef} style={reduced ? undefined : { transform: "translate3d(0,0,0)" }}>
+      <div ref={innerRef} style={enabled ? { transform: "translate3d(0,0,0)" } : undefined}>
         {children}
       </div>
     </div>

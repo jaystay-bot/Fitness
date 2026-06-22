@@ -16,10 +16,10 @@ import { projectTimeline, type TimelinePoint } from "@/lib/timeline";
 import type { SupplementPick } from "@/lib/types";
 
 const METRIC_COLOR = {
-  energy: "#D4FF3A",  // lime
-  focus: "#FAFAF7",   // paper
-  sleep: "#FF6B35",   // clinical orange
-  strength: "#FAFAF7", // paper (different stroke style below)
+  energy: "#2563EB",   // blue
+  focus: "#7C3AED",    // violet
+  sleep: "#F59E0B",    // amber
+  strength: "#047857", // emerald (dashed stroke below)
 } as const;
 
 export function TimelineProjection({ picks }: { picks: SupplementPick[] }) {
@@ -54,34 +54,34 @@ export function TimelineProjection({ picks }: { picks: SupplementPick[] }) {
             }}
             onMouseLeave={() => setActiveDay(null)}
           >
-            <CartesianGrid strokeDasharray="2 4" stroke="#FAFAF7" strokeOpacity={0.1} />
+            <CartesianGrid strokeDasharray="2 4" stroke="#0F1B2D" strokeOpacity={0.1} />
             <XAxis
               dataKey="day"
-              stroke="#FAFAF7"
+              stroke="#0F1B2D"
               strokeOpacity={0.4}
-              tick={{ fill: "#FAFAF7", fillOpacity: 0.6, fontSize: 11 }}
+              tick={{ fill: "#0F1B2D", fillOpacity: 0.6, fontSize: 11 }}
               tickLine={false}
             />
             <YAxis
               domain={[0, 100]}
-              stroke="#FAFAF7"
+              stroke="#0F1B2D"
               strokeOpacity={0.4}
-              tick={{ fill: "#FAFAF7", fillOpacity: 0.6, fontSize: 11 }}
+              tick={{ fill: "#0F1B2D", fillOpacity: 0.6, fontSize: 11 }}
               tickLine={false}
               width={28}
             />
             <Tooltip
               contentStyle={{
-                background: "#0A0A0A",
-                border: "1px solid #FAFAF733",
+                background: "#FFFFFF",
+                border: "1px solid #0F1B2D33",
                 borderRadius: 6,
-                color: "#FAFAF7",
+                color: "#0F1B2D",
                 fontSize: 12,
               }}
-              labelStyle={{ color: "#D4FF3A" }}
+              labelStyle={{ color: "#2563EB" }}
             />
             <Legend
-              wrapperStyle={{ color: "#FAFAF7", fontSize: 11, paddingTop: 4 }}
+              wrapperStyle={{ color: "#0F1B2D", fontSize: 11, paddingTop: 4 }}
             />
             <Line
               type="monotone"

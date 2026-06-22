@@ -6,6 +6,7 @@ const GOAL_PHRASE: Record<UserInput["primaryGoal"], string> = {
   energy: "aimed at all-day energy",
   longevity: "tilted toward long-term health",
   focus: "wired for focus",
+  "gain-weight": "built to add healthy weight",
 };
 
 const DIET_TAG: Record<UserInput["dietPattern"], string> = {

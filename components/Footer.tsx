@@ -4,9 +4,16 @@ export function Footer() {
       <div className="max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 py-10 flex flex-col gap-4">
         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
           <span className="font-serif text-xl tracking-tight">Apex Protocol</span>
-          <span className="font-mono text-[11px] uppercase tracking-wider text-paper/50">
-            Educational use only · Not medical advice
-          </span>
+          <nav className="flex items-center gap-4 font-mono text-[11px] uppercase tracking-wider text-paper/50">
+            <a href="/research" className="transition-colors hover:text-lime">
+              The Wire
+            </a>
+            <a href="/shop" className="transition-colors hover:text-lime">
+              Compare prices
+            </a>
+            <span aria-hidden>·</span>
+            <span>Not medical advice</span>
+          </nav>
         </div>
         <p className="text-sm text-paper/60 max-w-3xl leading-relaxed">
           Apex Protocol provides educational information based on published

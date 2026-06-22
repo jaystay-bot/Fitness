@@ -8,7 +8,16 @@ import type { SubscriptionTier } from "@/lib/types";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// When Clerk is not configured, clerkMiddleware() is a passthrough and calling
+// auth() throws. Degrade gracefully to the free tier so the result page (which
+// fetches this on mount) never sees a 500 on non-commercial / local deploys.
+const CLERK_ENABLED = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
+
 export async function GET() {
+  if (!CLERK_ENABLED) {
+    return NextResponse.json({ tier: "free" as SubscriptionTier });
+  }
+
   const { userId } = auth();
   if (!userId) {
     return NextResponse.json({ tier: null }, { status: 401 });
