@@ -1,6 +1,8 @@
-import { ExternalLink, FileText, Star } from "lucide-react";
+import { BarChart3, ExternalLink, FileText, Star } from "lucide-react";
 
 import type { ResearchItem } from "@/lib/research/feed";
+import { modelForCompound, STUDY_BREAKDOWNS } from "@/lib/research/studies";
+import { StudyChart } from "./StudyChart";
 import { TierMeter, VolumeBar } from "./Sparkline";
 
 const TIER_STYLE: Record<ResearchItem["tier"], string> = {
@@ -64,6 +66,39 @@ export function ResearchCard({
           <VolumeBar value={item.studyCount} max={max} />
         </dd>
       </dl>
+
+      {STUDY_BREAKDOWNS[item.id] ? (
+        <details className="group rounded-xl border border-paper/10 bg-ink/40">
+          <summary className="cursor-pointer list-none flex items-center gap-2 px-3 py-2 font-mono text-[10px] uppercase tracking-wider text-paper/70 hover:text-paper">
+            <BarChart3 className="w-3.5 h-3.5" aria-hidden />
+            See the data
+            <span className="ml-auto text-paper/40 group-open:hidden">Show ▾</span>
+            <span className="ml-auto text-paper/40 hidden group-open:inline">Hide ▴</span>
+          </summary>
+          <div className="px-3 pb-3 pt-1 flex flex-col gap-3">
+            <StudyChart points={modelForCompound(item.name, item.tier)} />
+            <span className="font-mono text-[9px] uppercase tracking-wider text-paper/40 -mt-1">
+              Apex model · illustrative, not a study result
+            </span>
+            <dl className="grid grid-cols-[5.5rem_1fr] gap-x-3 gap-y-1.5 text-xs">
+              {([
+                ["Design", STUDY_BREAKDOWNS[item.id].design],
+                ["Who", STUDY_BREAKDOWNS[item.id].population],
+                ["Measured", STUDY_BREAKDOWNS[item.id].outcome],
+                ["Finding", STUDY_BREAKDOWNS[item.id].magnitude],
+              ] as const).map(([k, v]) => (
+                <div key={k} className="contents">
+                  <dt className="font-mono text-[10px] uppercase tracking-wider text-paper/45">{k}</dt>
+                  <dd className="text-paper/80 leading-snug">{v}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="text-xs text-paper/70 leading-snug italic">
+              {STUDY_BREAKDOWNS[item.id].takeaway}
+            </p>
+          </div>
+        </details>
+      ) : null}
 
       <a
         href={item.pubmedUrl}
