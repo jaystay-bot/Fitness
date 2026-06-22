@@ -254,3 +254,13 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_022 — tsc+build exit 0. Live double-POST determinism IDENTICAL (legacy + new input). Protein unified 148g across card/target/plan (was 131 vs 148). Underweight BMI 15.7 → "built to add healthy weight", 106g protein (2.2/kg), protein+creatine+omega-3 stack, anti-inflammatory foods first, food-first/no-peptides warnings. Peptide substring only in the no-peptides warning.
 - **Watcher audit:** `verify-audit-trail [N=022]: OK — CURRENT, S1_LOCKED, A1_OUTPUT all committed`
 - N=022 | PASS | <$1.00 | tsc+build+live determinism | mission logic shipped
+
+## N=024 — Reposition copy from insurance/vault to the supplement mission
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** The insurance/vault top-of-page was "misconstrued / saying the wrong thing." Re-point to the actual supplement + nutrition mission.
+- **Architect:** S1_LOCKED_024 — rewrite spearCopy + SpearHero + VaultDashboard + UninsuranceThesis + page metadata. Content only; remove fabricated vault financials AND the now-moot disclosure together (honesty-critical).
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_024 — mission copy cascaded via spearCopy; SpearHero aside → "what you get"; VaultDashboard → protocol-output preview; metadata re-pointed.
+- **Watcher:** verify-audit-trail OK (below). No forbidden files; banned-pattern scan clean; no rendered insurance/vault text remains.
+- **Judge:** TRUTH_RESULT_024 — tsc+build exit 0; desktop+mobile screenshots confirm the new mission-focused top. Engine/theme untouched.

@@ -25,7 +25,7 @@
 ## STANDING REMINDERS
 
 - **DEV MODE on `isProUser`** — the verbatim comment block in `lib/subscription.ts` flags that Pro tier gating is currently disabled for testing. Re-enable before commercial launch by reverting the function body to `return tier === "pro";` and removing the comment block.
-- **Vault funding disclosure** — `VaultDashboard` carries the literal `"Vault funding ships in N=010. Provider marketplace ships in N=011."` This disclosure is mandatory until vault funding actually ships. Removing it before the funding flow is real is an ethical failure and a chargeback risk.
+- **Vault funding disclosure** — RESOLVED in N=024. The `VaultDashboard` no longer makes any vault FUNDING CLAIM (the "$2,400 balance / health score / kept by you" cards were removed when the top-of-page was re-pointed to the supplement mission). With no funding promise rendered, the mandatory disclosure is no longer applicable and was removed together with the claims — honest by construction. Do NOT reintroduce vault/insurance financial claims without restoring a disclosure AND a real funding flow.
 
 ## Project Spear cycles queued behind N=010
 

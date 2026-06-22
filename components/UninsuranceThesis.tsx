@@ -3,7 +3,7 @@ import { SPEAR_COPY } from "@/lib/spearCopy";
 export function UninsuranceThesis() {
   return (
     <section
-      aria-label="Un-insurance thesis"
+      aria-label="What this is"
       className="px-5 sm:px-8 lg:px-12 py-10 max-w-6xl mx-auto w-full"
     >
       <ol
