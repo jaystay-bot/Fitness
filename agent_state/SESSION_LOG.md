@@ -312,3 +312,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_028 — tsc+build exit 0; compliance guard did not throw (seed copy clean); zero fabricated prices.
 - **Watcher audit:** `verify-audit-trail [N=028]: OK`
 - N=028 | PASS | <$1.00 | tsc+build exit 0 | commerce data foundation
+
+## N=029 — Premium buy-box UI + /shop demo
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_029 — buy-box components + /shop page consuming N=028 data. New files only.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_029 — BottleVisual (illustration), BuyBox (CTA + compare <details> + best-price + disclaimers), ProductCard, AttributionFooter, /shop page.
+- **Watcher:** verify-audit-trail OK (below). New files only; no existing code/dep touched.
+- **Judge:** TRUTH_RESULT_029 — tsc+build 0; /shop static; screenshots confirm cards, compare drawer (6 retailers), "Check price", outbound links, disclaimers. No fake price/claim/checkout.
