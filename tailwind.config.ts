@@ -9,28 +9,28 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // "Elite Apothecary" colorway (N=026). Deep evergreen-obsidian canvas,
-        // vital mint-emerald primary, champagne-gold luxe accent, warm bone text.
-        // Canvas — deep evergreen-tinted near-black; organic + premium.
-        ink: "#0B0E0C",
-        // Elevated card / panel surface.
-        surface: "#131815",
-        // Inputs, hovers, the next elevation step above surface.
-        elevate: "#1C231E",
-        // Primary text — warm bone/cream, softer than pure white.
-        paper: "#EFEDE4",
-        // Primary accent (token name kept so it cascades app-wide) — a vital
-        // mint-emerald that reads "healthy / active", not energy-drink neon.
-        lime: "#5FE3A1",
-        // Champagne gold — luxe secondary for numerals, dividers, fine accents.
-        gold: "#E4C896",
-        // Warning / clinical accent — warm coral.
-        clinical: "#EF8A63",
+        // "Daylight" colorway (N=035). Clean white canvas, vivid blue primary,
+        // emerald secondary, deep-navy text — light, vibrant, premium.
+        // Page background (light) — also serves as text-on-accent (light text on
+        // the vivid-blue CTA reads as white-on-blue).
+        ink: "#F7F9FC",
+        // Elevated card / panel surface — pure white.
+        surface: "#FFFFFF",
+        // Inputs, hovers, the next elevation step.
+        elevate: "#EEF2F8",
+        // Primary text — deep navy ink (not pure black; premium).
+        paper: "#0F1B2D",
+        // Primary accent (token kept so it cascades) — vivid blue.
+        lime: "#2563EB",
+        // Secondary accent — emerald green, readable on white.
+        gold: "#047857",
+        // Warning / clinical accent — rose red.
+        clinical: "#E11D48",
       },
       boxShadow: {
-        // Soft elevation for cards and the result surface.
-        card: "0 1px 0 0 rgba(255,255,255,0.04) inset, 0 10px 34px -14px rgba(0,0,0,0.7)",
-        glow: "0 0 0 1px rgba(95,227,161,0.3), 0 10px 34px -8px rgba(95,227,161,0.28)",
+        // Soft, light elevation for cards on a white canvas.
+        card: "0 1px 2px 0 rgba(15,27,45,0.04), 0 12px 32px -16px rgba(15,27,45,0.18)",
+        glow: "0 0 0 1px rgba(37,99,235,0.25), 0 12px 32px -10px rgba(37,99,235,0.30)",
       },
       keyframes: {
         "fade-up": {

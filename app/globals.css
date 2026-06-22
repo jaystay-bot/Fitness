@@ -8,52 +8,35 @@
 
 html,
 body {
-  background-color: #0b0e0c;
-  color: #efede4;
+  background-color: #f7f9fc;
+  color: #0f1b2d;
 }
 
 body {
   font-feature-settings: "ss01", "cv11";
   overflow-x: clip;
-  /* Elite Apothecary canvas — a layered evergreen aurora with a champagne
-     highlight, plus a faint grain so the dark is rich, not flat. */
+  /* Daylight canvas — a clean white with soft, vibrant blue / emerald / amber
+     washes so the page feels colorful and alive without going dark. */
   background-image:
     radial-gradient(
       120% 85% at 50% -12%,
-      rgba(95, 227, 161, 0.1) 0%,
+      rgba(37, 99, 235, 0.1) 0%,
       transparent 55%
     ),
     radial-gradient(
-      90% 70% at 92% 4%,
-      rgba(228, 200, 150, 0.07) 0%,
+      85% 65% at 96% 2%,
+      rgba(245, 196, 56, 0.12) 0%,
       transparent 52%
     ),
     radial-gradient(
-      80% 70% at 4% 18%,
-      rgba(63, 142, 110, 0.09) 0%,
+      80% 70% at 2% 16%,
+      rgba(16, 185, 129, 0.1) 0%,
       transparent 55%
     );
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-}
-
-/* Fine luminous grain over the whole canvas for an apothecary-glass texture. */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* Keep app content above the grain layer. */
-body > * {
-  position: relative;
-  z-index: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -76,13 +59,13 @@ button {
 /* Consistent, premium focus ring instead of the default browser outline. */
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #0b0e0c, 0 0 0 4px rgba(95, 227, 161, 0.6);
+  box-shadow: 0 0 0 2px #f7f9fc, 0 0 0 4px rgba(37, 99, 235, 0.55);
   border-radius: 6px;
 }
 
 ::selection {
-  background: #5fe3a1;
-  color: #0b0e0c;
+  background: #2563eb;
+  color: #ffffff;
 }
 
 .pb-safe {

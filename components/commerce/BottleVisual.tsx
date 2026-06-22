@@ -51,24 +51,24 @@ export function BottleVisual({
       <svg viewBox="0 0 120 160" fill="none" className="h-full w-auto">
         <defs>
           <linearGradient id={`g-${product.id}`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#5FE3A1" stopOpacity="0.22" />
-            <stop offset="1" stopColor="#5FE3A1" stopOpacity="0.06" />
+            <stop offset="0" stopColor="#2563EB" stopOpacity="0.16" />
+            <stop offset="1" stopColor="#2563EB" stopOpacity="0.04" />
           </linearGradient>
         </defs>
-        {/* cap */}
-        <rect x="44" y="10" width="32" height="16" rx="4" fill="#E4C896" fillOpacity="0.85" />
-        <rect x="40" y="22" width="40" height="8" rx="3" fill="#E4C896" fillOpacity="0.5" />
+        {/* cap — vibrant amber */}
+        <rect x="44" y="10" width="32" height="16" rx="4" fill="#F5C438" fillOpacity="0.95" />
+        <rect x="40" y="22" width="40" height="8" rx="3" fill="#F5C438" fillOpacity="0.6" />
         {/* body */}
-        <rect x="34" y="30" width="52" height="116" rx="12" fill={`url(#g-${product.id})`} stroke="#5FE3A1" strokeOpacity="0.5" strokeWidth="1.5" />
+        <rect x="34" y="30" width="52" height="116" rx="12" fill={`url(#g-${product.id})`} stroke="#2563EB" strokeOpacity="0.55" strokeWidth="1.5" />
         {/* label band */}
-        <rect x="34" y="74" width="52" height="48" rx="4" fill="#0B0E0C" fillOpacity="0.55" stroke="#EFEDE4" strokeOpacity="0.15" />
-        <text x="60" y="92" textAnchor="middle" fontSize="9" fill="#EFEDE4" fillOpacity="0.85" fontFamily="ui-monospace, monospace">
+        <rect x="34" y="74" width="52" height="48" rx="4" fill="#FFFFFF" stroke="#0F1B2D" strokeOpacity="0.12" />
+        <text x="60" y="92" textAnchor="middle" fontSize="9" fill="#0F1B2D" fillOpacity="0.9" fontFamily="ui-monospace, monospace">
           {product.strengthLabel.slice(0, 12)}
         </text>
-        <text x="60" y="106" textAnchor="middle" fontSize="7" fill="#5FE3A1" fillOpacity="0.9" fontFamily="ui-monospace, monospace" letterSpacing="0.5">
+        <text x="60" y="106" textAnchor="middle" fontSize="7" fill="#2563EB" fillOpacity="0.95" fontFamily="ui-monospace, monospace" letterSpacing="0.5">
           {FORM_LABEL[product.form].toUpperCase()}
         </text>
-        <line x1="42" y1="114" x2="78" y2="114" stroke="#E4C896" strokeOpacity="0.5" strokeWidth="1" />
+        <line x1="42" y1="114" x2="78" y2="114" stroke="#047857" strokeOpacity="0.55" strokeWidth="1" />
       </svg>
       <span className="absolute bottom-1 right-1 font-mono text-[8px] uppercase tracking-wider text-paper/35">
         Illustration

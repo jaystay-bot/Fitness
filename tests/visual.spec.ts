@@ -3,8 +3,8 @@
 // Boots `next start` against a freshly built bundle, opens `/` at 390×844,
 // and asserts three computed-style invariants:
 //   1. Hero H1 font-size > 32px
-//   2. document.body backgroundColor === rgb(11, 14, 12)   (locked ink)
-//   3. Primary CTA backgroundColor === rgb(95, 227, 161)   (locked mint)
+//   2. document.body backgroundColor === rgb(247, 249, 252)  (locked ink, light)
+//   3. Primary CTA backgroundColor === rgb(37, 99, 235)      (locked blue)
 //
 // Then captures `visual_baseline_390.png` and `visual_baseline_1280.png`.
 //
@@ -26,8 +26,8 @@ const CHROME =
   process.env.CHROMIUM_PATH ??
   "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
 
-const EXPECTED_BODY_BG = "rgb(11, 14, 12)";
-const EXPECTED_CTA_BG = "rgb(95, 227, 161)";
+const EXPECTED_BODY_BG = "rgb(247, 249, 252)";
+const EXPECTED_CTA_BG = "rgb(37, 99, 235)";
 const MIN_H1_FONT_PX = 32;
 
 interface VisualReport {

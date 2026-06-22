@@ -7,7 +7,7 @@
 // their own intake. The product never replaces a clinician; it offers
 // a route to one when warranted.
 //
-// Locked palette: clinical orange (#FF6B35) is the only new color use
+// Locked palette: clinical orange (#E11D48) is the only new color use
 // permitted in this cycle, and it is already in the palette.
 //
 // Click flow follows the N=015 popup-blocker-safe pattern: synchronous
