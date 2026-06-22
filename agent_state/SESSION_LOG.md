@@ -345,3 +345,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_031 — tsc+build 0; live result rendered 4 correct deep links; unmatched picks show Fulfill only.
 - **Watcher audit:** `verify-audit-trail [N=031]: OK`
 - N=031 | PASS | <$1.00 | tsc+build+live | recommendations wired to buy boxes
+
+## N=032 — Top nav + landing motion language
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_032 — /shop nav + fade-up/hover on SymptomEntry + VaultDashboard cards.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_032 — SpearHero slim nav ("Compare prices" → /shop); staggered fade-up + hover lift on front-door + preview cards.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_032 — tsc+build 0; screenshots confirm nav + motion.

@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Clock, Leaf, ShieldCheck } from "lucide-react";
+import { ArrowRight, Check, Clock, Leaf, ShieldCheck, Store } from "lucide-react";
 
 import { ASSESSMENT_FORM_ANCHOR, SPEAR_COPY } from "@/lib/spearCopy";
 
@@ -14,6 +14,28 @@ export function SpearHero() {
       aria-label="Apex Protocol hero — evidence-backed supplement and nutrition guidance"
       className="relative overflow-hidden px-5 sm:px-8 lg:px-12 pt-16 sm:pt-20 lg:pt-28 pb-12 sm:pb-16"
     >
+      {/* Slim top nav */}
+      <nav className="relative max-w-6xl mx-auto w-full flex items-center justify-between gap-4 mb-10 sm:mb-14">
+        <span className="font-serif text-lg sm:text-xl tracking-tight text-paper">
+          Apex Protocol
+        </span>
+        <div className="flex items-center gap-5 font-mono text-[11px] uppercase tracking-wider">
+          <a
+            href={`#${ASSESSMENT_FORM_ANCHOR}`}
+            className="text-paper/60 transition-colors hover:text-paper"
+          >
+            Build protocol
+          </a>
+          <a
+            href="/shop"
+            className="inline-flex items-center gap-1.5 rounded-full border border-lime/30 bg-lime/5 px-3 py-1.5 text-lime transition hover:border-lime"
+          >
+            <Store className="w-3.5 h-3.5" aria-hidden />
+            Compare prices
+          </a>
+        </div>
+      </nav>
+
       {/* Aurora + botanical backdrop */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-0">
         <div className="absolute -top-32 left-[8%] h-[34rem] w-[34rem] rounded-full bg-lime/20 blur-[130px] animate-aurora-drift" />

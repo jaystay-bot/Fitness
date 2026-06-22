@@ -16,10 +16,11 @@ export function VaultDashboard() {
       </div>
 
       <ul role="list" className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {SPEAR_COPY.preview.cards.map((card) => (
+        {SPEAR_COPY.preview.cards.map((card, i) => (
           <li
             key={card.label}
-            className="bg-surface border border-paper/10 rounded-xl p-4 sm:p-5 flex flex-col gap-1.5 shadow-card"
+            style={{ animationDelay: `${i * 0.07}s` }}
+            className="animate-fade-up bg-surface border border-paper/10 rounded-xl p-4 sm:p-5 flex flex-col gap-1.5 shadow-card transition hover:-translate-y-0.5 hover:border-lime/30"
           >
             <span className="font-mono text-[11px] uppercase tracking-wider text-paper/60">
               {card.label}

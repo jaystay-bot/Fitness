@@ -34,13 +34,14 @@ export function SymptomEntry() {
         role="list"
         className="grid grid-cols-1 md:grid-cols-3 gap-3"
       >
-        {ENTRIES.map((entry) => (
+        {ENTRIES.map((entry, i) => (
           <li key={entry.path} className="flex flex-col gap-2">
             <a
               href={`#${ASSESSMENT_FORM_ANCHOR}`}
               data-spear-path={entry.path}
               aria-label={`${entry.label} — ${entry.caption}`}
-              className="block w-full bg-ink border border-paper/20 hover:border-lime focus:border-lime focus:outline-none rounded-md px-4 py-5 sm:py-6 text-paper font-mono uppercase tracking-wider text-sm transition-colors"
+              style={{ animationDelay: `${i * 0.08}s` }}
+              className="animate-fade-up block w-full bg-surface border border-paper/12 hover:border-lime focus:border-lime focus:outline-none rounded-xl px-4 py-5 sm:py-6 text-paper font-mono uppercase tracking-wider text-sm shadow-card transition hover:-translate-y-0.5"
             >
               {entry.label}
             </a>
