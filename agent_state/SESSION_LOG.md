@@ -367,3 +367,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_033 — tsc+build 0. Note: a Vercel Deployment Protection 403 is a platform setting, flagged to Commander separately.
 - **Watcher audit:** `verify-audit-trail [N=033]: OK`
 - N=033 | PASS | <$1.00 | tsc+build 0 | middleware public routes fix
+
+## N=034 — Fix /api/subscription 500 (Clerk unconfigured)
+
+- **Date:** 2026-06-22
+- **Trigger:** Local verification screenshot run surfaced a 500 on GET /api/subscription.
+- **Architect:** S1_LOCKED_034 — guard auth() behind CLERK_ENABLED; return free when Clerk absent. subscription route only.
+- **Operator:** A1_OUTPUT_034 — early free-tier return when Clerk keys absent.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_034 — tsc+build 0; GET /api/subscription 200 {"tier":"free"} (was 500); full result run shows 0 5xx.
