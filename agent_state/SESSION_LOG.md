@@ -420,3 +420,5 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Operator:** A1_OUTPUT_038 — live.ts (chunked, timeout-guarded, fallback); feed/StatStrip take items as props; page async + revalidate 6h; "Live · PubMed" indicator.
 - **Watcher:** verify-audit-trail OK (below).
 - **Judge:** TRUTH_RESULT_038 — tsc+build 0; sandbox fallback renders clean (estimates, 15 cards, 0 errors); live path runs on Vercel by design.
+- **Watcher audit:** `verify-audit-trail [N=038]: OK`
+- N=038 | PASS | <$1.00 | tsc+build+fallback verified | live PubMed feed (production)
