@@ -321,3 +321,5 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Operator:** A1_OUTPUT_029 — BottleVisual (illustration), BuyBox (CTA + compare <details> + best-price + disclaimers), ProductCard, AttributionFooter, /shop page.
 - **Watcher:** verify-audit-trail OK (below). New files only; no existing code/dep touched.
 - **Judge:** TRUTH_RESULT_029 — tsc+build 0; /shop static; screenshots confirm cards, compare drawer (6 retailers), "Check price", outbound links, disclaimers. No fake price/claim/checkout.
+- **Watcher audit:** `verify-audit-trail [N=029]: OK`
+- N=029 | PASS | <$1.00 | tsc+build+screenshots | buy-box UI + /shop shipped
