@@ -400,3 +400,14 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_036 — tsc+build 0; compliance guard clean; screenshots confirm feed + chart + filters + PubMed links; mobile clean. No fabricated statistics.
 - **Watcher audit:** `verify-audit-trail [N=036]: OK`
 - N=036 | PASS | <$1.00 | tsc+build+screenshots | The Wire research feed shipped
+
+## N=037 — "Your Channel" (personalized Wire)
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** Make The Wire feel like the user's own channel to scroll — personalized, something interesting each day.
+- **Architect:** S1_LOCKED_037 — localStorage stack personalization; For-you + badges + daily pick; hydration-safe.
+- **Operator:** A1_OUTPUT_037 — personal.ts (save/read stack, dailyIndex); ResultCard saves stack; feed gains For-you/In-your-stack/Today's read/stack-first sort.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_037 — tsc+build 0; live flow shows personalized feed + daily read; no hydration errors.
+- **Watcher audit:** `verify-audit-trail [N=037]: OK`
+- N=037 | PASS | <$1.00 | tsc+build+live | Your Channel personalized Wire

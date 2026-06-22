@@ -1,4 +1,4 @@
-import { ExternalLink, FileText } from "lucide-react";
+import { ExternalLink, FileText, Star } from "lucide-react";
 
 import type { ResearchItem } from "@/lib/research/feed";
 import { TierMeter, VolumeBar } from "./Sparkline";
@@ -12,15 +12,22 @@ const TIER_STYLE: Record<ResearchItem["tier"], string> = {
 export function ResearchCard({
   item,
   max,
+  inStack = false,
 }: {
   item: ResearchItem;
   max: number;
+  inStack?: boolean;
 }) {
   return (
-    <article className="flex flex-col gap-3 rounded-2xl border border-paper/10 bg-surface p-5 shadow-card transition-colors hover:border-lime/30">
+    <article className={`flex flex-col gap-3 rounded-2xl border bg-surface p-5 shadow-card transition-colors ${inStack ? "border-lime/40" : "border-paper/10 hover:border-lime/30"}`}>
       <header className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-1 min-w-0">
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap items-center gap-1.5">
+            {inStack ? (
+              <span className="inline-flex items-center gap-1 rounded-full bg-lime/15 text-lime px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider">
+                <Star className="w-2.5 h-2.5" aria-hidden /> In your stack
+              </span>
+            ) : null}
             {item.goals.slice(0, 3).map((g) => (
               <span
                 key={g}
