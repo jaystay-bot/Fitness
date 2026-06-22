@@ -442,6 +442,14 @@ export function AssessmentForm({
         </select>
       </Field>
 
+      <details className="group">
+        <summary className="cursor-pointer list-none flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-paper/60 hover:text-paper">
+          <span>Fine-tune (optional)</span>
+          <span className="h-px flex-1 bg-paper/15" aria-hidden="true" />
+          <span className="text-paper/40 group-open:hidden">▼ Show</span>
+          <span className="text-paper/40 hidden group-open:inline">▲ Hide</span>
+        </summary>
+        <div className="flex flex-col gap-4 mt-4">
       <div className="grid grid-cols-2 gap-3">
         <Field label="Activity" id="activityLevel">
           <select
@@ -565,6 +573,8 @@ export function AssessmentForm({
           <option value="high">High (known high CRP / flare)</option>
         </select>
       </Field>
+        </div>
+      </details>
 
       {error ? (
         <p

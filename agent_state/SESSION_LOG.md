@@ -266,3 +266,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_024 — tsc+build exit 0; desktop+mobile screenshots confirm the new mission-focused top. Engine/theme untouched.
 - **Watcher audit:** `verify-audit-trail [N=024]: OK`
 - N=024 | PASS | <$1.00 | tsc+build+screenshots | insurance/vault copy re-pointed to mission
+
+## N=025 — Minimal-input mode
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_025 — collapse non-essential fields into an optional "Fine-tune" <details>; keep essentials + unit fields visible (visual tripwire). Only AssessmentForm.tsx + Hero.tsx.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_025 — activity/sleep/diet/coffee/alcohol/symptom/inflammation collapsed; defaults still submit. Hero copy updated to "a few quick questions".
+- **Watcher:** verify-audit-trail OK (below). Only the two allowed files changed.
+- **Judge:** TRUTH_RESULT_025 — tsc+build exit 0; live 390px assertion: optional field hidden, core unit + goal fields visible.
