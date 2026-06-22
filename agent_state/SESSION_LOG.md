@@ -332,3 +332,5 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Operator:** A1_OUTPUT_030 — lib/commerce/EXPANSION.md (recipes + default decisions + ask-Jay triggers); LESSONS + QUEUE updated.
 - **Watcher:** verify-audit-trail OK (below). Docs only; no code/dep change.
 - **Judge:** TRUTH_RESULT_030 — tsc+build 0; buy-box spec N1-N7 complete.
+- **Watcher audit:** `verify-audit-trail [N=030]: OK`
+- N=030 | PASS | <$1.00 | tsc+build exit 0 | commerce expansion loop; spec N1-N7 complete
