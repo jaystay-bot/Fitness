@@ -158,7 +158,7 @@ export function ResultCard({
         {result.supplements.map((s) => (
           <article
             key={s.name}
-            className="border border-paper/15 rounded-lg p-4 flex flex-col gap-2 min-w-0"
+            className="bg-surface border border-paper/10 rounded-xl p-4 flex flex-col gap-2 min-w-0 shadow-card transition-colors hover:border-lime/30"
           >
             <header className="flex items-start justify-between gap-3">
               <h3 className="font-serif text-lg leading-tight break-words">{s.name}</h3>
@@ -224,7 +224,7 @@ export function ResultCard({
           {result.thirtyDayPlan.map((week) => (
             <article
               key={week.week}
-              className="border border-paper/15 rounded-lg p-4 flex flex-col gap-2 min-w-0"
+              className="bg-surface border border-paper/10 rounded-xl p-4 flex flex-col gap-2 min-w-0 shadow-card"
             >
               <h3 className="font-mono text-[11px] uppercase tracking-wider text-paper/60">
                 Week {week.week}
@@ -310,7 +310,7 @@ function NutritionList({
 }) {
   const dotColor = positive ? "bg-lime" : "bg-clinical";
   return (
-    <div className="border border-paper/15 rounded-lg p-4">
+    <div className="bg-surface border border-paper/10 rounded-xl p-4 shadow-card">
       <h3 className="font-mono text-[11px] uppercase tracking-wider text-paper/60 mb-2">
         {title}
       </h3>
