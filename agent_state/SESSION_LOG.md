@@ -233,3 +233,13 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_020 — `npx tsc --noEmit && npm run build` exit 0. Screenshot proof deferred (no chromium binary this cycle); build+tsc is the binding verify.
 - **Status:** N=020 PASS. NEXT_021 (mission logic) written.
 - N=020 | PASS | <$1.00 | tsc+build exit 0 | premium palette + surface depth; 8-Hat protocol installed
+
+## N=021 — Mobile overlap fix (ParallaxLedger)
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_021 — gate parallax to lg+ / no-reduced-motion; clear transform when off; re-evaluate on MQ change. Only ParallaxLedger.tsx allowed.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_021 — parallax no longer runs on stacked mobile layouts; ledger renders in normal flow. Desktop unchanged.
+- **Watcher:** PASS — only components/ParallaxLedger.tsx changed.
+- **Judge:** TRUTH_RESULT_021 — tsc+build exit 0; 390px screenshot confirms hero bullets readable, ledger stacked cleanly (overlap gone).
+- N=021 | PASS | <$1.00 | tsc+build exit 0 + screenshot | mobile ledger overlap fixed
