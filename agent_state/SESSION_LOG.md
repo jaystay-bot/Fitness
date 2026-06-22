@@ -300,3 +300,13 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_027 — tsc+build 0; emoji guard clean; desktop+mobile screenshots confirm an elite hero.
 - **Watcher audit:** `verify-audit-trail [N=027]: OK`
 - N=027 | PASS | <$1.00 | tsc+build+screenshots | kinetic elite hero shipped
+
+## N=028 — Commerce data foundation (vitamin buy-box)
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** Build a premium vitamin buy-box + licensed-imagery system (spec N1-N7). No fake prices/claims/checkout; outbound retailer links only; placeholder over unsafe image; least questions.
+- **Architect:** S1_LOCKED_028 — pure data/logic layer (types, retailers, products, images, compliance). 5 new lib/commerce files only.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_028 — 4 typed models, retailer registry + deterministic buildOffers/rankOffers, 5 seed vitamins (no brand/price), image metadata + placeholder, compliance disclaimers + blocked-claim guard (build-time enforced).
+- **Watcher:** verify-audit-trail OK (below). All-new files; no existing code/dep touched.
+- **Judge:** TRUTH_RESULT_028 — tsc+build exit 0; compliance guard did not throw (seed copy clean); zero fabricated prices.
