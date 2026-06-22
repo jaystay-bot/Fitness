@@ -275,3 +275,5 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Operator:** A1_OUTPUT_025 — activity/sleep/diet/coffee/alcohol/symptom/inflammation collapsed; defaults still submit. Hero copy updated to "a few quick questions".
 - **Watcher:** verify-audit-trail OK (below). Only the two allowed files changed.
 - **Judge:** TRUTH_RESULT_025 — tsc+build exit 0; live 390px assertion: optional field hidden, core unit + goal fields visible.
+- **Watcher audit:** `verify-audit-trail [N=025]: OK`
+- N=025 | PASS | <$1.00 | tsc+build+visibility assertion | minimal-input mode shipped
