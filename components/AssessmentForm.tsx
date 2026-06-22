@@ -44,6 +44,7 @@ const DEFAULTS: UserInput = {
   caffeineCupsPerDay: 2,
   alcoholDrinksPerWeek: 3,
   symptomToFix: "fatigue",
+  inflammation: "unknown",
 };
 
 function normalizeIntegerDisplay(raw: string) {
@@ -435,6 +436,7 @@ export function AssessmentForm({
           <option value="energy">Energy</option>
           <option value="muscle">Muscle</option>
           <option value="fat-loss">Fat loss</option>
+          <option value="gain-weight">Gain weight</option>
           <option value="longevity">Longevity</option>
           <option value="focus">Focus</option>
         </select>
@@ -542,6 +544,25 @@ export function AssessmentForm({
           <option value="low-strength">Low strength</option>
           <option value="bloating">Bloating</option>
           <option value="none">Nothing specific</option>
+        </select>
+      </Field>
+
+      <Field label="Inflammation (optional)" id="inflammation">
+        <select
+          id="inflammation"
+          className={FIELD}
+          value={input.inflammation ?? "unknown"}
+          onChange={(e) =>
+            update(
+              "inflammation",
+              e.target.value as UserInput["inflammation"],
+            )
+          }
+        >
+          <option value="unknown">Not sure</option>
+          <option value="low">Low / none</option>
+          <option value="elevated">Elevated (sore, puffy, slow recovery)</option>
+          <option value="high">High (known high CRP / flare)</option>
         </select>
       </Field>
 

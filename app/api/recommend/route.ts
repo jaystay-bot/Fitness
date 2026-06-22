@@ -14,7 +14,9 @@ const GOALS = [
   "fat-loss",
   "longevity",
   "focus",
+  "gain-weight",
 ] as const;
+const INFLAMMATION = ["unknown", "low", "elevated", "high"] as const;
 const DIETS = [
   "omnivore",
   "vegetarian",
@@ -99,7 +101,7 @@ function parseInput(raw: unknown): UserInput {
     throw new Error("Body must be a JSON object.");
   }
   const r = raw as Record<string, unknown>;
-  return {
+  const parsed: UserInput = {
     age: num(r.age, 18, 90, "age"),
     sex: oneOf(r.sex, ["male", "female"] as const, "sex"),
     heightCm: num(r.heightCm, 140, 220, "heightCm"),
@@ -122,6 +124,11 @@ function parseInput(raw: unknown): UserInput {
     ),
     symptomToFix: oneOf(r.symptomToFix, SYMPTOMS, "symptomToFix"),
   };
+  // Optional — only attached when present so legacy bodies stay valid.
+  if (r.inflammation !== undefined) {
+    parsed.inflammation = oneOf(r.inflammation, INFLAMMATION, "inflammation");
+  }
+  return parsed;
 }
 
 export async function POST(request: Request) {

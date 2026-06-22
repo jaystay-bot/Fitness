@@ -19,6 +19,7 @@ const FIELD_LABEL: Record<keyof UserInput, string> = {
   caffeineCupsPerDay: "Coffee (cups/day)",
   alcoholDrinksPerWeek: "Alcohol (drinks/wk)",
   symptomToFix: "Symptom to fix",
+  inflammation: "Inflammation",
 };
 
 const REQUIRED_FOR_SUBMIT: (keyof UserInput)[] = [

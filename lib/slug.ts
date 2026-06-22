@@ -1,6 +1,7 @@
 import type {
   ActivityLevel,
   DietPattern,
+  InflammationLevel,
   PrimaryGoal,
   Sex,
   Symptom,
@@ -15,6 +16,13 @@ const GOAL: PrimaryGoal[] = [
   "fat-loss",
   "longevity",
   "focus",
+  "gain-weight",
+];
+const INFLAMMATION: InflammationLevel[] = [
+  "unknown",
+  "low",
+  "elevated",
+  "high",
 ];
 const DIET: DietPattern[] = [
   "omnivore",
@@ -98,7 +106,7 @@ export function decodeSlug(slug: string): UserInput | null {
   if (!inRange(r.caffeineCupsPerDay, 0, 8)) return null;
   if (!inRange(r.alcoholDrinksPerWeek, 0, 30)) return null;
   if (!inEnum(r.symptomToFix, SYMPTOM)) return null;
-  return {
+  const out: UserInput = {
     age: r.age,
     sex: r.sex,
     heightCm: r.heightCm,
@@ -111,4 +119,9 @@ export function decodeSlug(slug: string): UserInput | null {
     alcoholDrinksPerWeek: r.alcoholDrinksPerWeek,
     symptomToFix: r.symptomToFix,
   };
+  // Optional field — only carried through when present and valid.
+  if (r.inflammation !== undefined && inEnum(r.inflammation, INFLAMMATION)) {
+    out.inflammation = r.inflammation;
+  }
+  return out;
 }

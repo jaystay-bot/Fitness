@@ -76,6 +76,34 @@ export const GOAL_NUTRITION: Record<PrimaryGoal, NutritionRule> = {
       "Alcohol on nights before deep-focus days",
     ],
   },
+  "gain-weight": {
+    eatMore: [
+      "A calorie surplus: add ~300–500 kcal of whole food per day",
+      "Calorie-dense staples: olive oil, nuts, nut butter, avocado",
+      "Whole milk, Greek yogurt, cheese, and eggs for easy calories",
+      "Rice, oats, potatoes, and pasta at every main meal",
+      "A protein + carb shake when a meal is hard to finish",
+    ],
+    eatLess: [
+      "Filling low-calorie volume (raw salads) before the main course",
+      "Skipped meals — eat on a clock, not only on hunger",
+      "Liquid calories that are pure sugar with no protein",
+    ],
+  },
+};
+
+// Anti-inflammatory food emphasis. Surfaced ahead of the goal baseline when the
+// user reports elevated/high inflammation. Educational, not a treatment claim.
+export const INFLAMMATION_OVERRIDE: { eatMore: string[]; eatLess: string[] } = {
+  eatMore: [
+    "Fatty fish (salmon, sardines) two to three times a week",
+    "Extra virgin olive oil as the default fat",
+    "Berries, leafy greens, and other deeply colored produce",
+  ],
+  eatLess: [
+    "Added sugar and sugar-sweetened drinks",
+    "Refined seed-oil deep-fried and ultra-processed food",
+  ],
 };
 
 export const DIET_OVERRIDES: Partial<

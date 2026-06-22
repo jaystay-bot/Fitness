@@ -243,3 +243,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Watcher:** PASS — only components/ParallaxLedger.tsx changed.
 - **Judge:** TRUTH_RESULT_021 — tsc+build exit 0; 390px screenshot confirms hero bullets readable, ledger stacked cleanly (overlap gone).
 - N=021 | PASS | <$1.00 | tsc+build exit 0 + screenshot | mobile ledger overlap fixed
+
+## N=022 — Mission logic (inflammation + weight gain + unified protein)
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_022 — unify protein target; inflammation-aware protein + foods; underweight/gain-weight support (no peptides). Allowed: types, engine, nutrition, verdict, slug, recommend route, AssessmentForm (+ VoiceInput type-forced).
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_022 — proteinTargetGrams() single source of truth; gain-weight goal + BMI<18.5 auto-detect; inflammation omega-3 + food override; no-peptides + inflammation warnings; optional inflammation threaded through slug + route + form.
+- **Watcher:** verify-audit-trail.sh result recorded below. No forbidden files; VoiceInput was a type-forced label add, added to the lock before editing.
+- **Judge:** TRUTH_RESULT_022 — tsc+build exit 0. Live double-POST determinism IDENTICAL (legacy + new input). Protein unified 148g across card/target/plan (was 131 vs 148). Underweight BMI 15.7 → "built to add healthy weight", 106g protein (2.2/kg), protein+creatine+omega-3 stack, anti-inflammatory foods first, food-first/no-peptides warnings. Peptide substring only in the no-peptides warning.

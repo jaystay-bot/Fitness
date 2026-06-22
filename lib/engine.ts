@@ -3,6 +3,7 @@ import { detectConflict } from "./conflicts";
 import {
   DIET_OVERRIDES,
   GOAL_NUTRITION,
+  INFLAMMATION_OVERRIDE,
   SYMPTOM_OVERRIDES,
 } from "./nutrition";
 import { resolveTaggedInputs } from "./signalPriority";
@@ -37,7 +38,35 @@ const GOAL_CORE: Record<PrimaryGoal, string[]> = {
     "rhodiola",
     "magnesium-glycinate",
   ],
+  // Healthy weight gain — whole-food calorie surplus plus the two compounds
+  // with the strongest evidence for adding lean mass. Deliberately NO peptides
+  // or hormones; this is food-first, supplements-second.
+  "gain-weight": ["protein", "creatine", "vitamin-d3", "magnesium-glycinate"],
 };
+
+// Clinical underweight threshold (WHO). Below this we surface weight-gain
+// support regardless of the chosen goal.
+const UNDERWEIGHT_BMI = 18.5;
+
+function isUnderweight(input: UserInput): boolean {
+  return bmi(input) < UNDERWEIGHT_BMI;
+}
+
+// Single source of truth for the daily protein target so the supplement card,
+// the daily-target readout, and the 30-day plan can never disagree. Higher when
+// building/gaining or underweight, and bumped further when inflammation is
+// elevated (recovery raises protein needs).
+function proteinTargetGrams(input: UserInput): number {
+  let perKg = 1.4;
+  if (input.primaryGoal === "muscle" || input.primaryGoal === "gain-weight") {
+    perKg = 1.8;
+  }
+  if (isUnderweight(input)) perKg = Math.max(perKg, 1.8);
+  if (input.inflammation === "elevated") perKg += 0.2;
+  if (input.inflammation === "high") perKg += 0.4;
+  perKg = Math.min(perKg, 2.4);
+  return Math.round(input.weightKg * perKg);
+}
 
 const SYMPTOM_ADDONS: Record<Symptom, string[]> = {
   "poor-sleep": ["magnesium-glycinate", "melatonin"],
@@ -61,7 +90,7 @@ function bmi(input: UserInput): number {
 
 function dosageFor(entry: SupplementEntry, input: UserInput): string {
   if (entry.id === "protein") {
-    const target = Math.round(input.weightKg * 1.6);
+    const target = proteinTargetGrams(input);
     return `${target} g protein/day total — supplement to fill the gap (typical scoop 25–40 g)`;
   }
   if (entry.id === "melatonin") {
@@ -95,7 +124,7 @@ function whyFor(entry: SupplementEntry, input: UserInput): string {
         ? "Pick an algae-derived EPA/DHA — covers the gap from no fish in your diet."
         : "Anti-inflammatory baseline; most diets fall short of EPA+DHA.";
     case "protein":
-      return `At ${input.weightKg} kg, you need around ${Math.round(input.weightKg * 1.6)} g/day — a shake plugs the gap on busy days.`;
+      return `At ${input.weightKg} kg, you need around ${proteinTargetGrams(input)} g/day — a shake plugs the gap on busy days.`;
     case "caffeine-theanine":
       return "Theanine smooths the caffeine peak — same focus, less jitter, fewer crashes.";
     case "rhodiola":
@@ -173,6 +202,18 @@ function buildStack(input: UserInput): SupplementPick[] {
     ensure(picks, "electrolytes", 0, "keto — electrolytes mandatory");
   }
 
+  // 4. Underweight (BMI < 18.5) or explicit weight-gain goal — protein floor +
+  // creatine for lean mass. Food-first; no peptides or hormones.
+  if (isUnderweight(input) || input.primaryGoal === "gain-weight") {
+    ensure(picks, "protein", 0, "underweight / weight-gain — protein floor for a healthy surplus");
+    ensure(picks, "creatine", 1, "underweight / weight-gain — creatine supports lean mass + strength");
+  }
+
+  // 5. Elevated inflammation — omega-3 for its anti-inflammatory baseline.
+  if (input.inflammation === "elevated" || input.inflammation === "high") {
+    ensure(picks, "omega-3", 1, "elevated inflammation — omega-3 anti-inflammatory support");
+  }
+
   // Convert and rank
   const all = Array.from(picks.values());
   all.sort((a, b) => {
@@ -240,6 +281,17 @@ function buildWarnings(
       "Alcohol intake at this level blunts sleep, training adaptation, and any supplement you stack on top.",
     );
   }
+  if (isUnderweight(input) || input.primaryGoal === "gain-weight") {
+    warnings.push(
+      "Weight gain is food-first: aim for a 300–500 kcal daily surplus from whole foods (nuts, olive oil, dairy, rice, oats) plus the protein target below. No peptides or hormones — they are not needed and are out of scope here. If you stay underweight despite eating more, see a clinician to rule out an underlying cause.",
+    );
+  }
+  if (input.inflammation === "elevated" || input.inflammation === "high") {
+    const target = proteinTargetGrams(input);
+    warnings.push(
+      `Inflammation raises protein needs and recovery cost — your target is bumped to about ${target} g/day, and an anti-inflammatory pattern (fatty fish, olive oil, berries, leafy greens; less added sugar, refined seed-oil fried food, and alcohol) does more than any single supplement.`,
+    );
+  }
 
   if (warnings.length === 0) {
     warnings.push(
@@ -259,20 +311,34 @@ function buildNutrition(input: UserInput): Recommendation["nutrition"] {
     eatMore: [],
     eatLess: [],
   };
+  // Anti-inflammatory food emphasis, surfaced ahead of the goal baseline when
+  // inflammation is elevated/high.
+  const inflammationExtra =
+    input.inflammation === "elevated" || input.inflammation === "high"
+      ? INFLAMMATION_OVERRIDE
+      : { eatMore: [], eatLess: [] };
 
   const eatMore = uniq(
-    [...dietExtra.eatMore, ...symptomExtra.eatMore, ...base.eatMore].slice(0, 5),
+    [
+      ...inflammationExtra.eatMore,
+      ...dietExtra.eatMore,
+      ...symptomExtra.eatMore,
+      ...base.eatMore,
+    ].slice(0, 5),
   );
   // Pad to 5 if short
   while (eatMore.length < 5) eatMore.push(base.eatMore[eatMore.length] ?? "Whole, minimally processed food first");
   const eatLess = uniq(
-    [...symptomExtra.eatLess, ...dietExtra.eatLess, ...base.eatLess].slice(0, 3),
+    [
+      ...inflammationExtra.eatLess,
+      ...symptomExtra.eatLess,
+      ...dietExtra.eatLess,
+      ...base.eatLess,
+    ].slice(0, 3),
   );
   while (eatLess.length < 3) eatLess.push(base.eatLess[eatLess.length] ?? "Ultra-processed snack foods");
 
-  const proteinTarget = Math.round(
-    input.weightKg * (input.primaryGoal === "muscle" ? 1.8 : 1.4),
-  );
+  const proteinTarget = proteinTargetGrams(input);
   const waterLiters = Math.round(input.weightKg * 0.033 * 10) / 10;
 
   return {
@@ -310,7 +376,7 @@ function buildPlan(
       actions: [
         `Start the three highest-priority supplements: ${top}.`,
         "Lock a wake time and a sleep time within a 30-minute window all seven days.",
-        `Hit a protein target of about ${Math.round(input.weightKg * 1.4)} g/day.`,
+        `Hit a protein target of about ${proteinTargetGrams(input)} g/day.`,
       ],
     },
     {
