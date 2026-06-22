@@ -431,3 +431,5 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Operator:** A1_OUTPUT_039 — studies.ts (6 breakdowns + modelForCompound), StudyChart (pure SVG), ResearchCard "See the data" expander.
 - **Watcher:** verify-audit-trail OK (below).
 - **Judge:** TRUTH_RESULT_039 — tsc+build 0; guard clean; screenshot shows in-app breakdown with model chart + cited facts. No fabricated statistics.
+- **Watcher audit:** `verify-audit-trail [N=039]: OK`
+- N=039 | PASS | <$1.00 | tsc+build+screenshot | in-app study breakdowns
