@@ -356,3 +356,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_032 — tsc+build 0; screenshots confirm nav + motion.
 - **Watcher audit:** `verify-audit-trail [N=032]: OK`
 - N=032 | PASS | <$1.00 | tsc+build+screenshots | top nav + landing motion
+
+## N=033 — Fix 403 auth-gating (middleware public routes)
+
+- **Date:** 2026-06-22
+- **Trigger:** Commander hit a 403 running results on the Vercel preview.
+- **Architect:** S1_LOCKED_033 — add /shop, /api/fulfillment/click, /api/plugins/(.*) to isPublicRoute. middleware.ts only.
+- **Operator:** A1_OUTPUT_033 — added the three public routes.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_033 — tsc+build 0. Note: a Vercel Deployment Protection 403 is a platform setting, flagged to Commander separately.

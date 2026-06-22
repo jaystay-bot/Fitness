@@ -9,6 +9,7 @@ const isPublicRoute = createRouteMatcher([
   "/",
   "/r/:path*",
   "/pricing",
+  "/shop",
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/api/recommend",
@@ -17,6 +18,10 @@ const isPublicRoute = createRouteMatcher([
   "/api/webhooks/(.*)",
   "/api/checkout",
   "/api/subscription",
+  // N=015: anonymous fulfillment-click tracking must work without auth.
+  "/api/fulfillment/click",
+  // N=012+: plugin signal routes are used by anonymous users on the form.
+  "/api/plugins/(.*)",
   // N=010: feedback widget must work for anonymous users; admin uses env-password gate.
   "/api/feedback/submit",
   "/admin/feedback",
