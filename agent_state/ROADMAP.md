@@ -22,6 +22,23 @@ Supersedes the prior `NEXT_020` vault-funding cycle. Jay's stated intent, in ord
 4. **N=023 — Real data research.** Replace hand-typed `studyCount` values with
    real PubMed counts via a build-time fetch script (NIH ODS / DSLD references).
 
+## Commander directive — 2026-06-22 (b): Elite brand redesign
+
+Full creative runway granted. Re-design the whole color scheme + brand feel into
+an ELITE PREMIUM wellness brand ("get right for humans" / vital, active, healthy)
+— not a "supplement page." Background, imagery, CTA, motion/kinetics all in
+scope. May add open-source libs, React interactivity, CSS/JS motion. NO basic
+emojis. Least friction, least questions — just proceed and make it magnificent.
+
+Design language (Designer's call): "Elite Apothecary" — deep evergreen-obsidian
+canvas, vital mint-emerald primary (retire neon lime), champagne gold luxe
+accent, warm bone text, organic motion, crisp SVG imagery.
+
+Cycles:
+- N=026 — Elite colorway + design tokens + premium global background (cascades app-wide).
+- N=027 — Kinetic hero: animated SVG aurora backdrop, entrance motion, premium CTA.
+- (further polish cycles as warranted)
+
 ## Deferred
 
 - Vault funding (former NEXT_020). The N=009 disclosure literal stays in place
