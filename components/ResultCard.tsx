@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { AlertTriangle, Calendar, Pill, Salad, Store } from "lucide-react";
 
 import { shopHrefForSupplement } from "@/lib/commerce/match";
+import { saveStack } from "@/lib/research/personal";
 import { encodeInput } from "@/lib/slug";
 import { telehealthPlugin } from "@/lib/plugins/telehealth";
 import type { Recommendation, SubscriptionTier, UserInput } from "@/lib/types";
@@ -94,6 +95,10 @@ export function ResultCard({
   const featured = result.supplements[0];
   const slug = shareSlug ?? encodeInput(input);
   const tier = useTier();
+  // N=037: remember this protocol's compounds so The Wire can personalize.
+  useEffect(() => {
+    saveStack(result.supplements.map((s) => s.name));
+  }, [result]);
   // N=016: conservative escalation. The button only renders when the
   // engine flagged a goal conflict OR the stack contains a supplement
   // requiring clinician oversight. Routine recommendations get a result
