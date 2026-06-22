@@ -78,8 +78,8 @@ export function ResearchFeed({ items: allItems }: { items: ResearchItem[] }) {
     <div className="flex flex-col gap-5">
       {/* Today's read — a good one */}
       {todays ? (
-        <div className="rounded-2xl border border-lime/30 bg-lime/[0.04] p-5 shadow-card">
-          <div className="flex items-center gap-2 mb-3 font-mono text-[11px] uppercase tracking-wider text-lime">
+        <div className="rounded-2xl border border-lime/30 bg-lime/[0.04] p-6 shadow-card">
+          <div className="flex items-center gap-2 mb-4 font-mono text-[11px] uppercase tracking-[0.18em] text-lime font-medium">
             <Sparkles className="w-3.5 h-3.5" aria-hidden />
             Today&apos;s read
           </div>
@@ -110,10 +110,13 @@ export function ResearchFeed({ items: allItems }: { items: ResearchItem[] }) {
         </div>
       </div>
 
-      <p className="font-mono text-[11px] uppercase tracking-wider text-paper/50">
-        {good.length} strong {good.length === 1 ? "pick" : "picks"}
-        {hasStack ? ` · ${inStack.size} in your stack` : ""}
-      </p>
+      <div className="flex items-center gap-3">
+        <p className="font-mono text-[11px] uppercase tracking-wider text-paper/50 shrink-0">
+          {good.length} strong {good.length === 1 ? "pick" : "picks"}
+          {hasStack ? ` · ${inStack.size} in your stack` : ""}
+        </p>
+        <span className="flex-1 h-px bg-paper/10" aria-hidden />
+      </div>
 
       {good.length === 0 && others.length === 0 ? (
         <p className="rounded-2xl border border-paper/10 bg-surface p-8 text-center text-paper/60">

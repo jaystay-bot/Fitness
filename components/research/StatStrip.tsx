@@ -51,11 +51,11 @@ export function StatStrip({
             )}
           </span>
         </div>
-        <ul className="flex flex-col gap-2.5">
+        <ul className="flex flex-col gap-3">
           {top.map((item) => (
             <li key={item.id} className="grid grid-cols-[9rem_1fr_auto] items-center gap-3">
               <span className="font-mono text-[11px] text-paper/70 truncate">{item.name}</span>
-              <span className="h-2 rounded-full bg-paper/10 overflow-hidden">
+              <span className="h-2.5 rounded-full bg-paper/10 overflow-hidden">
                 <span
                   className="block h-full rounded-full bg-lime"
                   style={{ width: `${Math.max(4, (item.studyCount / max) * 100).toFixed(1)}%` }}

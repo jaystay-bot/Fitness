@@ -39,20 +39,20 @@ export function ResearchCard({
               </span>
             ))}
           </div>
-          <h3 className="font-serif text-xl leading-tight text-paper break-words">
+          <h3 className="font-serif text-2xl leading-tight tracking-tight text-paper break-words">
             {item.name}
           </h3>
         </div>
         <span
-          className={`shrink-0 rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider ${TIER_STYLE[item.tier]}`}
+          className={`shrink-0 rounded-full px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider ${TIER_STYLE[item.tier]}`}
         >
           {item.tier}
         </span>
       </header>
 
-      <p className="text-sm text-paper/80 leading-snug">{item.finding}</p>
+      <p className="text-[0.9375rem] text-paper/80 leading-relaxed">{item.finding}</p>
 
-      <dl className="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-2">
+      <dl className="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-2.5">
         <dt className="font-mono text-[10px] uppercase tracking-wider text-paper/45">
           Evidence
         </dt>
