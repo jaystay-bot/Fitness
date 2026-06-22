@@ -49,3 +49,14 @@
 - Award-surface positioning packets (Webby, FastCo IxD, Communication Arts)
 
 These are queued for cycles beyond N=007.
+
+## COMMERCE FOLLOW-UPS (after N=029)
+
+- Live price + exact-SKU resolution via retailer APIs / affiliate feeds (needs egress). Set priceCents + lastVerifiedAt; "Best price" badge then activates.
+- Real, license-verified bottle photography (needs egress to verify/download + attribution).
+- Nav link to /shop + per-recommendation "where to buy" deep links from ResultCard.
+- Wire the existing Amazon affiliate plugin (lib/plugins/amazon) into BuyBox server-side for attributed Amazon links.
+
+## FUTURE VISION (logged, not scoped)
+
+- **THE WIRE** — a living, citation-backed evidence newsroom personalized to the compounds in a user's protocol, graded on the existing evidence tiers, able to recompute the stack when new evidence lands. Sources only (PubMed/Europe PMC, ClinicalTrials.gov, Cochrane, journal RSS); no human posts, no engagement metrics; every card one click from the primary source with funding/COI shown. Braids with Dream-State Dosing, The Negotiator, and self-trial publishing. Large multi-N initiative — needs egress + a Commander scope before any build.

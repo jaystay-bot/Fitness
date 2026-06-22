@@ -323,3 +323,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_029 — tsc+build 0; /shop static; screenshots confirm cards, compare drawer (6 retailers), "Check price", outbound links, disclaimers. No fake price/claim/checkout.
 - **Watcher audit:** `verify-audit-trail [N=029]: OK`
 - N=029 | PASS | <$1.00 | tsc+build+screenshots | buy-box UI + /shop shipped
+
+## N=030 — Commerce expansion loop + docs (spec N7)
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_030 — document the future-agent loop; update LESSONS/QUEUE; log THE WIRE. Docs only.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_030 — lib/commerce/EXPANSION.md (recipes + default decisions + ask-Jay triggers); LESSONS + QUEUE updated.
+- **Watcher:** verify-audit-trail OK (below). Docs only; no code/dep change.
+- **Judge:** TRUTH_RESULT_030 — tsc+build 0; buy-box spec N1-N7 complete.
