@@ -264,3 +264,5 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Operator:** A1_OUTPUT_024 — mission copy cascaded via spearCopy; SpearHero aside → "what you get"; VaultDashboard → protocol-output preview; metadata re-pointed.
 - **Watcher:** verify-audit-trail OK (below). No forbidden files; banned-pattern scan clean; no rendered insurance/vault text remains.
 - **Judge:** TRUTH_RESULT_024 — tsc+build exit 0; desktop+mobile screenshots confirm the new mission-focused top. Engine/theme untouched.
+- **Watcher audit:** `verify-audit-trail [N=024]: OK`
+- N=024 | PASS | <$1.00 | tsc+build+screenshots | insurance/vault copy re-pointed to mission
