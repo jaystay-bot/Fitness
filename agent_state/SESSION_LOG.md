@@ -343,3 +343,5 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Operator:** A1_OUTPUT_031 — shopHrefForSupplement matcher; ResultCard link; Footer "Compare prices"; ProductCard id anchor.
 - **Watcher:** verify-audit-trail OK (below).
 - **Judge:** TRUTH_RESULT_031 — tsc+build 0; live result rendered 4 correct deep links; unmatched picks show Fulfill only.
+- **Watcher audit:** `verify-audit-trail [N=031]: OK`
+- N=031 | PASS | <$1.00 | tsc+build+live | recommendations wired to buy boxes
