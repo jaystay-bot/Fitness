@@ -354,3 +354,5 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Operator:** A1_OUTPUT_032 — SpearHero slim nav ("Compare prices" → /shop); staggered fade-up + hover lift on front-door + preview cards.
 - **Watcher:** verify-audit-trail OK (below).
 - **Judge:** TRUTH_RESULT_032 — tsc+build 0; screenshots confirm nav + motion.
+- **Watcher audit:** `verify-audit-trail [N=032]: OK`
+- N=032 | PASS | <$1.00 | tsc+build+screenshots | top nav + landing motion
