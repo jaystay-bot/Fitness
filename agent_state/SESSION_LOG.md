@@ -398,3 +398,5 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Operator:** A1_OUTPUT_036 — feed data + Sparkline meters + ResearchCard + StatStrip (density chart) + client filter feed + /research page + nav links.
 - **Watcher:** verify-audit-trail OK (below).
 - **Judge:** TRUTH_RESULT_036 — tsc+build 0; compliance guard clean; screenshots confirm feed + chart + filters + PubMed links; mobile clean. No fabricated statistics.
+- **Watcher audit:** `verify-audit-trail [N=036]: OK`
+- N=036 | PASS | <$1.00 | tsc+build+screenshots | The Wire research feed shipped
