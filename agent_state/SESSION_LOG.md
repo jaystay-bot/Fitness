@@ -376,3 +376,5 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Operator:** A1_OUTPUT_034 — early free-tier return when Clerk keys absent.
 - **Watcher:** verify-audit-trail OK (below).
 - **Judge:** TRUTH_RESULT_034 — tsc+build 0; GET /api/subscription 200 {"tier":"free"} (was 500); full result run shows 0 5xx.
+- **Watcher audit:** `verify-audit-trail [N=034]: OK`
+- N=034 | PASS | <$1.00 | tsc+build + live 200 | subscription 500 fixed
