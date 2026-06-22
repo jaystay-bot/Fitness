@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Sparkles, Star } from "lucide-react";
+import { ChevronDown, Sparkles, Star } from "lucide-react";
 
 import { GOAL_FILTERS, type ResearchItem } from "@/lib/research/feed";
 import { dailyIndex, readStack } from "@/lib/research/personal";
+import { STUDY_BREAKDOWNS } from "@/lib/research/studies";
 import type { EvidenceTier, PrimaryGoal } from "@/lib/types";
 import { ResearchCard } from "./ResearchCard";
 
@@ -18,6 +19,12 @@ const TIERS: { id: TierFilter; label: string }[] = [
   { id: "Emerging", label: "Emerging" },
 ];
 
+// "Good" research we surface by default: Strong evidence, or a compound with a
+// curated study breakdown + model. Everything else is one click away.
+function isGood(item: ResearchItem): boolean {
+  return item.tier === "Strong" || Boolean(STUDY_BREAKDOWNS[item.id]);
+}
+
 export function ResearchFeed({ items: allItems }: { items: ResearchItem[] }) {
   const maxStudies = useMemo(
     () => Math.max(1, ...allItems.map((r) => r.studyCount)),
@@ -25,6 +32,7 @@ export function ResearchFeed({ items: allItems }: { items: ResearchItem[] }) {
   );
   const [goal, setGoal] = useState<GoalFilter>("all");
   const [tier, setTier] = useState<TierFilter>("all");
+  const [showOthers, setShowOthers] = useState(false);
   // Personalization is read after mount so SSR output matches (no hydration gap).
   const [stack, setStack] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
@@ -37,32 +45,38 @@ export function ResearchFeed({ items: allItems }: { items: ResearchItem[] }) {
   const inStack = useMemo(() => new Set(stack), [stack]);
   const hasStack = mounted && inStack.size > 0;
 
-  // Deterministic "read of the day".
-  const todays = mounted ? allItems[dailyIndex(allItems.length)] : null;
+  // Deterministic "read of the day" — always from the good pool.
+  const goodPool = useMemo(() => allItems.filter(isGood), [allItems]);
+  const todays = mounted && goodPool.length
+    ? goodPool[dailyIndex(goodPool.length)]
+    : null;
 
-  const items = useMemo(() => {
-    const filtered = allItems.filter((r) => {
-      const goalOk =
-        goal === "all"
-          ? true
-          : goal === "for-you"
-            ? inStack.has(r.name)
-            : r.goals.includes(goal);
-      const tierOk = tier === "all" || r.tier === tier;
-      return goalOk && tierOk;
-    });
-    // Stack compounds first, then by study volume.
-    return filtered.sort((a, b) => {
-      const aIn = inStack.has(a.name) ? 1 : 0;
-      const bIn = inStack.has(b.name) ? 1 : 0;
-      if (aIn !== bIn) return bIn - aIn;
-      return b.studyCount - a.studyCount;
-    });
+  const filtered = useMemo(() => {
+    return allItems
+      .filter((r) => {
+        const goalOk =
+          goal === "all"
+            ? true
+            : goal === "for-you"
+              ? inStack.has(r.name)
+              : r.goals.includes(goal);
+        const tierOk = tier === "all" || r.tier === tier;
+        return goalOk && tierOk;
+      })
+      .sort((a, b) => {
+        const aIn = inStack.has(a.name) ? 1 : 0;
+        const bIn = inStack.has(b.name) ? 1 : 0;
+        if (aIn !== bIn) return bIn - aIn;
+        return b.studyCount - a.studyCount;
+      });
   }, [goal, tier, inStack, allItems]);
+
+  const good = useMemo(() => filtered.filter(isGood), [filtered]);
+  const others = useMemo(() => filtered.filter((r) => !isGood(r)), [filtered]);
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Today's read */}
+      {/* Today's read — a good one */}
       {todays ? (
         <div className="rounded-2xl border border-lime/30 bg-lime/[0.04] p-5 shadow-card">
           <div className="flex items-center gap-2 mb-3 font-mono text-[11px] uppercase tracking-wider text-lime">
@@ -97,27 +111,45 @@ export function ResearchFeed({ items: allItems }: { items: ResearchItem[] }) {
       </div>
 
       <p className="font-mono text-[11px] uppercase tracking-wider text-paper/50">
-        {items.length} {items.length === 1 ? "compound" : "compounds"}
+        {good.length} strong {good.length === 1 ? "pick" : "picks"}
         {hasStack ? ` · ${inStack.size} in your stack` : ""}
       </p>
 
-      {items.length === 0 ? (
+      {good.length === 0 && others.length === 0 ? (
         <p className="rounded-2xl border border-paper/10 bg-surface p-8 text-center text-paper/60">
           {goal === "for-you"
             ? "Build a protocol and your compounds will show up here."
             : "No compounds match these filters."}
         </p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {items.map((item) => (
-            <ResearchCard
-              key={item.id}
-              item={item}
-              max={maxStudies}
-              inStack={inStack.has(item.name)}
-            />
-          ))}
-        </div>
+        <>
+          {good.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {good.map((item) => (
+                <ResearchCard key={item.id} item={item} max={maxStudies} inStack={inStack.has(item.name)} />
+              ))}
+            </div>
+          ) : null}
+
+          {others.length > 0 ? (
+            <div className="flex flex-col gap-4">
+              <button
+                onClick={() => setShowOthers((v) => !v)}
+                className="self-center inline-flex items-center gap-2 rounded-full border border-paper/20 px-4 py-2 font-mono text-[11px] uppercase tracking-wider text-paper/70 transition hover:border-lime hover:text-paper"
+              >
+                {showOthers ? "Hide" : `View ${others.length} more`} · lighter evidence
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showOthers ? "rotate-180" : ""}`} aria-hidden />
+              </button>
+              {showOthers ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {others.map((item) => (
+                    <ResearchCard key={item.id} item={item} max={maxStudies} inStack={inStack.has(item.name)} />
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+        </>
       )}
     </div>
   );

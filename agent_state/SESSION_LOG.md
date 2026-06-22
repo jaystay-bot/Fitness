@@ -433,3 +433,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_039 — tsc+build 0; guard clean; screenshot shows in-app breakdown with model chart + cited facts. No fabricated statistics.
 - **Watcher audit:** `verify-audit-trail [N=039]: OK`
 - N=039 | PASS | <$1.00 | tsc+build+screenshot | in-app study breakdowns
+
+## N=040 — Curate The Wire to good research + models
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** Only bring good research data and models for users to see; let them click to view others.
+- **Architect:** S1_LOCKED_040 — good = Strong tier or has a curated breakdown; default to good, "View others" reveals the rest. Feed only.
+- **Operator:** A1_OUTPUT_040 — isGood split; good grid by default; "View N more · lighter evidence" toggle; Today's read from good pool.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_040 — tsc+build 0; default "10 strong picks", "View 4 more" reveals others.
