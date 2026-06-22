@@ -26,6 +26,27 @@ runtime engine pure (no runtime external calls, per the app's design).
   committed fallback and the build must stay green offline.
 - Verify: `node scripts/fetch-pubmed-counts.mjs` (or a dry-run flag) + tsc + build.
 
+## BLOCKER (discovered 2026-06-22)
+
+N=023 cannot complete in this environment. PubMed is unreachable:
+- Sandbox curl → `Host not in allowlist: eutils.ncbi.nlm.nih.gov` (network egress policy).
+- Agent WebFetch → HTTP 403 from both eutils and the pubmed.ncbi.nlm.nih.gov web UI.
+
+Per protocol (no real fetch → no PASS, no invented data), N=023 is PAUSED until
+one of:
+1. Commander adds `eutils.ncbi.nlm.nih.gov` (and `pubmed.ncbi.nlm.nih.gov`) to
+   the environment's network egress allowlist
+   (https://code.claude.com/docs/en/claude-code-on-the-web), then the fetch runs
+   for real here; OR
+2. Commander runs `scripts/fetch-pubmed-counts.mjs` locally where PubMed is
+   reachable and commits the generated `lib/data/studyCounts.json`; OR
+3. We ship only the build-time mechanism + honest "PubMed results (approx)"
+   relabeling now (numbers stay as committed fallbacks until a real fetch runs)
+   — explicitly NOT a numbers change, only a path to one.
+
+Non-blocked cycles can proceed first: minimal-input mode and the positioning
+copy rework.
+
 ## AFTER N=023
 
 - N=024 — Minimal-input mode (fewest questions).
