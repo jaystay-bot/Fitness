@@ -334,3 +334,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_030 — tsc+build 0; buy-box spec N1-N7 complete.
 - **Watcher audit:** `verify-audit-trail [N=030]: OK`
 - N=030 | PASS | <$1.00 | tsc+build exit 0 | commerce expansion loop; spec N1-N7 complete
+
+## N=031 — Wire recommendations to the buy boxes
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_031 — "Where to buy" per matched supplement → /shop deep link; footer /shop link. match.ts + ResultCard + Footer + ProductCard.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_031 — shopHrefForSupplement matcher; ResultCard link; Footer "Compare prices"; ProductCard id anchor.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_031 — tsc+build 0; live result rendered 4 correct deep links; unmatched picks show Fulfill only.

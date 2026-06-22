@@ -7,7 +7,10 @@ export function ProductCard({ resolved }: { resolved: ResolvedProduct }) {
   const brand = product.brand ?? "Multiple brands";
 
   return (
-    <article className="flex flex-col gap-4 rounded-2xl border border-paper/10 bg-surface p-5 shadow-card transition-colors hover:border-lime/25">
+    <article
+      id={`product-${product.slug}`}
+      className="scroll-mt-24 flex flex-col gap-4 rounded-2xl border border-paper/10 bg-surface p-5 shadow-card transition-colors hover:border-lime/25 target:border-lime/60"
+    >
       <div className="flex gap-4">
         <BottleVisual
           product={product}
