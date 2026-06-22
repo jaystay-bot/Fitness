@@ -442,3 +442,5 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Operator:** A1_OUTPUT_040 — isGood split; good grid by default; "View N more · lighter evidence" toggle; Today's read from good pool.
 - **Watcher:** verify-audit-trail OK (below).
 - **Judge:** TRUTH_RESULT_040 — tsc+build 0; default "10 strong picks", "View 4 more" reveals others.
+- **Watcher audit:** `verify-audit-trail [N=040]: OK`
+- N=040 | PASS | <$1.00 | tsc+build+screenshot | curated good research, view-others toggle
