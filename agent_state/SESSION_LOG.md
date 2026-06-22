@@ -422,3 +422,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_038 — tsc+build 0; sandbox fallback renders clean (estimates, 15 cards, 0 errors); live path runs on Vercel by design.
 - **Watcher audit:** `verify-audit-trail [N=038]: OK`
 - N=038 | PASS | <$1.00 | tsc+build+fallback verified | live PubMed feed (production)
+
+## N=039 — Study breakdowns (read the data in-app)
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** Let users read/analyze the data in-app instead of clicking to PubMed; make our own charts from what we can extract, curated subset.
+- **Architect:** S1_LOCKED_039 — curated breakdowns: our labeled model chart + real cited qualitative facts; no fabricated stats; compliance-guarded.
+- **Operator:** A1_OUTPUT_039 — studies.ts (6 breakdowns + modelForCompound), StudyChart (pure SVG), ResearchCard "See the data" expander.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_039 — tsc+build 0; guard clean; screenshot shows in-app breakdown with model chart + cited facts. No fabricated statistics.
