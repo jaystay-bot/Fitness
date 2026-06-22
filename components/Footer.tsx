@@ -5,11 +5,14 @@ export function Footer() {
         <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
           <span className="font-serif text-xl tracking-tight">Apex Protocol</span>
           <nav className="flex items-center gap-4 font-mono text-[11px] uppercase tracking-wider text-paper/50">
+            <a href="/research" className="transition-colors hover:text-lime">
+              The Wire
+            </a>
             <a href="/shop" className="transition-colors hover:text-lime">
               Compare prices
             </a>
             <span aria-hidden>·</span>
-            <span>Educational use only · Not medical advice</span>
+            <span>Not medical advice</span>
           </nav>
         </div>
         <p className="text-sm text-paper/60 max-w-3xl leading-relaxed">

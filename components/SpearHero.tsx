@@ -19,10 +19,16 @@ export function SpearHero() {
         <span className="font-serif text-lg sm:text-xl tracking-tight text-paper">
           Apex Protocol
         </span>
-        <div className="flex items-center gap-5 font-mono text-[11px] uppercase tracking-wider">
+        <div className="flex items-center gap-4 sm:gap-5 font-mono text-[11px] uppercase tracking-wider">
+          <a
+            href="/research"
+            className="text-paper/60 transition-colors hover:text-paper"
+          >
+            The Wire
+          </a>
           <a
             href={`#${ASSESSMENT_FORM_ANCHOR}`}
-            className="text-paper/60 transition-colors hover:text-paper"
+            className="hidden sm:inline text-paper/60 transition-colors hover:text-paper"
           >
             Build protocol
           </a>

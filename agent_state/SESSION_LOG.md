@@ -389,3 +389,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_035 — tsc+build 0; screenshots confirm legible light theme across landing/result/shop/mobile; charts legible; no overlap found.
 - **Watcher audit:** `verify-audit-trail [N=035]: OK`
 - N=035 | PASS | <$1.00 | tsc+build+screenshots | Daylight light theme
+
+## N=036 — "The Wire" research feed (/research)
+
+- **Date:** 2026-06-22
+- **Commander (Jay):** Build the research/studies evidence page as a social-feed-style stream you READ (not post) — charts, data, statistics on supplements, linking to studies.
+- **Architect:** S1_LOCKED_036 — read-only feed from real engine evidence data; honesty rules (no fabricated stats; compliance guard; PubMed links).
+- **Operator:** A1_OUTPUT_036 — feed data + Sparkline meters + ResearchCard + StatStrip (density chart) + client filter feed + /research page + nav links.
+- **Watcher:** verify-audit-trail OK (below).
+- **Judge:** TRUTH_RESULT_036 — tsc+build 0; compliance guard clean; screenshots confirm feed + chart + filters + PubMed links; mobile clean. No fabricated statistics.
