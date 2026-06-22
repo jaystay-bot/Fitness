@@ -289,3 +289,12 @@ Note: parallel N=008 cycles ran. Interactive expansion was the larger feature cy
 - **Judge:** TRUTH_RESULT_026 — tsc+build 0; live body bg rgb(11,14,12); desktop screenshot confirms elite canvas.
 - **Watcher audit:** `verify-audit-trail [N=026]: OK`
 - N=026 | PASS | <$1.00 | tsc+build+screenshot | elite colorway shipped
+
+## N=027 — Kinetic hero (elite first impression)
+
+- **Date:** 2026-06-22
+- **Architect:** S1_LOCKED_027 — rewrite SpearHero into a cinematic hero (aurora + botanical SVG, entrance motion, gold-italic headline, mint CTA, trust line, glass panel). SpearHero.tsx only; lucide icons, no emoji, no dep.
+- **Sentinel:** GATE OPEN.
+- **Operator:** A1_OUTPUT_027 — aurora/float blooms + concentric motif; staggered fade-up; "Build my protocol" CTA → #assessment-form; trust line; floating glass panel.
+- **Watcher:** verify-audit-trail OK (below). Only SpearHero.tsx changed; tokens/engine untouched.
+- **Judge:** TRUTH_RESULT_027 — tsc+build 0; emoji guard clean; desktop+mobile screenshots confirm an elite hero.
