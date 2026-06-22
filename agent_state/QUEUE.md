@@ -2,7 +2,13 @@
 
 ## ACTIVE
 
-- N=010 — Vault funding (Stripe Treasury or equivalent). Honor the N=009 disclosure that promised funding ships in N=010. Awaiting Commander.
+- N=021 — Mission logic: unify protein target + inflammation-aware protein + underweight → healthy weight gain (NO peptides). See NEXT_021.md. (Commander redirect 2026-06-22.)
+- N=022 — Minimal-input mode: reduce the form to the fewest questions that still yield useful guidance.
+- N=023 — Real data research: replace hand-typed `studyCount` with real PubMed counts via a build-time fetch script (NIH ODS / DSLD references).
+
+## DEFERRED (Commander redirect 2026-06-22)
+
+- N=010-style Vault funding (Stripe Treasury). Deferred behind the redesign + mission cycles. The N=009 "Vault funding ships in N=010" disclosure stays in place and honest until funding actually ships — no ethical/chargeback debt.
 
 ## DONE
 
@@ -30,7 +36,7 @@
 
 ## STANDING JUDGE PRIMITIVES
 
-- **Visual baseline regression test (`tests/visual.spec.ts`)** is part of the standard Judge phase. Three N=003 computed-style assertions: hero `h1` font-size > 32px, `body.backgroundColor === rgb(10, 10, 10)`, primary CTA `backgroundColor === rgb(212, 255, 58)`. As of N=004, the same file also asserts the unit-toggle invariants: imperial-default mode (`#feet`, `#inches`, `#pounds` visible; FT/LB `aria-pressed="true"`) and metric-after-toggle mode (`#heightCm`, `#weightKg` visible; CM/KG `aria-pressed="true"`).
+- **Visual baseline regression test (`tests/visual.spec.ts`)** is part of the standard Judge phase. Three computed-style assertions: hero `h1` font-size > 32px, and the locked palette. **As of N=020 (Commander-authorized re-freeze) the locked colors are `body.backgroundColor === rgb(10, 11, 13)` and primary CTA `backgroundColor === rgb(182, 242, 74)`** — the prior neon values (`rgb(10,10,10)` / `rgb(212,255,58)`) were the explicit "color scheme way off" complaint and are retired. The same file also asserts the unit-toggle invariants: imperial-default mode (`#feet`, `#inches`, `#pounds` visible; FT/LB `aria-pressed="true"`) and metric-after-toggle mode (`#heightCm`, `#weightKg` visible; CM/KG `aria-pressed="true"`).
 - **Positioning tripwire** (added N=005): every Judge phase re-runs a rendered-HTML banned-pattern check against `streak`, `unlock`, `achievement`, `level up`, `limited time`, `people viewing`, `earn xp/points/rewards`, and any `\d+:\d{2}` countdown timer. The Watcher's source-grep mirrors this list (`earn xp`, etc.).
 - **Engine determinism**: `recommend(input)` must remain pure synchronous and `JSON.stringify`-identical across calls with the same input, including `variationSeed` and every `SupplementPick.confidence`.
 
