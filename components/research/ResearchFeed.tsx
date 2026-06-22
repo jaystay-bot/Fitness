@@ -3,11 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Sparkles, Star } from "lucide-react";
 
-import {
-  GOAL_FILTERS,
-  MAX_STUDY_COUNT,
-  RESEARCH_ITEMS,
-} from "@/lib/research/feed";
+import { GOAL_FILTERS, type ResearchItem } from "@/lib/research/feed";
 import { dailyIndex, readStack } from "@/lib/research/personal";
 import type { EvidenceTier, PrimaryGoal } from "@/lib/types";
 import { ResearchCard } from "./ResearchCard";
@@ -22,7 +18,11 @@ const TIERS: { id: TierFilter; label: string }[] = [
   { id: "Emerging", label: "Emerging" },
 ];
 
-export function ResearchFeed() {
+export function ResearchFeed({ items: allItems }: { items: ResearchItem[] }) {
+  const maxStudies = useMemo(
+    () => Math.max(1, ...allItems.map((r) => r.studyCount)),
+    [allItems],
+  );
   const [goal, setGoal] = useState<GoalFilter>("all");
   const [tier, setTier] = useState<TierFilter>("all");
   // Personalization is read after mount so SSR output matches (no hydration gap).
@@ -38,10 +38,10 @@ export function ResearchFeed() {
   const hasStack = mounted && inStack.size > 0;
 
   // Deterministic "read of the day".
-  const todays = mounted ? RESEARCH_ITEMS[dailyIndex(RESEARCH_ITEMS.length)] : null;
+  const todays = mounted ? allItems[dailyIndex(allItems.length)] : null;
 
   const items = useMemo(() => {
-    const filtered = RESEARCH_ITEMS.filter((r) => {
+    const filtered = allItems.filter((r) => {
       const goalOk =
         goal === "all"
           ? true
@@ -58,7 +58,7 @@ export function ResearchFeed() {
       if (aIn !== bIn) return bIn - aIn;
       return b.studyCount - a.studyCount;
     });
-  }, [goal, tier, inStack]);
+  }, [goal, tier, inStack, allItems]);
 
   return (
     <div className="flex flex-col gap-5">
@@ -69,7 +69,7 @@ export function ResearchFeed() {
             <Sparkles className="w-3.5 h-3.5" aria-hidden />
             Today&apos;s read
           </div>
-          <ResearchCard item={todays} max={MAX_STUDY_COUNT} inStack={inStack.has(todays.name)} />
+          <ResearchCard item={todays} max={maxStudies} inStack={inStack.has(todays.name)} />
         </div>
       ) : null}
 
@@ -113,7 +113,7 @@ export function ResearchFeed() {
             <ResearchCard
               key={item.id}
               item={item}
-              max={MAX_STUDY_COUNT}
+              max={maxStudies}
               inStack={inStack.has(item.name)}
             />
           ))}
