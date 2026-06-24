@@ -117,6 +117,14 @@ export function ResultCard({
         <VerdictReveal text={result.verdict} />
         <div className="flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-2 text-xs font-mono uppercase tracking-wider text-paper/60 min-w-0">
           <span>BMI {result.bmi}</span>
+          <span>
+            Eat {result.nutrition.dailyTargets.calorieTarget.toLocaleString()} kcal/day
+            {result.nutrition.dailyTargets.calorieTarget !== result.nutrition.dailyTargets.maintenanceCalories ? (
+              <span className="text-paper/40">
+                {" "}(maintain {result.nutrition.dailyTargets.maintenanceCalories.toLocaleString()})
+              </span>
+            ) : null}
+          </span>
           <span>Protein {result.nutrition.dailyTargets.proteinGrams} g/day</span>
           <span>Water {result.nutrition.dailyTargets.waterLiters} L/day</span>
           <span>Sleep {result.nutrition.dailyTargets.sleepHours} h/night</span>

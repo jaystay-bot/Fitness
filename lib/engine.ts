@@ -9,6 +9,7 @@ import {
 import { resolveTaggedInputs } from "./signalPriority";
 import { SUPPLEMENTS, getSupplement } from "./supplements";
 import type {
+  ActivityLevel,
   EvidenceTier,
   PrimaryGoal,
   Recommendation,
@@ -66,6 +67,38 @@ function proteinTargetGrams(input: UserInput): number {
   if (input.inflammation === "high") perKg += 0.4;
   perKg = Math.min(perKg, 2.4);
   return Math.round(input.weightKg * perKg);
+}
+
+// Mifflin-St Jeor basal metabolic rate — the most widely validated estimate.
+function bmr(input: UserInput): number {
+  const base = 10 * input.weightKg + 6.25 * input.heightCm - 5 * input.age;
+  return input.sex === "male" ? base + 5 : base - 161;
+}
+
+const ACTIVITY_FACTOR: Record<ActivityLevel, number> = {
+  sedentary: 1.2,
+  light: 1.375,
+  moderate: 1.55,
+  high: 1.725,
+};
+
+// Estimated maintenance calories (TDEE), rounded to a clean 50 kcal.
+function maintenanceCalories(input: UserInput): number {
+  const tdee = bmr(input) * ACTIVITY_FACTOR[input.activityLevel];
+  return Math.round(tdee / 50) * 50;
+}
+
+// Goal-adjusted daily calorie target. Surplus for muscle / weight gain, deficit
+// for fat loss, maintenance otherwise. Underweight forces a surplus regardless
+// of the chosen goal (food-first weight-gain support).
+function calorieTargetKcal(input: UserInput): number {
+  const maintenance = maintenanceCalories(input);
+  let delta = 0;
+  if (input.primaryGoal === "gain-weight") delta = 400;
+  else if (input.primaryGoal === "muscle") delta = 200;
+  else if (input.primaryGoal === "fat-loss") delta = -400;
+  if (isUnderweight(input)) delta = Math.max(delta, 400);
+  return Math.round((maintenance + delta) / 50) * 50;
 }
 
 const SYMPTOM_ADDONS: Record<Symptom, string[]> = {
@@ -345,6 +378,8 @@ function buildNutrition(input: UserInput): Recommendation["nutrition"] {
     eatMore: eatMore.slice(0, 5),
     eatLess: eatLess.slice(0, 3),
     dailyTargets: {
+      calorieTarget: calorieTargetKcal(input),
+      maintenanceCalories: maintenanceCalories(input),
       proteinGrams: proteinTarget,
       waterLiters,
       sleepHours: input.primaryGoal === "muscle" ? 8 : 7.5,

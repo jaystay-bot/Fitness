@@ -77,6 +77,8 @@ export interface Recommendation {
     eatMore: string[];
     eatLess: string[];
     dailyTargets: {
+      calorieTarget: number;
+      maintenanceCalories: number;
       proteinGrams: number;
       waterLiters: number;
       sleepHours: number;
