@@ -8,7 +8,7 @@ export function VolumeBar({ value, max }: { value: number; max: number }) {
   const pct = Math.max(0.04, Math.min(1, value / max));
   return (
     <div className="flex items-center gap-2 w-full">
-      <div className="h-1.5 flex-1 rounded-full bg-paper/10 overflow-hidden">
+      <div className="h-2 flex-1 rounded-full bg-paper/10 overflow-hidden">
         <div
           className="h-full rounded-full bg-lime"
           style={{ width: `${(pct * 100).toFixed(1)}%` }}
@@ -35,7 +35,7 @@ export function TierMeter({ tier }: { tier: EvidenceTier }) {
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className={`h-1.5 w-5 rounded-full ${i < filled ? "bg-gold" : "bg-paper/12"}`}
+          className={`h-2 w-6 rounded-full ${i < filled ? "bg-gold" : "bg-paper/12"}`}
         />
       ))}
     </div>

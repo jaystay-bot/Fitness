@@ -6,10 +6,15 @@ export type ProFeature =
   | "pdf"
   | "notifications";
 
-// NOTE: DEV MODE ACTIVE, ALL USERS GRANTED PRO ACCESS FOR TESTING, REVERT BEFORE COMMERCIAL LAUNCH
+// Demo mode: when NEXT_PUBLIC_DEMO_MODE is set, every visitor is granted Pro
+// access so the full product (timeline, lab parser, bottle scanner) is visible
+// in a public portfolio demo without a subscription. Unset / "false" falls back
+// to the real entitlement check. Flip the env var off for commercial launch.
+const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+
 export function isProUser(tier: SubscriptionTier | null | undefined): boolean {
-  void tier;
-  return true;
+  if (DEMO_MODE) return true;
+  return tier === "pro";
 }
 
 export function canAccess(

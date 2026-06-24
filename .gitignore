@@ -6,3 +6,11 @@ out/
 .env.local
 .env.production
 tsconfig.tsbuildinfo
+
+# Internal multi-agent development trail — kept on the working branch, never
+# on the public default branch (main).
+agent_state/
+8HAT_SYSTEM.md
+AGENTS.md
+*.pdf
+scripts/verify-audit-trail.sh
