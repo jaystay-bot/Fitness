@@ -69,6 +69,70 @@ export const STUDY_BREAKDOWNS: Record<string, StudyBreakdown> = {
     takeaway:
       "An acute, same-session effect — useful before focused work, not something that builds over weeks.",
   },
+  "magnesium-glycinate": {
+    design: "Randomized trials and reviews of magnesium supplementation",
+    population: "Adults, with larger effects where intake is low",
+    outcome: "Sleep quality and markers of relaxation",
+    magnitude: "Modest improvement, clearest when baseline intake is low",
+    takeaway:
+      "Best thought of as topping up a common dietary shortfall; the glycinate form is chosen for tolerability, not extra potency.",
+  },
+  protein: {
+    design: "Meta-analyses of protein supplementation during resistance training",
+    population: "Adults across a range of training experience",
+    outcome: "Muscle mass and strength gains alongside training",
+    magnitude: "A meaningful increment when total daily protein is otherwise short",
+    takeaway:
+      "Total daily protein is what drives the result — a shake is just a convenient way to hit the number.",
+  },
+  zinc: {
+    design: "Supplementation trials and reviews",
+    population: "Adults, with the clearest effects in deficiency",
+    outcome: "Immune markers and, when low, hormonal markers",
+    magnitude: "Reliable mainly when correcting a shortfall",
+    takeaway:
+      "Useful to fill a gap rather than a bonus for the already-replete; sustained high doses can crowd out copper.",
+  },
+  b12: {
+    design: "Supplementation and observational studies",
+    population: "Adults, especially plant-based eaters and older people",
+    outcome: "Blood B12 status and related fatigue",
+    magnitude: "Reliably restores low levels",
+    takeaway:
+      "A priority where dietary intake is low; little added benefit once levels are already normal.",
+  },
+  iron: {
+    design: "Randomized trials in low-iron populations",
+    population: "Adults with low iron status, often menstruating women",
+    outcome: "Fatigue tied to iron status and ferritin levels",
+    magnitude: "Clear improvement when iron is genuinely low",
+    takeaway:
+      "Test ferritin first — supplementing without a real shortfall carries risk and no benefit.",
+  },
+  rhodiola: {
+    design: "Short randomized trials of standardized extract",
+    population: "Adults reporting stress-related fatigue",
+    outcome: "Perceived fatigue and mental endurance",
+    magnitude: "Modest, on a moderate and somewhat mixed evidence base",
+    takeaway:
+      "Most relevant for stress-related fatigue; effects track the specific standardized extract studied.",
+  },
+  probiotic: {
+    design: "Strain-specific randomized trials and reviews",
+    population: "Adults with digestive complaints",
+    outcome: "Digestive comfort and regularity",
+    magnitude: "Strain-dependent; benefits do not generalize across products",
+    takeaway:
+      "The strain on the label matters more than the CFU count — match the strain to the studied use.",
+  },
+  electrolytes: {
+    design: "Hydration and exercise-physiology studies",
+    population: "Active adults, and those on low-carb or fasting protocols",
+    outcome: "Hydration balance and exercise-related cramping",
+    magnitude: "Most useful around heavy sweating, heat, or carb restriction",
+    takeaway:
+      "Situational insurance for training, heat, or keto — not a daily essential for everyone.",
+  },
 };
 
 // Build a minimal pick (only `name` is read by the model) and project 30 days.
