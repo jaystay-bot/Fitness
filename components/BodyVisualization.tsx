@@ -1,10 +1,6 @@
 import { BODY_SYSTEMS, nameToBodyKey } from "@/lib/bodySystems";
-import {
-  SVG_POSITIONS,
-  VIEWBOX_HEIGHT,
-  VIEWBOX_WIDTH,
-} from "@/lib/svgPositions";
 import type { BodySystem, SupplementPick } from "@/lib/types";
+import { AnatomyHologram } from "./AnatomyHologram";
 
 interface Tag {
   system: BodySystem;
@@ -58,6 +54,11 @@ export function BodyVisualization({
     grouped.get(t.system)!.push(t);
   }
 
+  const active = Array.from(grouped.entries()).map(([system, list]) => ({
+    system,
+    warning: list.some((t) => t.warning),
+  }));
+
   return (
     <section
       aria-label="Body systems visualization"
@@ -72,72 +73,7 @@ export function BodyVisualization({
         </span>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-[2fr_3fr] gap-5 items-start">
-        <svg
-          viewBox={`0 0 ${VIEWBOX_WIDTH} ${VIEWBOX_HEIGHT}`}
-          overflow="visible"
-          className="w-full max-w-[280px] mx-auto"
-          role="img"
-          aria-label="Anatomical silhouette with labeled supplement targets"
-        >
-          {/* Hand-coded silhouette: head, neck, torso, arms, legs. */}
-          <g
-            stroke="#0F1B2D"
-            strokeOpacity="0.5"
-            strokeWidth="1.5"
-            fill="#0F1B2D"
-            fillOpacity="0.06"
-          >
-            {/* Head */}
-            <ellipse cx="200" cy="60" rx="40" ry="46" />
-            {/* Neck */}
-            <rect x="190" y="100" width="20" height="20" />
-            {/* Shoulders + torso */}
-            <path d="M 110 130 Q 200 110 290 130 L 295 220 Q 295 320 280 380 L 230 480 L 230 600 L 195 600 L 195 480 L 200 380 Q 200 320 200 220 L 200 380 L 170 480 L 170 600 L 205 600 L 205 480 L 120 380 Q 105 320 105 220 Z" />
-            {/* Arms */}
-            <path d="M 110 130 L 70 220 L 65 350 L 80 360 L 95 250 L 110 200 Z" />
-            <path d="M 290 130 L 330 220 L 335 350 L 320 360 L 305 250 L 290 200 Z" />
-          </g>
-          {/* Subtle line dividers between major regions. */}
-          <g
-            stroke="#0F1B2D"
-            strokeOpacity="0.15"
-            strokeDasharray="3 4"
-            fill="none"
-          >
-            <line x1="40" y1="120" x2="360" y2="120" />
-            <line x1="40" y1="280" x2="360" y2="280" />
-            <line x1="40" y1="380" x2="360" y2="380" />
-          </g>
-          {/* Tag connectors and labels per body system. */}
-          {Array.from(grouped.entries()).map(([system, list]) => {
-            const pos = SVG_POSITIONS[system];
-            return (
-              <g key={system}>
-                <circle
-                  cx={pos.cx}
-                  cy={pos.cy}
-                  r="4"
-                  fill={
-                    list.some((t) => t.warning) ? "#E11D48" : "#2563EB"
-                  }
-                />
-                {list.map((t, i) => (
-                  <text
-                    key={`${system}-${t.name}-${i}`}
-                    x={pos.cx + 12}
-                    y={pos.cy + i * 14 - (list.length - 1) * 7}
-                    fontFamily="ui-monospace, monospace"
-                    fontSize="11"
-                    fill={t.warning ? "#E11D48" : "#0F1B2D"}
-                    aria-label={`${t.name} targets ${system}`}
-                  >
-                    {t.name}
-                  </text>
-                ))}
-              </g>
-            );
-          })}
-        </svg>
+        <AnatomyHologram active={active} />
         <ul className="flex flex-col gap-2 text-sm text-paper/85">
           {Array.from(grouped.entries()).map(([system, list]) => (
             <li key={system} className="border border-paper/15 rounded-md p-3">
