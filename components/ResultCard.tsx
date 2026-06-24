@@ -20,14 +20,6 @@ import { SpeakToDoctorButton } from "./SpeakToDoctorButton";
 import { UpgradeButton } from "./UpgradeButton";
 import { VerdictReveal } from "./VerdictReveal";
 
-const SupplementBottle3D = dynamic(
-  () =>
-    import("./SupplementBottle3D").then((m) => ({
-      default: m.SupplementBottle3D,
-    })),
-  { ssr: false },
-);
-
 const InteractiveTimeline = dynamic(
   () =>
     import("./InteractiveTimeline").then((m) => ({
@@ -93,7 +85,6 @@ export function ResultCard({
   input: UserInput;
   shareSlug?: string;
 }) {
-  const featured = result.supplements[0];
   const slug = shareSlug ?? encodeInput(input);
   const tier = useTier();
   const stackCost = monthlyStackCost(result.supplements.map((s) => s.name));
@@ -134,12 +125,6 @@ export function ResultCard({
           <Stat label="BMI" value={String(result.bmi)} />
         </dl>
       </div>
-
-      {featured ? (
-        <div className="mt-8 flex justify-center">
-          <SupplementBottle3D name={featured.name} tier={featured.evidenceTier} />
-        </div>
-      ) : null}
 
       <details className="group" open>
         <summary className="cursor-pointer list-none mt-10 mb-3 font-mono text-[11px] uppercase tracking-wider text-lime flex items-center gap-2">
