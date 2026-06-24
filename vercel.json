@@ -12,7 +12,8 @@
   },
   "build": {
     "env": {
-      "PYTHON_BIN": "python3"
+      "PYTHON_BIN": "python3",
+      "NEXT_PUBLIC_DEMO_MODE": "true"
     }
   }
 }
