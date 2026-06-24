@@ -5,7 +5,6 @@ import { ChevronDown, Sparkles, Star } from "lucide-react";
 
 import { GOAL_FILTERS, type ResearchItem } from "@/lib/research/feed";
 import { dailyIndex, readStack } from "@/lib/research/personal";
-import { STUDY_BREAKDOWNS } from "@/lib/research/studies";
 import type { EvidenceTier, PrimaryGoal } from "@/lib/types";
 import { ResearchCard } from "./ResearchCard";
 
@@ -19,10 +18,12 @@ const TIERS: { id: TierFilter; label: string }[] = [
   { id: "Emerging", label: "Emerging" },
 ];
 
-// "Good" research we surface by default: Strong evidence, or a compound with a
-// curated study breakdown + model. Everything else is one click away.
+// "Good" research we surface by default: Strong-tier evidence. Now that nearly
+// every compound carries a curated study breakdown, the default/“lighter” split
+// is driven purely by evidence tier — Strong shows by default, Moderate is one
+// click away (still with its own receipts on expand).
 function isGood(item: ResearchItem): boolean {
-  return item.tier === "Strong" || Boolean(STUDY_BREAKDOWNS[item.id]);
+  return item.tier === "Strong";
 }
 
 export function ResearchFeed({ items: allItems }: { items: ResearchItem[] }) {

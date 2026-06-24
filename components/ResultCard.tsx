@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { AlertTriangle, Calendar, Pill, Salad, Store } from "lucide-react";
 
 import { shopHrefForSupplement } from "@/lib/commerce/match";
+import { CHEAPEST_CHANNEL_NOTE, monthlyStackCost } from "@/lib/commerce/priceEstimates";
 import { saveStack } from "@/lib/research/personal";
 import { encodeInput } from "@/lib/slug";
 import { telehealthPlugin } from "@/lib/plugins/telehealth";
@@ -95,6 +96,7 @@ export function ResultCard({
   const featured = result.supplements[0];
   const slug = shareSlug ?? encodeInput(input);
   const tier = useTier();
+  const stackCost = monthlyStackCost(result.supplements.map((s) => s.name));
   // N=037: remember this protocol's compounds so The Wire can personalize.
   useEffect(() => {
     saveStack(result.supplements.map((s) => s.name));
@@ -115,12 +117,22 @@ export function ResultCard({
           Your protocol — {input.primaryGoal}
         </span>
         <VerdictReveal text={result.verdict} />
-        <div className="flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-2 text-xs font-mono uppercase tracking-wider text-paper/60 min-w-0">
-          <span>BMI {result.bmi}</span>
-          <span>Protein {result.nutrition.dailyTargets.proteinGrams} g/day</span>
-          <span>Water {result.nutrition.dailyTargets.waterLiters} L/day</span>
-          <span>Sleep {result.nutrition.dailyTargets.sleepHours} h/night</span>
-        </div>
+        <dl className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 min-w-0">
+          <Stat
+            label="Eat / day"
+            value={result.nutrition.dailyTargets.calorieTarget.toLocaleString()}
+            unit="kcal"
+            sub={
+              result.nutrition.dailyTargets.calorieTarget !== result.nutrition.dailyTargets.maintenanceCalories
+                ? `maintain ${result.nutrition.dailyTargets.maintenanceCalories.toLocaleString()}`
+                : "maintenance"
+            }
+          />
+          <Stat label="Protein / day" value={String(result.nutrition.dailyTargets.proteinGrams)} unit="g" />
+          <Stat label="Water / day" value={String(result.nutrition.dailyTargets.waterLiters)} unit="L" />
+          <Stat label="Sleep / night" value={String(result.nutrition.dailyTargets.sleepHours)} unit="h" />
+          <Stat label="BMI" value={String(result.bmi)} />
+        </dl>
       </div>
 
       {featured ? (
@@ -160,6 +172,23 @@ export function ResultCard({
       <SectionHeader icon={<Pill className="w-4 h-4" aria-hidden="true" />}>
         Stack ({result.supplements.length} {result.supplements.length === 1 ? "pick" : "picks"})
       </SectionHeader>
+      {stackCost ? (
+        <div className="rounded-xl border border-paper/10 bg-surface px-4 py-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 shadow-card">
+          <span className="font-mono text-[11px] uppercase tracking-wider text-paper/55">
+            Est. cost
+          </span>
+          <span className="font-serif text-lg text-paper">
+            ~${stackCost.lowDollars}–${stackCost.highDollars}
+            <span className="text-sm text-paper/55"> /month</span>
+          </span>
+          <span className="font-mono text-[10px] uppercase tracking-wider text-paper/40">
+            typical retail · not a live price
+          </span>
+          <p className="w-full text-xs text-paper/55 leading-snug mt-0.5">
+            {CHEAPEST_CHANNEL_NOTE}
+          </p>
+        </div>
+      ) : null}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
         {result.supplements.map((s) => (
           <article
@@ -293,6 +322,35 @@ export function ResultCard({
         <UpgradeButton variant="primary" interval="month" />
       </div>
     </section>
+  );
+}
+
+function Stat({
+  label,
+  value,
+  unit,
+  sub,
+}: {
+  label: string;
+  value: string;
+  unit?: string;
+  sub?: string;
+}) {
+  return (
+    <div className="rounded-xl border border-paper/10 bg-surface px-3 py-2.5 shadow-card flex flex-col gap-0.5 min-w-0">
+      <dt className="font-mono text-[10px] uppercase tracking-wider text-paper/45 truncate">
+        {label}
+      </dt>
+      <dd className="font-serif text-xl leading-none text-paper">
+        {value}
+        {unit ? <span className="text-sm text-paper/55"> {unit}</span> : null}
+      </dd>
+      {sub ? (
+        <span className="font-mono text-[9px] uppercase tracking-wider text-paper/40 truncate">
+          {sub}
+        </span>
+      ) : null}
+    </div>
   );
 }
 
